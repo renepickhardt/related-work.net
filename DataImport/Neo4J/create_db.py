@@ -1,100 +1,11 @@
 #
-## Writes arxiv meta data and references into a Neo4J graph db.
+# Writes arxiv meta data and references into a Neo4J graph db.
 #
-#    by Heinrich Hartmann, www.related-work.net, 2012
+# by Heinrich Hartmann, www.related-work.net, 2012
 #
+# For more informations see README.md in the same folder
 #
-#
-### DB Structure diagram:
-#                           
-#    PAPER <---[type]------ P1  <--[ref]-->  P2 
-#                            |               |
-#                            |[author]       |[author]
-#                            v               v
-#    AUTHOR <--[type]------ A1              A2
-#
-### Description:
-#
-# *   Paper nodes, with properties:
-#     *   title
-#     *   abstract
-#     *   date         (YYYY-MM-DD, or YYYY, YYYY-MM  if data not available)
-#     *   source_url   (e.g. 'http://arxiv.org/abs/1001.1032' )
-#     *   source_id    (e.g. 'arxiv:1001.1032')
-#     *   unknown_references
-#     *   arxiv_meta_dict
-#         as a list of unicode strings (see remark below):
-#         [ k1, v1 , k2, v2, ... ]
-#         vi are lists of meta_dict values joined with separator "|".
-#         An example dict is attached at the end of the file.
-#
-# *   Reference relation: P1 ---> P2,  where P1,P2 are paper nodes. Properties:
-#     *   ref_string (e.g. 'Knuth, D., A remark on ... ')
-#
-# *   Author nodes, with properties:
-#     *   name       (e.g. 'Knuth, Daniel-William')
-#
-# *   Author relation: P ---> A, 
-#     where P in (Paper nodes) and A in (Author nodes)
-#
-# *   Meta nodes: 
-#     - PAPER
-#     - AUTHOR
-#
-### Paradigm:
-#
-# *   Keep the relation structure simple: Do not include relations, that can be 
-#     conveniently covered by an index/lookup table. How would we use this 
-#     traversal? It is always easy to add relations later on.
-# *   Do not throw away information.
-#
-### Install guide:
-#
-# *   sudo apt-get install python-jpype
-# *   git clone https://github.com/neo4j/python-embedded.git 
-# *   sudo python setup.py install
-# *   edit .bash.rc:   
-#     export CLASSPATH=/usr/lib/jvm/java-6-openjdk/jre/lib/
-#     export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre/
-#
-### Remark:
-#
-# *   We use the embeded-python neo4j library. 
-#     As it turns out there are severe speed issues! 
-#     [https://github.com/neo4j/python-embedded/issues/15!]
-# *   Propertis of Nodes and Relations can be:
-#     strings (unicode/ascii), integers, bools
-#     and lists of such. Dictionaries are not supported.
-#
-### Install guide:
-#
-# *   sudo apt-get install python-jpype
-# *   git clone https://github.com/neo4j/python-embedded.git 
-# *   sudo python setup.py install
-# *   edit .bash.rc:   
-#     export CLASSPATH=/usr/lib/jvm/java-6-openjdk/jre/lib/
-#     export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre/
-#
-### References:
-# *   [Neo4J docs](http://docs.neo4j.org/chunked/milestone/python-embedded.html)
-# *   [Github repositoty](https://github.com/neo4j/python-embedded)
-# 
-### Open Questions:
-#
-# *   How to deal with unmatched references? 
-#     1.  Store them in paper_nodes?
-#            a. Store all references in paper_nodes 
-#               (redundant, since we want ref relation)
-#            b. Store matched references in relations 
-#               and unmatched ones in paper_node      
-#               (approach taken. Drawback: not very coherent)
-#     2.   Store them in a relation to a 'unknown_paper' node. (slow?!)
-#     3.   Add a new paper_node and a relation. (slow? data overload?)
-#
-### Todo: 
-#
-# *   Coauthor relation
-# *   Timing decorators
+
 
 
 import os
@@ -103,9 +14,10 @@ os.environ['CLASSPATH'] = '/usr/lib/jvm/java-6-openjdk/jre/lib/'
 os.environ['JAVA_HOME'] = '/usr/lib/jvm/java-6-openjdk/jre/'
 
 from neo4j import GraphDatabase, INCOMING, Evaluation
+
 import sys
 sys.path.append('../MetaImport')
-from MetaRead import get_meta_from_pkl
+from MetaRead import get_json_from_dir
 sys.path.append('../tools')
 from shared import group_generator
 
@@ -116,7 +28,7 @@ db    = GraphDatabase('db_folder')
 ROOT  = None
 
 match_file = '../DATA/ALL_MATCH.txt'
-meta_pkl_dir = '../DATA/META/PKL/'
+meta_json_dir = '../DATA/META/JSON/'
 
 def main():
     if not db.node.indexes.exists('author_idx'):
@@ -126,9 +38,14 @@ def main():
         print "Reading db"
         init_globals()
 
+    # Add paper nodes with information from meta_pkl_feed
     meta_fill_db()
+    # Add reference relations
     reference_fill_db()
+    # Write unmatched reference arrays
     unmatched_reference_fill_db()
+
+    # Calculate Metrics (now done better by Rene in Java)
     #write_caches()
     #write_cite_rank()
     db.shutdown()
@@ -178,12 +95,10 @@ def meta_fill_db(db=db,limit = -1):
     # Create Paper Nodes
     # 
     start = time()
-    for batch_count, batch in enumerate(group_generator(get_meta_from_pkl(meta_pkl_dir, limit = limit),1000)):
+    for batch_count, batch in enumerate(group_generator(get_json_from_dir(meta_json_dir, limit = limit),1000)):
         print 'Processing metadata batch %d. Time elapsed: %d sec.' % (batch_count, time() - start)
         with db.transaction:
             for rec_id, meta_dict in batch:
-                continue
-
                 # create a new node
                 paper_node = db.node(
                     label           = 'paper_node arxiv:'+rec_id,
@@ -251,8 +166,6 @@ def reference_fill_db(match_file = match_file , db=db):
                     print 'Skipped line: not not enough separators "|". ',  line[:20]
                     continue
 
-                continue
-
                 # .single property is broken! Have to loop through results (which should be a single one)
                 # equivalent to: source_node = source_idx['id']['arxiv:' + source_id].single
                 for source_node in source_idx['id']['arxiv:' + source_id]: 
@@ -303,8 +216,6 @@ def unmatched_reference_fill_db(match_file = match_file , db=db):
                 except ValueError:
                     print 'Skipped line: not not enough separators "|". ',  line[:20]
                     continue
-
-                continue
 
                 if not target_id == '':
                     # Lookup target_id in the index
