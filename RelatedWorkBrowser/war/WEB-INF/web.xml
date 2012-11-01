@@ -4,30 +4,25 @@
               http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5"
          xmlns="http://java.sun.com/xml/ns/javaee">
-  
-  <!-- Default page to serve -->
 
   <!-- Servlets -->
   <servlet>
     <servlet-name>greetServlet</servlet-name>
-    <servlet-class>net.relatedwork.server.StaticAutoCompleteServiceImpl</servlet-class>
+    <servlet-class>de.renepickhardt.gwt.server.GreetingServiceImpl</servlet-class>
   </servlet>
   
   <servlet-mapping>
     <servlet-name>greetServlet</servlet-name>
     <url-pattern>/relatedworkbrowser/greet</url-pattern>
   </servlet-mapping>
-  
-  
-          <listener>
-                <listener-class>
-                        net.relatedwork.server.ContextListener
-        </listener-class>
-        </listener>
-  
-  
+    
+  <listener>
+  	<listener-class>de.renepickhardt.gwt.server.ContextListener</listener-class>
+  </listener>
+    
+  <!-- Default page to serve -->
   <welcome-file-list>
-    <welcome-file>RelatedWorkBrowser.html</welcome-file>
+    <welcome-file>RelatedWork.html</welcome-file>
   </welcome-file-list>
 
 </web-app>
