@@ -25,11 +25,6 @@ public class BenchmarkMain {
 		FriendOfAFriendQueryBenchmark foafqb = new FriendOfAFriendQueryBenchmark(graphDB);
 		
 		int cnt = 0;
-		for (Node n : graphDB.getAllNodes()){
-			if (++cnt % 10000 == 0){
-				System.out.println(cnt);
-			}
-		}
 		
 		System.out.println("done start benchmark");
 		
@@ -39,11 +34,6 @@ public class BenchmarkMain {
 					foafqb.coAuthorBenchmark(base*j);
 			}
 		}
-		
-//		for (int i = 1000 ; i < 100000; i = i + 1000){
-//			t.coAuthorBenchmark(i);
-//		}
-
 	}
 
 }

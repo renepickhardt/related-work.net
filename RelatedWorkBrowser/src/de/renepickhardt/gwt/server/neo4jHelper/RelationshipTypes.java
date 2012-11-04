@@ -12,4 +12,7 @@ public class RelationshipTypes {
 	public static DynamicRelationshipType CO_AUTHOR_COUNT = DynamicRelationshipType.withName("rw:dm:CoAuthorCount");
 	public static final RelationshipType CITES_AUTHOR = DynamicRelationshipType.withName("rw:dm:citesAuthor");
 	
+	public static final RelationshipType SIM_AUTHOR = DynamicRelationshipType.withName("rw:dm:simAuthor");
+	
+	
 }
