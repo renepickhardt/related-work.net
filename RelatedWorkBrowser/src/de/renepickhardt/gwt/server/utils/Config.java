@@ -29,7 +29,7 @@ public class Config extends Properties {
 	static Config instance = null;
 
 	public Config() {
-		String file = "config.txt";
+		String file = "/home/rpickhardt/data/source code/git/related-work-net/RelatedWorkBrowser/config.txt";
 		try {
 			BufferedInputStream stream = new BufferedInputStream(
 					new FileInputStream(file));
