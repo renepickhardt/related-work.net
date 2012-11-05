@@ -2,6 +2,8 @@ package de.renepickhardt.gwt.server.executables;
 
 import org.neo4j.kernel.EmbeddedGraphDatabase;
 
+import de.renepickhardt.gwt.server.datamining.BuildIndices;
+import de.renepickhardt.gwt.server.datamining.CalculatePageRank;
 import de.renepickhardt.gwt.server.datamining.CoAuthorCalculator;
 import de.renepickhardt.gwt.server.datamining.SimilarPaperCalculator;
 import de.renepickhardt.gwt.server.utils.Config;
@@ -26,14 +28,20 @@ public class StartDataMining {
 	public static void main(String[] args) {
 		EmbeddedGraphDatabase graphDB = new EmbeddedGraphDatabase(Config.get().neo4jDbPath);
 		
-		CoAuthorCalculator cac = new CoAuthorCalculator(graphDB);
+		//CoAuthorCalculator cac = new CoAuthorCalculator(graphDB);
 		//cac.calculateTopKCoAuthors(500,10);
-		//cac.
+		//cac.calculateTopKLikesToCiteAuthors(500, 12);
 
-		SimilarPaperCalculator spc = new SimilarPaperCalculator(graphDB);
+		//SimilarPaperCalculator spc = new SimilarPaperCalculator(graphDB);
 		//spc.startTopKCalculation(500, 15);
-		spc.similarTopKAuthors(500, 15);
+		//spc.similarTopKAuthors(500, 15);
 		
+//		CalculatePageRank cpr = new CalculatePageRank(graphDB);
+//		cpr.dcalculatePageRank(0.85, 3);
+		
+//		BuildIndices bi = new BuildIndices();
+//		bi.setGraphDB(graphDB);
+//		bi.buildSearchIndex("prsearch_idx");
 		
 		graphDB.shutdown();
 	}

@@ -36,6 +36,8 @@ import de.renepickhardt.gwt.shared.Paper;
  * 
  * this class also triggers the calculation of similar authors based on cocitations. 
  * 
+ * algorithms exist as a top k version (which can still be improved and there is code redundancy)
+ * 
  * @author rpickhardt
  *
  */

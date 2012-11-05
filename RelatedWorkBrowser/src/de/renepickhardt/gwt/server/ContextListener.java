@@ -12,6 +12,7 @@ import org.neo4j.graphdb.index.Index;
 import org.neo4j.index.impl.lucene.LuceneIndex;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
 
+import de.renepickhardt.gwt.server.utils.Config;
 import de.renepickhardt.gwt.shared.ItemSuggestion;
 
 public class ContextListener implements ServletContextListener {
@@ -39,8 +40,7 @@ public class ContextListener implements ServletContextListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
-		EmbeddedGraphDatabase graphDB = new EmbeddedGraphDatabase(
-				"/var/lib/datasets/rawdata/relatedwork/db_folder");
+		EmbeddedGraphDatabase graphDB = new EmbeddedGraphDatabase(Config.get().neo4jDbPath);
 		ServletContext context = arg0.getServletContext();
 		context.setAttribute("neo4j", graphDB);
 

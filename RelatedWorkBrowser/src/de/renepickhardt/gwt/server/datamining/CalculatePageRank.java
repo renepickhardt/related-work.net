@@ -12,6 +12,8 @@ import org.neo4j.graphdb.index.Index;
 import org.neo4j.index.lucene.ValueContext;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
 
+import de.renepickhardt.gwt.server.utils.IOHelper;
+
 /**
  * this is a small hack which helps to calculate page rank values for rather
  * small graphs iteratively. I am sure a modern computer should be able to
@@ -55,14 +57,19 @@ public class CalculatePageRank {
 				nodeIndex);
 
 		for (int i = 0; i < iterationen; i++) {
-			System.out.println("iteration number: \t" + i);
+			IOHelper.strongLog("Calculateing page rank. Iteration number: \t" + i);
 			for (Long key:newPageRankValues.keySet()){
 				newPageRankValues.put(key,newPageRankValues.get(key)*0.15);
 			}
 			
+			int nodeCnt = 0;
 			for (Entry<Long, Double> e : nodeIndex.entrySet()) {
 				Node n = db.getNodeById(e.getKey());
 
+				if (nodeCnt++%5000==0){
+					IOHelper.log((nodeCnt-1) + " nodes have been assigned new PR values in iteration number: " + i );
+				}
+				
 				int degree = 1;
 				for (Relationship rel : n.getRelationships(Direction.OUTGOING)) {
 					degree++;
@@ -91,7 +98,7 @@ public class CalculatePageRank {
 	}
 
 	private void updatePageRankValues(HashMap<Long, Double> nodeIndex) {
-		System.out.println("start to hit the disk");
+		IOHelper.strongLog("start to hit the disk");
 		int cnt = 0;
 		Transaction tx = db.beginTx();
 		try {
@@ -102,6 +109,7 @@ public class CalculatePageRank {
 					tx.finish();
 					cnt=0;
 					tx = db.beginTx();
+					IOHelper.log("updated another 50k nodes with PR properties");
 				}
 				Node n = db.getNodeById(e.getKey());
 				n.setProperty("pageRankValue", e.getValue());
@@ -119,35 +127,4 @@ public class CalculatePageRank {
 		}
 		return nodeIndex;
 	}
-	
-	public Index<Node> putToIndex(String indexName){
-		Index<Node> searchIndex = db.index().forNodes(indexName);
-		Transaction tx = db.beginTx();
-		try {
-			Index<Node> search = db.index().forNodes("search_idx");
-			long start = System.currentTimeMillis();
-			int cnt = 0;
-			for (Node n:db.getAllNodes()){
-				if (n.hasProperty("title") && n.hasProperty("pageRankValue")){
-					searchIndex.add(n, "title", (String)n.getProperty("title"));
-					searchIndex.add(n, "pr", new ValueContext((Double)n.getProperty("pageRankValue")).indexNumeric());
-				}
-				if (n.hasProperty("name")){
-					searchIndex.add(n, "title", (String)n.getProperty("name"));
-					searchIndex.add(n, "pr", new ValueContext((Double)n.getProperty("pageRankValue")).indexNumeric());
-				}
-				if (cnt++%5000==0){
-					System.out.println(cnt);
-					tx.success();
-					tx.finish();
-					tx = db.beginTx();
-				}
-			}
-			tx.success();
-		}finally{
-			tx.finish();
-		}
-		return searchIndex;
-	}
-
 }

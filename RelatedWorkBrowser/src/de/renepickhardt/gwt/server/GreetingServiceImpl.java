@@ -131,41 +131,15 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			if (!n.hasProperty("pageRankValue"))continue;
 			Double pr = (Double)n.getProperty("pageRankValue");
 			if (n.hasProperty("name")) {
-				apc.name = (String) n.getProperty("name");		
+				apc.name = (String) n.getProperty("name");
+				
+				//TODO: benchmark if one look with conditional statements would be more efficient!
 
-				HashMap<Node, Double> simAuthors = new HashMap<Node, Double>();
-				for (Relationship rel:n.getRelationships(RelationshipTypes.AUTHOROF)){
-					Node paper = rel.getOtherNode(n);
-					if (paper.hasProperty("title")){// i found a paper
-						Paper p = new Paper((String)paper.getProperty("title"));
-						p.pageRank = (Double)paper.getProperty("pageRankValue");
-						p.citationCount = (Integer)paper.getProperty("c_citation_count");
-						apc.papers.add(p);
-						for (Relationship simPaperRel:paper.getRelationships(DynamicRelationshipType.withName("RW:DM:CO_CITATION_SCORE"), Direction.OUTGOING)){
-							Node simPaper = simPaperRel.getEndNode();
-							if (simPaperRel.hasProperty("rw:coCitationScore")){
-								Double score = (Double)simPaperRel.getProperty("rw:coCitationScore");
-								for (Relationship authorRel:simPaper.getRelationships(RelationshipTypes.AUTHOROF)){
-									Node simAuthor = authorRel.getOtherNode(simPaper);
-									if (simAuthor.getId()==n.getId())continue;
-									if (simAuthors.containsKey(simAuthor))
-										simAuthors.put(simAuthor, simAuthors.get(simAuthor) + score);
-									else
-										simAuthors.put(simAuthor, score);
-								}
-							}
-						}
-					}
-				}
-				
-				
-				
 				for (Relationship rel:n.getRelationships(RelationshipTypes.CO_AUTHOR_COUNT)){
 					Node coAuthor = rel.getEndNode();
 					Integer count = (Integer)rel.getProperty(DBRelationshipProperties.CO_AUTHOR_COUNT);
 					apc.coAuthors.add(new Author((String)coAuthor.getProperty("name") + "\t" + count));
 				}
-
 				
 				for (Relationship rel:n.getRelationships(RelationshipTypes.CITES_AUTHOR,Direction.OUTGOING)){
 					Node citedAuthor = rel.getEndNode();
@@ -179,58 +153,12 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 					apc.citedByAuthors.add(new Author((String)citedAuthor.getProperty("name") + "\t" + count));
 				}
 				
-				for (Node simAuthor: simAuthors.keySet()){
-					apc.simAuthors.add(new Author((String)simAuthor.getProperty("name") + "\t" + simAuthors.get(simAuthor)));
+				for (Relationship rel:n.getRelationships(RelationshipTypes.SIM_AUTHOR, Direction.OUTGOING)){
+					Node simAuthor = rel.getEndNode();
+					Double score = (Double)rel.getProperty(DBRelationshipProperties.SIM_AUTHOR_SCORE);
+					apc.citedByAuthors.add(new Author((String)simAuthor.getProperty("name") + "\t" + score));
 				}
 				
-				/*
-				HashMap<Node, Integer> coAuthors = new HashMap<Node, Integer>();
-				HashMap<Node, Integer> citedAuthors = new HashMap<Node, Integer>();
-
-				for (Relationship rel:n.getRelationships(DynamicRelationshipType.withName("author"))){
-					Node paper = rel.getOtherNode(n);
-					if (paper.hasProperty("title")){// i found a paper
-						Paper p = new Paper((String)paper.getProperty("title"));
-						p.pageRank = (Double)paper.getProperty("pageRankValue");
-						p.citationCount = (Integer)paper.getProperty("c_citation_count");
-						apc.papers.add(p);
-
-						//find cited authors
-						for (Relationship citedPaperRel: paper.getRelationships(DynamicRelationshipType.withName("ref"), Direction.OUTGOING)){
-							Node citedPaper = citedPaperRel.getOtherNode(paper);
-							if (citedPaper.hasProperty("title")){
-								for (Relationship citedAuthorRel: citedPaper.getRelationships(DynamicRelationshipType.withName("author"),Direction.OUTGOING)){
-									Node citedAuthor = citedAuthorRel.getOtherNode(citedPaper);
-									if (citedAuthor.hasProperty("name")){
-										if (citedAuthors.containsKey(citedAuthor))
-											citedAuthors.put(citedAuthor, citedAuthors.get(citedAuthor) + 1);
-										else
-											citedAuthors.put(citedAuthor, 1);
-									}
-								}
-							}
-						}
-						
-						//find co authors
-						for (Relationship coAuthorRel: paper.getRelationships(DynamicRelationshipType.withName("author"))){
-							Node coAuthor = coAuthorRel.getOtherNode(paper);
-							if (coAuthors.containsKey(coAuthor))
-								coAuthors.put(coAuthor, coAuthors.get(coAuthor) + 1);
-							else
-								coAuthors.put(coAuthor, 1);
-						}
-					}
-				}
-				
-				for (Node coAuthor: coAuthors.keySet()){
-					apc.coAuthors.add(new Author((String)coAuthor.getProperty("name") + "\t" + coAuthors.get(coAuthor)));
-				}
-				
-				for (Node citedAuthor: citedAuthors.keySet()){
-					apc.citedAuthors.add(new Author((String)citedAuthor.getProperty("name") + "\t" + citedAuthors.get(citedAuthor)));
-				}
-				
-								*/
 				break;
 			}
 		}

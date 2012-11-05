@@ -176,4 +176,60 @@ public class CoAuthorCalculator extends Calculator {
 			tx.finish();
 		}
 	}	
+	
+	
+	public void calculateTopKLikesToCiteAuthors(int transactionThreshhold, int k){
+		Transaction tx = graphDB.beginTx();
+		try {
+			int transactionCount = 0;
+			for (Node author:graphDB.getAllNodes()){
+				if (!author.hasProperty("name"))continue; // only want to work on authors
+				HashMap<Node, Integer> citedAuthors = new HashMap<Node, Integer>();
+				for (Relationship rel:author.getRelationships(RelationshipTypes.AUTHOROF)){
+					Node paper = rel.getOtherNode(author);
+					if (paper.hasProperty("title")){// i found a paper
+						//find cited authors
+						for (Relationship citedPaperRel: paper.getRelationships(RelationshipTypes.CITES,Direction.OUTGOING)){
+							Node citedPaper = citedPaperRel.getOtherNode(paper);
+							if (citedPaper.hasProperty("title")){
+								for (Relationship citedAuthorRel: citedPaper.getRelationships(RelationshipTypes.AUTHOROF)){
+									Node citedAuthor = citedAuthorRel.getOtherNode(citedPaper);
+									if (citedAuthor.getId()==author.getId())continue;
+									if (citedAuthor.hasProperty("name")){
+										if (citedAuthors.containsKey(citedAuthor))
+											citedAuthors.put(citedAuthor, citedAuthors.get(citedAuthor) + 1);
+										else
+											citedAuthors.put(citedAuthor, 1);
+									}
+								}
+							}
+						}
+					}
+				}
+				
+				Algo<Node, Integer> a = new Algo<Node, Integer>();				
+				TreeMap<Integer, Set<Node>> topkCitedAuthors = a.getTopkElements(citedAuthors, k);				
+				int topkCnt=0;
+				
+				for (Integer citedAuthorCount: topkCitedAuthors.descendingKeySet()){
+					for (Node citedAuthor: topkCitedAuthors.get(citedAuthorCount)){
+						Relationship citedAuthorRel = author.createRelationshipTo(citedAuthor, RelationshipTypes.CITES_AUTHOR);
+						citedAuthorRel.setProperty(DBRelationshipProperties.CITATION_COUNT,citedAuthorCount);
+						if (++topkCnt>=k)break;
+					}
+					if (topkCnt>=k)break;					
+				}	
+				if (++transactionCount % transactionThreshhold == 0){
+					tx.success();
+					tx.finish();
+					tx = graphDB.beginTx();
+					IOHelper.log(transactionCount + " nodes have been equipped with citedAuthor relations so far");	
+				}					
+			}
+			tx.success();
+		}finally{
+			tx.finish();
+		}
+	}	
+	
 }
