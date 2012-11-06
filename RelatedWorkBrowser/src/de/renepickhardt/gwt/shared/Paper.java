@@ -14,6 +14,16 @@ public class Paper implements IsSerializable {
 
 	public Double pageRank;
 	public Integer citationCount;
-	public String title; 
+	public String title;
 
+	
+	public String getHtmlLink(){
+		String result = "";
+		result = result + "<a href='#paper_" + title + "'>" + title + "</a>";
+		return result;
+	}
+	
+	public String renderSRP() {
+		return getHtmlLink();
+	}
 }

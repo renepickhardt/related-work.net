@@ -154,12 +154,17 @@ public class FriendOfAFriendQueryBenchmark {
 	private int coAuthorCypher(int numQueries){
 		int qCnt = 0;
 		int resCnt = 0;
+		ExecutionEngine engine = new ExecutionEngine( graphDB );
 		for (Node author:graphDB.getAllNodes()){
 			if (!author.hasProperty("name"))continue;
 			if (++qCnt>numQueries)break;
-			ExecutionEngine engine = new ExecutionEngine( graphDB );
-			String query = "START author=node("+author.getId()+") MATCH author-[:"+RelationshipTypes.AUTHOROF.name()+"]-()-[:"+RelationshipTypes.AUTHOROF.name()+"]- coAuthor RETURN coAuthor";
-			ExecutionResult result = engine.execute( query);
+			
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put( "node", author );
+			//ExecutionResult result = engine.execute( "start n=node({node}) return n.name", params );
+			
+			String query = "START author=node({node}) MATCH author-[:"+RelationshipTypes.AUTHOROF.name()+"]-()-[:"+RelationshipTypes.AUTHOROF.name()+"]- coAuthor RETURN coAuthor";
+			ExecutionResult result = engine.execute( query, params);
 			scala.collection.Iterator<Node> it = result.columnAs("coAuthor");
 			while (it.hasNext()){
 				Node coAuthor = it.next();

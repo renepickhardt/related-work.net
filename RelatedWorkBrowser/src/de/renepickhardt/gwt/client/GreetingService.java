@@ -6,6 +6,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.user.client.ui.SuggestOracle;
 
 import de.renepickhardt.gwt.shared.AuthorPageContent;
+import de.renepickhardt.gwt.shared.ContentContainer;
 import de.renepickhardt.gwt.shared.PaperPageContent;
 
 /**
@@ -17,4 +18,6 @@ public interface GreetingService extends RemoteService {
 	SuggestOracle.Response getSuggestions(SuggestOracle.Request req);
 	AuthorPageContent displayAuthorPage(String id);
 	PaperPageContent displayPaperPage(String id);
+	ContentContainer getMostPopularAuthorsAndPapers();
+	
 }

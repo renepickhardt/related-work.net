@@ -9,6 +9,7 @@ import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.DynamicRelationshipType;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.index.Index;
 import org.neo4j.graphdb.index.IndexHits;
 import org.neo4j.index.lucene.QueryContext;
@@ -20,10 +21,12 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.renepickhardt.gwt.client.GreetingService;
 import de.renepickhardt.gwt.server.SuggestTree.SuggestionList;
+import de.renepickhardt.gwt.server.neo4jHelper.DBNodeProperties;
 import de.renepickhardt.gwt.server.neo4jHelper.DBRelationshipProperties;
 import de.renepickhardt.gwt.server.neo4jHelper.RelationshipTypes;
 import de.renepickhardt.gwt.shared.Author;
 import de.renepickhardt.gwt.shared.AuthorPageContent;
+import de.renepickhardt.gwt.shared.ContentContainer;
 import de.renepickhardt.gwt.shared.ItemSuggestion;
 import de.renepickhardt.gwt.shared.Paper;
 import de.renepickhardt.gwt.shared.PaperPageContent;
@@ -114,11 +117,18 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	public AuthorPageContent displayAuthorPage(String id){
 		AuthorPageContent apc = new AuthorPageContent();
 		
-		Index<Node> index = ContextListener.getSearchIndex(getServletContext());
 		id = id.replace(' ', '?');
+		
+		HashMap<String, AuthorPageContent> apcCache = ContextListener.getAuthorPageCach(getServletContext());
+		
+		if (apcCache.containsKey(id)){
+			return apcCache.get(id);
+		}
+		
 		Sort s = new Sort();
 		s.setSort(new SortField("pr", SortField.DOUBLE, true));
 
+		Index<Node> index = ContextListener.getSearchIndex(getServletContext());
 		IndexHits<Node> res = index.query(new QueryContext("title:"
 				+ id+"*").sort(s).top(10));
 		
@@ -156,9 +166,19 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 				for (Relationship rel:n.getRelationships(RelationshipTypes.SIM_AUTHOR, Direction.OUTGOING)){
 					Node simAuthor = rel.getEndNode();
 					Double score = (Double)rel.getProperty(DBRelationshipProperties.SIM_AUTHOR_SCORE);
-					apc.citedByAuthors.add(new Author((String)simAuthor.getProperty("name") + "\t" + score));
+					apc.simAuthors.add(new Author((String)simAuthor.getProperty("name") + "\t" + score));
 				}
 				
+				for (Relationship rel:n.getRelationships(RelationshipTypes.AUTHOROF)){
+					Node paper = rel.getOtherNode(n);
+					Paper p = new Paper();
+					p.title = (String)paper.getProperty(DBNodeProperties.PAPER_TITLE);
+					p.citationCount = (Integer)paper.getProperty(DBNodeProperties.PAPER_CITATION_COUNT);
+					p.pageRank = (Double)paper.getProperty(DBNodeProperties.PAGE_RANK_VALUE);
+					apc.papers.add(p);
+				}
+				
+				apcCache.put(id, apc);
 				break;
 			}
 		}
@@ -211,5 +231,35 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		}
 		
 		return ppc;
+	}
+	
+	public ContentContainer getMostPopularAuthorsAndPapers(){
+		ContentContainer cc = new ContentContainer();
+
+		Index<Node> index = ContextListener.getSearchIndex(getServletContext());
+		Sort s = new Sort();
+		s.setSort(new SortField("pr", SortField.DOUBLE, true));
+
+		IndexHits<Node> res = index.query(new QueryContext("title:*").sort(s).top(100));
+
+		if (res == null)
+			return null;
+			
+		ArrayList<Author> authors = new ArrayList<Author>();
+		ArrayList<Paper> papers = new ArrayList<Paper>();
+		for (Node n : res) {
+			if (!n.hasProperty("pageRankValue"))continue;
+			Double pr = (Double)n.getProperty("pageRankValue");
+			if (n.hasProperty("name")) {
+				authors.add(new Author((String) n.getProperty("name")));
+			}
+			if (n.hasProperty("title")){
+				papers.add(new Paper((String)n.getProperty("title")));
+			}
+		}
+		cc.setAuthors(authors);
+		cc.setPapers(papers);
+		
+		return cc;
 	}
 }

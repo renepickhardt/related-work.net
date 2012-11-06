@@ -13,6 +13,7 @@ import org.neo4j.index.impl.lucene.LuceneIndex;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
 
 import de.renepickhardt.gwt.server.utils.Config;
+import de.renepickhardt.gwt.shared.AuthorPageContent;
 import de.renepickhardt.gwt.shared.ItemSuggestion;
 
 public class ContextListener implements ServletContextListener {
@@ -21,6 +22,11 @@ public class ContextListener implements ServletContextListener {
 		return (EmbeddedGraphDatabase) context.getAttribute("neo4j");
 	}
 
+	public static HashMap<String, AuthorPageContent> getAuthorPageCach(
+			ServletContext servletContext) {
+		return (HashMap<String, AuthorPageContent>)servletContext.getAttribute("apcCache");
+	}
+	
 	public static SuggestTree<Double> getSuggestTree(ServletContext context) {
 		return (SuggestTree<Double>) context.getAttribute("tree");
 	}
@@ -47,6 +53,10 @@ public class ContextListener implements ServletContextListener {
 		boolean getSearchIndex = true;
 		boolean getAuthorSearchIndex = false;
 		boolean getAutoSuggestions = true;
+		
+		HashMap<String, AuthorPageContent> apcCache = new HashMap<String, AuthorPageContent>(10000);
+		context.setAttribute("apcCache", apcCache);
+		
 		if (getSearchIndex) {
 			Index<Node> test = graphDB.index().forNodes("prsearch_idx");
 			((LuceneIndex<Node>) test).setCacheCapacity("title", 300000);
@@ -88,5 +98,4 @@ public class ContextListener implements ServletContextListener {
 
 		return tree;
 	}
-
 }

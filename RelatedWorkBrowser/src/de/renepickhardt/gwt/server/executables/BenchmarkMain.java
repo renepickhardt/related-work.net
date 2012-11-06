@@ -34,6 +34,8 @@ public class BenchmarkMain {
 					foafqb.coAuthorBenchmark(base*j);
 			}
 		}
+		
+		System.out.println("done with benchmark");
 	}
 
 }

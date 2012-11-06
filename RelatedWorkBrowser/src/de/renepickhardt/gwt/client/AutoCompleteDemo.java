@@ -1,9 +1,11 @@
 package de.renepickhardt.gwt.client;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import de.renepickhardt.gwt.shared.Author;
 import de.renepickhardt.gwt.shared.AuthorPageContent;
+import de.renepickhardt.gwt.shared.ContentContainer;
 import de.renepickhardt.gwt.shared.FieldVerifier;
 import de.renepickhardt.gwt.shared.HistoryTokens;
 import de.renepickhardt.gwt.shared.Paper;
@@ -179,18 +181,46 @@ public class AutoCompleteDemo implements EntryPoint {
 		link.setText("Seite von Hartmann");
 
 		HTML h = new HTML("<h1>Let's look at conferences</h1>");
-
 		h.setTitle(HistoryTokens.CONFERENCE_PAGE);
 		tabPanel.add(link.asWidget(), "Conferences");
 		h = new HTML("<h1>Let's look at jornals</h1>");
 		h.setTitle(HistoryTokens.JOURNAL_PAGE);
 		tabPanel.add(h, "Journals");
-		h = (new HTML("<h1>let's look for authors</h1>"));
-		h.setTitle(HistoryTokens.AUTHOR_PAGE);
-		tabPanel.add(h, "Authors");
-		h = (new HTML("<h1>let's brows papers</h1>"));
-		h.setTitle(HistoryTokens.PAPER_PAGE);
-		tabPanel.add(h, "Papers");
+
+		
+		greetingService.getMostPopularAuthorsAndPapers(new AsyncCallback<ContentContainer>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				
+			}
+
+			@Override
+			public void onSuccess(ContentContainer result) {
+				ArrayList<Author> authors = result.getAuthors();
+				String htmlString = "<h1>Most popular authors</h1>";
+				for (Author a:authors){
+					htmlString = htmlString + a.renderSRP() + "<br>";
+				}
+				HTML h = new HTML(htmlString);
+				h.setTitle(HistoryTokens.AUTHOR_PAGE);
+				tabPanel.add(h, "Authors");
+
+				ArrayList<Paper> papers = result.getPapers();
+				htmlString ="<h1>Most popular papers</h1>"; 
+				
+				for (Paper p:papers){
+					htmlString = htmlString + p.renderSRP() + "<br>";
+				}
+				h = new HTML(htmlString);
+				h.setTitle(HistoryTokens.PAPER_PAGE);
+				tabPanel.add(h, "Papers");					
+
+			}
+			
+		});
+		
+
 
 		tabPanel.addSelectionHandler(new SelectionHandler<Integer>() {
 			public void onSelection(SelectionEvent<Integer> event) {

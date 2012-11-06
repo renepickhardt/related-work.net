@@ -18,4 +18,14 @@ public class Author implements IsSerializable {
 		this.name = name;
 	}
 
+	public String getHtmlLink(){
+		String result = "";
+		result = result + "<a href='#author_" + name + "'>" + name + "</a>";
+		return result;
+	}
+	
+	public String renderSRP() {
+		return getHtmlLink();
+	}
+
 }
