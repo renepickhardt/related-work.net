@@ -3,17 +3,9 @@ package de.renepickhardt.gwt.client;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import de.renepickhardt.gwt.shared.Author;
-import de.renepickhardt.gwt.shared.AuthorPageContent;
-import de.renepickhardt.gwt.shared.ContentContainer;
-import de.renepickhardt.gwt.shared.FieldVerifier;
-import de.renepickhardt.gwt.shared.HistoryTokens;
-import de.renepickhardt.gwt.shared.Paper;
-import de.renepickhardt.gwt.shared.PaperPageContent;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dev.Link;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -23,6 +15,7 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -33,8 +26,17 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TabPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+
+import de.renepickhardt.gwt.client.staticcontent.AuthorPage;
+import de.renepickhardt.gwt.server.utils.Config;
+import de.renepickhardt.gwt.shared.Author;
+import de.renepickhardt.gwt.shared.AuthorPageContent;
+import de.renepickhardt.gwt.shared.ContentContainer;
+import de.renepickhardt.gwt.shared.FieldVerifier;
+import de.renepickhardt.gwt.shared.HistoryTokens;
+import de.renepickhardt.gwt.shared.Paper;
+import de.renepickhardt.gwt.shared.PaperPageContent;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -50,7 +52,6 @@ public class AutoCompleteDemo implements EntryPoint {
 
 	private final HashMap<String, AuthorPageContent> authorPageCach = new HashMap<String, AuthorPageContent>();
 
-	
 	/**
 	 * Create a remote service proxy to talk to the server-side Greeting
 	 * service.
@@ -62,10 +63,10 @@ public class AutoCompleteDemo implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
+		handleCookies();
 		final Button sendButton = new Button("Send");
 		ItemSuggestOracle oracle = new ItemSuggestOracle();
 		final SuggestBox nameField = new SuggestBox(oracle);
-
 		nameField.setText("GWT User");
 		final Label errorLabel = new Label();
 
@@ -178,7 +179,8 @@ public class AutoCompleteDemo implements EntryPoint {
 
 		Hyperlink link = new Hyperlink();
 		link.setTargetHistoryToken("author_Hartmann, Heinrich");
-		link.setText("Seite von Hartmann");
+		AuthorPage myConstants = (AuthorPage) GWT.create(AuthorPage.class);
+		link.setText("Seite von Hartmann"+myConstants.citedAuthors() + myConstants.similarAuthors());
 
 		HTML h = new HTML("<h1>Let's look at conferences</h1>");
 		h.setTitle(HistoryTokens.CONFERENCE_PAGE);
@@ -187,40 +189,38 @@ public class AutoCompleteDemo implements EntryPoint {
 		h.setTitle(HistoryTokens.JOURNAL_PAGE);
 		tabPanel.add(h, "Journals");
 
-		
-		greetingService.getMostPopularAuthorsAndPapers(new AsyncCallback<ContentContainer>() {
+		greetingService
+				.getMostPopularAuthorsAndPapers(new AsyncCallback<ContentContainer>() {
 
-			@Override
-			public void onFailure(Throwable caught) {
-				
-			}
+					@Override
+					public void onFailure(Throwable caught) {
 
-			@Override
-			public void onSuccess(ContentContainer result) {
-				ArrayList<Author> authors = result.getAuthors();
-				String htmlString = "<h1>Most popular authors</h1>";
-				for (Author a:authors){
-					htmlString = htmlString + a.renderSRP() + "<br>";
-				}
-				HTML h = new HTML(htmlString);
-				h.setTitle(HistoryTokens.AUTHOR_PAGE);
-				tabPanel.add(h, "Authors");
+					}
 
-				ArrayList<Paper> papers = result.getPapers();
-				htmlString ="<h1>Most popular papers</h1>"; 
-				
-				for (Paper p:papers){
-					htmlString = htmlString + p.renderSRP() + "<br>";
-				}
-				h = new HTML(htmlString);
-				h.setTitle(HistoryTokens.PAPER_PAGE);
-				tabPanel.add(h, "Papers");					
+					@Override
+					public void onSuccess(ContentContainer result) {
+						ArrayList<Author> authors = result.getAuthors();
+						String htmlString = "<h1>Most popular authors</h1>";
+						for (Author a : authors) {
+							htmlString = htmlString + a.renderSRP() + "<br>";
+						}
+						HTML h = new HTML(htmlString);
+						h.setTitle(HistoryTokens.AUTHOR_PAGE);
+						tabPanel.add(h, "Authors");
 
-			}
-			
-		});
-		
+						ArrayList<Paper> papers = result.getPapers();
+						htmlString = "<h1>Most popular papers</h1>";
 
+						for (Paper p : papers) {
+							htmlString = htmlString + p.renderSRP() + "<br>";
+						}
+						h = new HTML(htmlString);
+						h.setTitle(HistoryTokens.PAPER_PAGE);
+						tabPanel.add(h, "Papers");
+
+					}
+
+				});
 
 		tabPanel.addSelectionHandler(new SelectionHandler<Integer>() {
 			public void onSelection(SelectionEvent<Integer> event) {
@@ -244,7 +244,9 @@ public class AutoCompleteDemo implements EntryPoint {
 					if (historyToken.startsWith(HistoryTokens.AUTHOR_PAGE)) {
 						if (values.length > 1) {
 							if (authorPageCach.containsKey(historyToken)) {
-								// TODO: runime for cache? or let via server push notifie clients if a cached site is updated?
+								// TODO: runime for cache? or let via server
+								// push notifie clients if a cached site is
+								// updated?
 								AuthorPageContent apc = authorPageCach
 										.get(historyToken);
 								tabPanel.remove(2);
@@ -275,7 +277,10 @@ public class AutoCompleteDemo implements EntryPoint {
 														.getHtmlString());
 												html.setTitle(HistoryTokens.AUTHOR_PAGE
 														+ "_" + values[1]);
-												tabPanel.insert(html,HistoryTokens.AUTHOR_PAGE,2);
+												tabPanel.insert(
+														html,
+														HistoryTokens.AUTHOR_PAGE,
+														2);
 												tabPanel.selectTab(2);
 												authorPageCach.put(
 														historyToken, res);
@@ -285,28 +290,29 @@ public class AutoCompleteDemo implements EntryPoint {
 							}
 						}
 					}
-					if (historyToken.startsWith(HistoryTokens.PAPER_PAGE)){
+					if (historyToken.startsWith(HistoryTokens.PAPER_PAGE)) {
 						if (values.length > 1) {
 							greetingService.displayPaperPage(values[1],
 									new AsyncCallback<PaperPageContent>() {
-										public void onFailure(
-												Throwable caught) {
+										public void onFailure(Throwable caught) {
 											// TODO Auto-generated method
 											// stub
 
 										}
-										public void onSuccess(PaperPageContent res) {
+
+										public void onSuccess(
+												PaperPageContent res) {
 											tabPanel.remove(3);
 											HTML html = new HTML(res
 													.getHtmlString());
 											html.setTitle(HistoryTokens.PAPER_PAGE
 													+ "_" + values[1]);
-											tabPanel.insert(html,HistoryTokens.PAPER_PAGE,3);
+											tabPanel.insert(html,
+													HistoryTokens.PAPER_PAGE, 3);
 											tabPanel.selectTab(3);
 										}
 									});
-						}
-						else{
+						} else {
 							tabPanel.selectTab(3);
 						}
 					}
@@ -321,4 +327,9 @@ public class AutoCompleteDemo implements EntryPoint {
 
 	}
 
+	private void handleCookies() {
+		if (Cookies.getCookie("rw.session")==null){
+			//http://stackoverflow.com/questions/1382088/session-id-cookie-in-gwt-rpc
+		}
+	}
 }

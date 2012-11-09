@@ -52,7 +52,7 @@ public class ContextListener implements ServletContextListener {
 
 		boolean getSearchIndex = true;
 		boolean getAuthorSearchIndex = false;
-		boolean getAutoSuggestions = true;
+		boolean getAutoSuggestions = false;
 		
 		HashMap<String, AuthorPageContent> apcCache = new HashMap<String, AuthorPageContent>(10000);
 		context.setAttribute("apcCache", apcCache);

@@ -1,8 +1,19 @@
 package de.renepickhardt.gwt.server;
 
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.SimpleEmail;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.neo4j.graphdb.Direction;
@@ -15,6 +26,7 @@ import org.neo4j.graphdb.index.IndexHits;
 import org.neo4j.index.lucene.QueryContext;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
 
+import com.google.gwt.dev.util.HttpHeaders;
 import com.google.gwt.user.client.ui.SuggestOracle.Request;
 import com.google.gwt.user.client.ui.SuggestOracle.Response;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -24,6 +36,8 @@ import de.renepickhardt.gwt.server.SuggestTree.SuggestionList;
 import de.renepickhardt.gwt.server.neo4jHelper.DBNodeProperties;
 import de.renepickhardt.gwt.server.neo4jHelper.DBRelationshipProperties;
 import de.renepickhardt.gwt.server.neo4jHelper.RelationshipTypes;
+import de.renepickhardt.gwt.server.utils.Config;
+import de.renepickhardt.gwt.server.utils.IOHelper;
 import de.renepickhardt.gwt.shared.Author;
 import de.renepickhardt.gwt.shared.AuthorPageContent;
 import de.renepickhardt.gwt.shared.ContentContainer;
@@ -40,8 +54,10 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		GreetingService {
 
 	public String greetServer(String input) throws IllegalArgumentException {
+		evaluteRequest();
+
 		EmbeddedGraphDatabase graphDB = ContextListener.getGraphDB(getServletContext());
-		
+			
 		Index<Node> test = ContextListener.getSearchIndex(getServletContext());
 		
 		input = input.replace(' ', '?');
@@ -99,6 +115,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public Response getSuggestions(Request req) {
+		evaluteRequest();
 		Response response = new Response();
 		ArrayList<ItemSuggestion> suggestions = new ArrayList<ItemSuggestion>();
 
@@ -115,6 +132,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	public AuthorPageContent displayAuthorPage(String id){
+		evaluteRequest();
 		AuthorPageContent apc = new AuthorPageContent();
 		
 		id = id.replace(' ', '?');
@@ -186,6 +204,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	public PaperPageContent displayPaperPage(String id){
+		evaluteRequest();
 		Index<Node> index = ContextListener.getSearchIndex(getServletContext());
 		id = id.replace(' ', '?');
 		Sort s = new Sort();
@@ -234,6 +253,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	public ContentContainer getMostPopularAuthorsAndPapers(){
+		evaluteRequest();
 		ContentContainer cc = new ContentContainer();
 
 		Index<Node> index = ContextListener.getSearchIndex(getServletContext());
@@ -262,4 +282,113 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		
 		return cc;
 	}
+	
+	private void evaluteRequest(){
+		BufferedWriter log = IOHelper.openAppendFile("request.log");
+		try {
+			HttpServletRequest req = getThreadLocalRequest();
+			Enumeration a = req.getAttributeNames();
+			while (a.hasMoreElements()){
+				log.write((Integer) a.nextElement());
+			}		
+			Object obj = req.getAuthType();
+			if (obj!=null)
+				log.write("\nauthtype:" +obj);
+			
+			obj = req.getCharacterEncoding();
+			if (obj!=null)
+				log.write("\nencoding:" +obj);
+
+			obj = req.getContentLength();
+			if (obj!=null)
+				log.write("\nContentLength:" +obj);
+
+			obj = req.getContentType();
+			if (obj!=null)
+				log.write("\nType:" +obj);
+
+			obj = req.getHeader("user-agent");
+			if (obj!=null)
+				log.write("\nagent:" +obj);
+
+			obj = req.getLocalAddr();
+			if (obj!=null)
+				log.write("\nlocal addr:" +obj);
+			
+			obj = req.getRemoteAddr();
+			if (obj!=null)
+				log.write("\nRem addr:" +obj);
+
+			obj = req.getLocalName();
+			if (obj!=null)
+				log.write("\nloc name:" +obj);
+
+			obj = req.getLocalPort();
+			if (obj!=null)
+				log.write("\nloc port:" +obj);
+
+			obj = req.getRemoteUser();
+			if (obj!=null)
+				log.write("\nRem usr:" +obj);
+
+			Map m = req.getParameterMap();
+			for (Object k:m.keySet()){
+				log.write("\n\tparams: key:"+k+ " has value:" +  m.get(k));
+			}
+			
+			obj = req.getQueryString();
+			if (obj!=null)
+				log.write("\nqstring usr:" +obj);
+			obj = req.getProtocol();
+			if (obj!=null)
+					log.write("\nprotocol usr:" +obj);
+			
+			obj = req.getRequestedSessionId();
+			if (obj!=null)
+					log.write("\nsession id:" +obj);
+			
+			obj = req.getRequestURI();
+			if (obj!=null)
+					log.write("\nURI:" +obj);
+			
+			obj = req.getContextPath();
+			if (obj!=null)
+					log.write("\ncontext path:" +obj);
+			
+			obj = req.getDateHeader("yyyy-mm-dd");
+			if (obj!=null)
+					log.write("\ndateheader:" +obj);
+			Cookie[] cookies = req.getCookies();
+			if (cookies != null){
+				for(Cookie c: cookies){
+					log.write("\n\nfound cookie:");
+					obj = c.getComment();
+					if (obj!=null)
+						log.write("\ncomment:" +obj);
+					obj = c.getDomain();
+					if (obj!=null)
+						log.write("\nDomain:" +obj);
+					obj = c.getMaxAge();
+					if (obj!=null)
+						log.write("\nmaxAge:" +obj);
+					obj = c.getName();
+					if (obj!=null)
+						log.write("\nName:" +obj);
+					obj = c.getPath();
+					if (obj!=null)
+						log.write("\nPath:" +obj);
+					obj = c.getValue();
+					if (obj!=null)
+						log.write("\nValue:" +obj);
+					obj = c.getVersion();
+					if (obj!=null)
+						log.write("\nversion:" +obj);	
+				}
+			}
+			log.flush();
+			log.close();
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+	}	
 }
