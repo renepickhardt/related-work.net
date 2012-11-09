@@ -9,6 +9,10 @@ import net.relatedwork.gwtp.client.place.DefaultPlace;
 import net.relatedwork.gwtp.client.place.NameTokens;
 import net.relatedwork.gwtp.client.core.ResponsePresenter;
 import net.relatedwork.gwtp.client.core.ResponseView;
+import net.relatedwork.gwtp.client.core.AuthorPagePresenter;
+import net.relatedwork.gwtp.client.core.AuthorPageView;
+import net.relatedwork.gwtp.client.core.LoadDataToServletContextPresenter;
+import net.relatedwork.gwtp.client.core.LoadDataToServletContextView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -23,5 +27,14 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenter(ResponsePresenter.class, ResponsePresenter.MyView.class,
 				ResponseView.class, ResponsePresenter.MyProxy.class);
+
+		bindPresenter(AuthorPagePresenter.class,
+				AuthorPagePresenter.MyView.class, AuthorPageView.class,
+				AuthorPagePresenter.MyProxy.class);
+
+		bindPresenter(LoadDataToServletContextPresenter.class,
+				LoadDataToServletContextPresenter.MyView.class,
+				LoadDataToServletContextView.class,
+				LoadDataToServletContextPresenter.MyProxy.class);
 	}
 }

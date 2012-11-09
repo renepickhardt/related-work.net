@@ -80,7 +80,7 @@ public class MainPagePresenter extends
 			getView().setError("Please enter at least four characters");
 			return;
 		}
-	
+
 		// Then, we transmit it to the ResponsePresenter, which will do the server call
 		placeManager.revealPlace(new PlaceRequest(NameTokens.response).with(
 				ResponsePresenter.textToServerParam, textToServer));

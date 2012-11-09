@@ -1,6 +1,7 @@
 package net.relatedwork.gwtp.client.core;
 
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.gwtplatform.mvp.client.proxy.PlaceManagerImpl;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HasValue;
@@ -37,6 +38,8 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 		nameField.setText("GWT User");
 		errorLabel = new Label();
 
+		 
+		
 		// We can add style names to widgets
 		sendButton.addStyleName("sendButton");
 

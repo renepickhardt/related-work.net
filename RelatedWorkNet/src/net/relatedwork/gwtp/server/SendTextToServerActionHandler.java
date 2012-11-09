@@ -20,7 +20,6 @@ public class SendTextToServerActionHandler implements
 
 	@Inject
 	public SendTextToServerActionHandler(final ServletContext servletContext, final Provider<HttpServletRequest> requestProvider) {
-
 		this.servletContext = servletContext;
 		this.requestProvider = requestProvider;
 	}
@@ -29,7 +28,7 @@ public class SendTextToServerActionHandler implements
 	public SendTextToServerResult execute(SendTextToServer action,
 			ExecutionContext context) throws ActionException {
 		String input = action.getTextToServer();
-	
+		
 		// Verify that the input is valid.
 		if (!FieldVerifier.isValidName(input)) {
 			// If the input is not valid, throw an IllegalArgumentException back to

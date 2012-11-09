@@ -1,5 +1,6 @@
 package net.relatedwork.gwtp.shared;
 
+import com.google.gwt.core.client.GWT;
 import com.gwtplatform.dispatch.shared.UnsecuredActionImpl;
 import net.relatedwork.gwtp.shared.SendTextToServerResult;
 

@@ -9,6 +9,9 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.google.inject.Provider;
 import net.relatedwork.gwtp.client.core.MainPagePresenter;
 import net.relatedwork.gwtp.client.core.ResponsePresenter;
+import com.google.gwt.inject.client.AsyncProvider;
+import net.relatedwork.gwtp.client.core.AuthorPagePresenter;
+import net.relatedwork.gwtp.client.core.LoadDataToServletContextPresenter;
 
 @GinModules({ DispatchAsyncModule.class, ClientModule.class })
 public interface ClientGinjector extends Ginjector {
@@ -20,4 +23,8 @@ public interface ClientGinjector extends Ginjector {
 	Provider<MainPagePresenter> getMainPagePresenter();
 
 	Provider<ResponsePresenter> getResponsePresenter();
+
+	AsyncProvider<AuthorPagePresenter> getAuthorPagePresenter();
+
+	AsyncProvider<LoadDataToServletContextPresenter> getLoadDataToServletContextPresenter();
 }
