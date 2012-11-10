@@ -7,11 +7,14 @@ import com.gwtplatform.mvp.client.annotations.NameToken;
 import net.relatedwork.gwtp.client.place.NameTokens;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.google.inject.Inject;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasValue;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
@@ -58,8 +61,17 @@ public class MainPagePresenter extends
 				new ClickHandler() {
 					@Override
 					public void onClick(ClickEvent event) {
-						sendNameToServer();
+						sendNameToServer("mouse click");
 					}
+				}));
+		registerHandler(getView().getNameValue().addValueChangeHandler(
+				new ValueChangeHandler<String>() {
+
+					@Override
+					public void onValueChange(ValueChangeEvent<String> event) {
+						sendNameToServer("enter button");
+					}
+
 				}));
 	}
 
@@ -72,7 +84,7 @@ public class MainPagePresenter extends
 	/**
 	 * Send the name from the nameField to the server and wait for a response.
 	 */
-	private void sendNameToServer() {
+	private void sendNameToServer(String method) {
 		// First, we validate the input.
 		getView().setError("");
 		String textToServer = getView().getNameValue().getValue();
@@ -81,8 +93,9 @@ public class MainPagePresenter extends
 			return;
 		}
 
-		// Then, we transmit it to the ResponsePresenter, which will do the server call
+		// Then, we transmit it to the ResponsePresenter, which will do the
+		// server call
 		placeManager.revealPlace(new PlaceRequest(NameTokens.response).with(
-				ResponsePresenter.textToServerParam, textToServer));
+				ResponsePresenter.textToServerParam, textToServer).with("method", method));
 	}
 }

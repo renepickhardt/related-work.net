@@ -43,6 +43,7 @@ public class ResponsePresenter extends
 	private final PlaceManager placeManager;
 
 	private String textToServer;
+	private String method;
 
 	@Inject
 	public ResponsePresenter(final EventBus eventBus, final MyView view,
@@ -62,6 +63,7 @@ public class ResponsePresenter extends
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
 		textToServer = request.getParameter(textToServerParam, null);
+		method = request.getParameter("method", "not set (impossible)");
 	}
 
 	@Override
@@ -81,7 +83,7 @@ public class ResponsePresenter extends
 		super.onReset();
 		getView().setTextToServer(textToServer);
 		getView().setServerResponse("Waiting for response...");
-		dispatcher.execute(new SendTextToServer(textToServer),
+		dispatcher.execute(new SendTextToServer(textToServer,method),
 				new AsyncCallback<SendTextToServerResult>() {
 					@Override
 					public void onFailure(Throwable caught) {

@@ -28,6 +28,7 @@ public class SendTextToServerActionHandler implements
 	public SendTextToServerResult execute(SendTextToServer action,
 			ExecutionContext context) throws ActionException {
 		String input = action.getTextToServer();
+		String method = action.getMethodPara();
 		
 		// Verify that the input is valid.
 		if (!FieldVerifier.isValidName(input)) {
@@ -40,7 +41,7 @@ public class SendTextToServerActionHandler implements
 		String userAgent = requestProvider.get().getHeader("User-Agent");
 		return new SendTextToServerResult("Hello, " + input
 				+ "!<br><br>I am running " + serverInfo
-				+ ".<br><br>It looks like you are using:<br>" + userAgent);
+				+ ".<br><br>It looks like you are using:<br>" + userAgent + "<br><br>you used the following method: " + method);
 	}
 
 	@Override
