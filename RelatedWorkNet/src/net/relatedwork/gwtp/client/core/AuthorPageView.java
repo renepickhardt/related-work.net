@@ -26,4 +26,10 @@ public class AuthorPageView extends ViewImpl implements
 	public Widget asWidget() {
 		return widget;
 	}
+	
+	public void setResult(String result){
+		HTML html = new HTML(result);
+		widget.add(html);
+	}
+	
 }

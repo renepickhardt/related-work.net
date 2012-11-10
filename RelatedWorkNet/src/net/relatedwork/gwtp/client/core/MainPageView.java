@@ -1,11 +1,17 @@
 package net.relatedwork.gwtp.client.core;
 
+import net.relatedwork.gwtp.client.place.NameTokens;
+
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceManagerImpl;
+import com.gwtplatform.mvp.client.proxy.PlaceRequest;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -37,9 +43,6 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 		nameField = new TextBox();
 		nameField.setText("GWT User");
 		errorLabel = new Label();
-
-		 
-		
 		// We can add style names to widgets
 		sendButton.addStyleName("sendButton");
 
@@ -48,6 +51,11 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 		panel.add(nameField, "nameFieldContainer");
 		panel.add(sendButton, "sendButtonContainer");
 		panel.add(errorLabel, "errorLabelContainer");
+		
+		Hyperlink l = new Hyperlink();
+		l.setTargetHistoryToken(NameTokens.getAuthor()+";key=pickhardt");
+		l.setText("Display Author Page");
+		panel.add(l);
 	}
 
 	@Override
