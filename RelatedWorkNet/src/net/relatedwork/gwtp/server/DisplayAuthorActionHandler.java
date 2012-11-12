@@ -3,8 +3,13 @@ package net.relatedwork.gwtp.server;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.index.Index;
+import org.neo4j.graphdb.index.IndexHits;
+import org.neo4j.index.lucene.QueryContext;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
 import org.neo4j.kernel.EmbeddedReadOnlyGraphDatabase;
 
@@ -39,8 +44,21 @@ public class DisplayAuthorActionHandler implements
 			return new DisplayAuthorResult(result);
 		}
 		result = "";
-		EmbeddedReadOnlyGraphDatabase graphDB = Neo4jHelper.getReadOnlyGraphDatabase(servletContext);
-		for (Node n:graphDB.getAllNodes()){
+		
+		Index<Node> searchIndex = Neo4jHelper.getSearchIndex(servletContext);		
+		String query = action.getKey().replace(' ', '?');
+		Sort s = new Sort();
+		s.setSort(new SortField("pr", SortField.DOUBLE, true));
+
+		IndexHits<Node> lookUpResult = searchIndex.query(new QueryContext("title:"
+				+ query+"*").sort(s).top(10));
+		
+		
+		if (lookUpResult == null)
+			return new DisplayAuthorResult("no results on search index: could not find Author");
+		
+		DisplayAuthorResult displayAuthorResult = null;
+		for (Node n : lookUpResult) {		
 			if (n.hasProperty("name")){//TODO: need to change !
 				for (Relationship rel:n.getRelationships()){
 					Node otherNode = rel.getOtherNode(n);
@@ -50,12 +68,13 @@ public class DisplayAuthorActionHandler implements
 					result = result + "<br><br>";
 				}
 				servletContext.setAttribute(action.getKey(), result);
-				break;
+				displayAuthorResult = new DisplayAuthorResult(result);
+				break;					
 			}
 		}
-		
-		DisplayAuthorResult displayAuthorResult = new DisplayAuthorResult(result);
-		
+		if (displayAuthorResult==null){
+			displayAuthorResult = new DisplayAuthorResult("could not find Author");
+		}
 		return displayAuthorResult;
 	}
 

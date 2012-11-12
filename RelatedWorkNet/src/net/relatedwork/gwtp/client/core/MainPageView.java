@@ -53,7 +53,7 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 		panel.add(errorLabel, "errorLabelContainer");
 		
 		Hyperlink l = new Hyperlink();
-		l.setTargetHistoryToken(NameTokens.getAuthor()+";key=pickhardt");
+		l.setTargetHistoryToken(NameTokens.getAuthor()+";key=Hartmann, Hei");
 		l.setText("Display Author Page");
 		panel.add(l);
 	}

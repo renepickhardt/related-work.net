@@ -2,6 +2,9 @@ package net.relatedwork.gwtp.server;
 
 import javax.servlet.ServletContext;
 
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.index.Index;
+import org.neo4j.index.impl.lucene.LuceneIndex;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
 import org.neo4j.kernel.EmbeddedReadOnlyGraphDatabase;
 
@@ -27,4 +30,17 @@ public class Neo4jHelper {
 		}
 		return graphDB;		
 	}
+	
+	public static Index<Node> getSearchIndex(ServletContext servletContext){
+		Index<Node> searchIndex;
+		searchIndex = (Index<Node>)servletContext.getAttribute("searchIndex");
+		if (searchIndex==null){
+			EmbeddedGraphDatabase graphDB = getGraphDatabase(servletContext);
+			searchIndex = graphDB.index().forNodes("prsearch_idx");
+			((LuceneIndex<Node>) searchIndex).setCacheCapacity("title", 300000);
+			servletContext.setAttribute("searchIndex",searchIndex);
+		}
+		return searchIndex;
+	}
+	
 }

@@ -1,9 +1,12 @@
 package net.relatedwork.gwtp.client.core;
 
+import net.relatedwork.gwtp.client.place.NameTokens;
+
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -20,6 +23,11 @@ public class AuthorPageView extends ViewImpl implements
 		widget = (HTMLPanel) binder.createAndBindUi(this);
 		HTML html = new HTML("<h1>More to come soon</h1>");
 		widget.add(html);
+		Hyperlink l = new Hyperlink();
+		l.setTargetHistoryToken(NameTokens.getMain());
+		l.setText("back to home page");
+		widget.add(l);
+
 	}
 
 	@Override

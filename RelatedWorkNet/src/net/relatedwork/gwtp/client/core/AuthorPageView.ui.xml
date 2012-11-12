@@ -4,7 +4,15 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
-	ui:generateLocales='default'>
+	ui:generateLocales='default' xmlns:d="urn:import:com.google.gwt.dom.client">
 
-	<g:HTMLPanel/>
+	<ui:with type="net.relatedwork.gwtp.client.place.NameTokens" field="nameTokens"></ui:with>
+
+	<g:HTMLPanel>
+	    <g:InlineHyperlink targetHistoryToken="{nameTokens.getMain}">Home</g:InlineHyperlink>
+	    <g:InlineHyperlink targetHistoryToken="{nameTokens.getAuthor}">Author</g:InlineHyperlink> 
+	    <g:InlineHyperlink targetHistoryToken="{nameTokens.getLoaddata}">Load data</g:InlineHyperlink>
+	    <g:SuggestBox></g:SuggestBox>
+	 </g:HTMLPanel>
+
 </ui:UiBinder>
