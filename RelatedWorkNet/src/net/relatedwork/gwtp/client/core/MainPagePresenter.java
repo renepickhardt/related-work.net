@@ -1,9 +1,13 @@
 package net.relatedwork.gwtp.client.core;
 
+import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.annotations.NameToken;
+
+import net.relatedwork.gwtp.client.core.AuthorPagePresenter.MyProxy;
+import net.relatedwork.gwtp.client.core.AuthorPagePresenter.MyView;
 import net.relatedwork.gwtp.client.place.NameTokens;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.google.inject.Inject;
@@ -41,11 +45,14 @@ public class MainPagePresenter extends
 
 	private final PlaceManager placeManager;
 
+	private final DispatchAsync dispatcher;
+	
 	@Inject
 	public MainPagePresenter(final EventBus eventBus, final MyView view,
-			final MyProxy proxy, final PlaceManager placeManager) {
+			final MyProxy proxy, final DispatchAsync dispatcher, final PlaceManager placeManager) {
 		super(eventBus, view, proxy);
 
+		this.dispatcher = dispatcher;
 		this.placeManager = placeManager;
 	}
 

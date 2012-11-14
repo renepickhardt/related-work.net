@@ -1,5 +1,6 @@
 package net.relatedwork.gwtp.client.core;
 
+import net.relatedwork.gwtp.client.core.AuthorPageView.Binder;
 import net.relatedwork.gwtp.client.place.NameTokens;
 
 import com.gwtplatform.mvp.client.ViewImpl;
@@ -8,7 +9,9 @@ import com.gwtplatform.mvp.client.proxy.PlaceManagerImpl;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
@@ -19,6 +22,9 @@ import com.google.inject.Inject;
 
 public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 
+	public interface Binder extends UiBinder<Widget, MainPageView> {
+	}
+	
 	private static String html = "<h1>Web Application Starter Project</h1>\n"
 			+ "<table align=\"center\">\n"
 			+ "  <tr>\n"
@@ -31,14 +37,15 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 			+ "  <tr>\n"
 			+ "    <td colspan=\"2\" style=\"color:red;\" id=\"errorLabelContainer\"></td>\n"
 			+ "  </tr>\n" + "</table>\n";
-	private final HTMLPanel panel = new HTMLPanel(html);
+	private final HTMLPanel panel;// = new HTMLPanel(html);
 	private final Label errorLabel;
 	private final TextBox nameField;
 	private final Button sendButton;
 
 	@Inject
-	public MainPageView() {
-
+	public MainPageView(final Binder binder) {
+		panel = (HTMLPanel) binder.createAndBindUi(this);
+		panel.add(new HTML(html));
 		sendButton = new Button("Send");
 		nameField = new TextBox();
 		nameField.setText("GWT User");
