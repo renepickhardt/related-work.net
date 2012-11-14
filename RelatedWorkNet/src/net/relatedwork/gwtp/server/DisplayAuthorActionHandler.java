@@ -15,6 +15,7 @@ import org.neo4j.kernel.EmbeddedReadOnlyGraphDatabase;
 
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
 
+import net.relatedwork.gwtp.client.place.NameTokens;
 import net.relatedwork.gwtp.shared.DisplayAuthor;
 import net.relatedwork.gwtp.shared.DisplayAuthorResult;
 
@@ -63,7 +64,7 @@ public class DisplayAuthorActionHandler implements
 				for (Relationship rel:n.getRelationships()){
 					Node otherNode = rel.getOtherNode(n);
 					for (String key:otherNode.getPropertyKeys()){
-						result = result + otherNode.getProperty(key) + "<br>";
+						result = result + "<a href='"+NameTokens.author +"#" + otherNode.getProperty(key)+"'>" + otherNode.getProperty(key) + "</a><br>";
 					}
 					result = result + "<br><br>";
 				}

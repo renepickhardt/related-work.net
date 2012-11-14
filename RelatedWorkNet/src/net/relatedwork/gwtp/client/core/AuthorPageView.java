@@ -1,39 +1,24 @@
 package net.relatedwork.gwtp.client.core;
 
-import net.relatedwork.gwtp.client.place.NameTokens;
-
-import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.gwtplatform.mvp.client.ViewImpl;
 
 public class AuthorPageView extends ViewImpl implements
 		AuthorPagePresenter.MyView {
 
 	private final HTMLPanel widget;
 
-//	public interface Binder extends UiBinder<Widget, AuthorPageView> {
-//	}
-
-
 	private static AuthorPageViewUiBinder uiBinder = GWT.create(AuthorPageViewUiBinder.class);
 	interface AuthorPageViewUiBinder extends UiBinder<Widget, AuthorPageView> {}
-
 	
 	@Inject
-	public AuthorPageView(/*final Binder binder*/) {
+	public AuthorPageView() {
 		widget = (HTMLPanel) uiBinder.createAndBindUi(this);
-//		HTML html = new HTML("<h1>More to come soon</h1>");
-//		widget.add(html);
-//		Hyperlink l = new Hyperlink();
-//		l.setTargetHistoryToken(NameTokens.getMain());
-//		l.setText("back to home page");
-//		widget.add(l);
-
 	}
 
 	@Override
@@ -42,8 +27,8 @@ public class AuthorPageView extends ViewImpl implements
 	}
 	
 	public void setResult(String result){
+		widget.clear();
 		HTML html = new HTML(result);
 		widget.add(html);
-	}
-	
+	}	
 }

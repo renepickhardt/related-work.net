@@ -1,6 +1,7 @@
 package net.relatedwork.gwtp.client.core;
 
 
+import net.relatedwork.gwtp.client.GlobalSearchSuggestOracle;
 import net.relatedwork.gwtp.client.place.NameTokens;
 
 import com.google.gwt.core.client.GWT;
@@ -9,12 +10,12 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -41,9 +42,14 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 			+ "  </tr>\n" + "</table>\n";
 	private final HTMLPanel panel;// = new HTMLPanel(html);
 	@UiField HTMLPanel rwContent;
+	@UiField HTMLPanel searchBoxContainer;
+	
 	private final Label errorLabel;
+	private final SuggestBox searchBox;
 	private final TextBox nameField;
 	private final Button sendButton;
+
+	private GlobalSearchSuggestOracle oracle;
 
 	@Inject
 	public MainPageView(/*final Binder binder*/) {
@@ -57,6 +63,9 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 		// We can add style names to widgets
 		sendButton.addStyleName("sendButton");
 
+		searchBox = setSuggestBox(oracle);
+		searchBoxContainer.add(searchBox);
+		
 		// Add the nameField and sendButton to the RootPanel
 		// Use RootPanel.get() to get the entire body element
 		panel.add(nameField, "nameFieldContainer");
@@ -69,6 +78,11 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 		panel.add(l);
 	}
 
+	public SuggestBox setSuggestBox(GlobalSearchSuggestOracle oracle){
+		SuggestBox searchBox = new SuggestBox(oracle);
+		return searchBox;
+	}
+
 	@Override
 	public Widget asWidget() {
 		return panel;
@@ -78,6 +92,11 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 	public HasValue<String> getNameValue() {
 		return nameField;
 	}
+	
+	@Override
+	public SuggestBox getSuggestBox() {
+		return searchBox;
+	}	
 
 	@Override
 	public HasClickHandlers getSendClickHandlers() {
@@ -112,4 +131,8 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 		}
 	}
 
+	@Override
+	public void setOracle(GlobalSearchSuggestOracle oracle) {
+		this.oracle = oracle;
+	}
 }

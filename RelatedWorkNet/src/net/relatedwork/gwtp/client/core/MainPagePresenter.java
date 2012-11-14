@@ -1,5 +1,6 @@
 package net.relatedwork.gwtp.client.core;
 
+import net.relatedwork.gwtp.client.GlobalSearchSuggestOracle;
 import net.relatedwork.gwtp.client.place.NameTokens;
 import net.relatedwork.gwtp.shared.FieldVerifier;
 
@@ -11,6 +12,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.ui.HasValue;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
@@ -41,10 +43,14 @@ public class MainPagePresenter extends
 		HasValue<String> getNameValue();
 
 		HasClickHandlers getSendClickHandlers();
-
+		
 		void resetAndFocus();
 
 		void setError(String errorText);
+
+		SuggestBox getSuggestBox();
+
+		void setOracle(GlobalSearchSuggestOracle oracle);
 	}
 
 	@ProxyStandard
@@ -74,6 +80,8 @@ public class MainPagePresenter extends
 	@Override
 	protected void onBind() {
 		super.onBind();
+		getView().setOracle(getOracle());
+
 		registerHandler(getView().getSendClickHandlers().addClickHandler(
 				new ClickHandler() {
 					@Override
@@ -114,5 +122,10 @@ public class MainPagePresenter extends
 		// server call
 		placeManager.revealPlace(new PlaceRequest(NameTokens.response).with(
 				ResponsePresenter.textToServerParam, textToServer).with("method", method));
+	}
+	
+	public GlobalSearchSuggestOracle getOracle() {
+		GlobalSearchSuggestOracle oracle = new GlobalSearchSuggestOracle(dispatcher);
+		return oracle;
 	}
 }

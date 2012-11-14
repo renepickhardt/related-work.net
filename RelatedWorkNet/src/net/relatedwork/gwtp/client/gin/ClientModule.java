@@ -13,6 +13,8 @@ import net.relatedwork.gwtp.client.core.AuthorPagePresenter;
 import net.relatedwork.gwtp.client.core.AuthorPageView;
 import net.relatedwork.gwtp.client.core.LoadDataToServletContextPresenter;
 import net.relatedwork.gwtp.client.core.LoadDataToServletContextView;
+import net.relatedwork.gwtp.client.SuggestPresenter;
+import net.relatedwork.gwtp.client.SuggestView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -36,5 +38,8 @@ public class ClientModule extends AbstractPresenterModule {
 				LoadDataToServletContextPresenter.MyView.class,
 				LoadDataToServletContextView.class,
 				LoadDataToServletContextPresenter.MyProxy.class);
+
+		bindPresenterWidget(SuggestPresenter.class,
+				SuggestPresenter.MyView.class, SuggestView.class);
 	}
 }
