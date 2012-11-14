@@ -1,2 +1,53 @@
 /* Add css rules here for your application. */
 
+
+div.rwHeader {
+padding: 8px;
+height:80;
+position:fixed;
+width:100%;
+border-style: none none dotted none;
+border-width: 1px;
+background-color: #EEEEEE;
+}
+
+div.rwContentContainer{
+	top:60px;
+width:100%;
+clear: both;
+}
+div.rwContent {
+	position:absolute;
+	top:74px;
+	float:left;
+padding: 8px;
+padding: 8px;
+width: 640px;
+height: 5cm;
+border-style: none none dotted none;
+border-width: 1px;
+background-color: #FF0000;
+}
+
+div.rwSidebar {
+	position:absolute;
+	top:74px;
+	left:640px;
+	float:left;
+padding: 8px;
+width: 160px;
+height: 5cm;
+border-style: none none dotted none;
+border-width: 1px;
+background-color: #666666;
+}
+
+div.rwFooter {
+	clear:both;
+padding: 8px;
+height: 160px;
+width:100%;
+border-style: none none dotted none;
+border-width: 1px;
+background-color: #EEEEEE;
+}

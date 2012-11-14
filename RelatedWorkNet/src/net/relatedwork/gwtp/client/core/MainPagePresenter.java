@@ -1,32 +1,41 @@
 package net.relatedwork.gwtp.client.core;
 
-import com.gwtplatform.dispatch.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.Presenter;
-import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.ProxyStandard;
-import com.gwtplatform.mvp.client.annotations.NameToken;
-
-import net.relatedwork.gwtp.client.core.AuthorPagePresenter.MyProxy;
-import net.relatedwork.gwtp.client.core.AuthorPagePresenter.MyView;
 import net.relatedwork.gwtp.client.place.NameTokens;
-import com.gwtplatform.mvp.client.proxy.ProxyPlace;
-import com.google.inject.Inject;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.EventBus;
-import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
+import net.relatedwork.gwtp.shared.FieldVerifier;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.ui.HasValue;
+import com.google.inject.Inject;
+import com.gwtplatform.dispatch.shared.DispatchAsync;
+import com.gwtplatform.mvp.client.Presenter;
+import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.ContentSlot;
+import com.gwtplatform.mvp.client.annotations.NameToken;
+import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
-import net.relatedwork.gwtp.shared.FieldVerifier;
+import com.gwtplatform.mvp.client.proxy.ProxyPlace;
+import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
+import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
+import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
 
 public class MainPagePresenter extends
 		Presenter<MainPagePresenter.MyView, MainPagePresenter.MyProxy> {
 
+
+	/**
+	   * Child presenters can fire a RevealContentEvent with TYPE_SetMainContent to set themselves
+	   * as children of this presenter.
+	   */
+	  @ContentSlot
+	  public static final Type<RevealContentHandler<?>> TYPE_SetMainContent = new Type<RevealContentHandler<?>>();
+	  
 	public interface MyView extends View {
 
 		HasValue<String> getNameValue();
@@ -59,6 +68,7 @@ public class MainPagePresenter extends
 	@Override
 	protected void revealInParent() {
 		RevealRootContentEvent.fire(this, this);
+//		RevealContentEvent.fire(this, MainPagePresenter.TYPE_SetMainContent, this);
 	}
 
 	@Override

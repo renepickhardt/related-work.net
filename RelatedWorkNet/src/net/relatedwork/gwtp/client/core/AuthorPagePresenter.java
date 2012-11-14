@@ -14,6 +14,7 @@ import net.relatedwork.gwtp.shared.SendTextToServerResult;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
+import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.google.inject.Inject;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -46,7 +47,8 @@ public class AuthorPagePresenter extends
 
 	@Override
 	protected void revealInParent() {
-		RevealRootContentEvent.fire(this, this);
+		RevealContentEvent.fire(this, MainPagePresenter.TYPE_SetMainContent, this);
+		//RevealRootContentEvent.fire(this, this);
 	}
 
 	@Override

@@ -16,6 +16,9 @@
 	<inherits name='com.gwtplatform.mvp.Mvp'/>
 	<inherits name='com.gwtplatform.dispatch.Dispatch'/>
 
+ 	<inherits name="com.google.gwt.uibinder.UiBinder" />
+	<inherits name="com.gwtplatform.mvp.Mvp" /> 
+
 	<!-- Specify the app entry point class.                         -->
 	<entry-point class='net.relatedwork.gwtp.client.RelatedWorkNet'/>
 
@@ -25,5 +28,4 @@
 
 	<define-configuration-property name='gin.ginjector' is-multi-valued='false' />
 	<set-configuration-property name='gin.ginjector' value='net.relatedwork.gwtp.client.gin.ClientGinjector' />
-
 </module>
