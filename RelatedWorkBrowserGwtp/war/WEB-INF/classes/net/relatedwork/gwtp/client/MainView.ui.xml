@@ -1,0 +1,23 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:HTMLPanel ui:field="rwMain">
+	    <g:HTMLPanel ui:field="rwHeader">
+			<h1>rwHeadder</h1> 
+		</g:HTMLPanel>
+		<hr/>
+		<g:HTMLPanel ui:field="rwBody">
+			<g:HTMLPanel ui:field="rwContent" styleName="rwContent">rwContent</g:HTMLPanel>
+			<g:HTMLPanel ui:field="rwSidebar" styleName="rwSidebar">rwSidebar</g:HTMLPanel>
+		</g:HTMLPanel>
+		<g:HTMLPanel ui:field="rwFooter" styleName="rwFooter">	
+			<hr/>
+			<h3>rwFooter</h3> 
+		</g:HTMLPanel>
+	</g:HTMLPanel>
+</ui:UiBinder>

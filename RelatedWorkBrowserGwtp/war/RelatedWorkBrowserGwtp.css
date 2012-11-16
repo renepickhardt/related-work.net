@@ -1,0 +1,18 @@
+/* Add css rules here for your application. */
+
+div.rwSidebar {
+	background-color: #EEEEEE;
+	width: 200px;
+	float: right;
+	min-height: 100px;
+}
+
+div.rwContent {
+	background-color: #CCCCCC;	
+	float: left;
+	min-height: 100px;
+}
+
+div.rwFooter {
+	clear: both;
+}
