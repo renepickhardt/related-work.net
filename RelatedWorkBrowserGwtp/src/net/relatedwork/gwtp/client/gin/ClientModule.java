@@ -23,5 +23,7 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenter(ImprintPresenter.class, ImprintPresenter.MyView.class,
 				ImprintView.class, ImprintPresenter.MyProxy.class);
+		
+		
 	}
 }

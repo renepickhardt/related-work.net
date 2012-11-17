@@ -43,6 +43,5 @@ public class ImprintPresenter extends
 	@Override
 	protected void onReset() {
 		super.onReset();
-		getEventBus().fireEvent(new MyTestEvent("Imprint"));
 	}
 }
