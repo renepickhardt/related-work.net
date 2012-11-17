@@ -18,7 +18,7 @@
 			</g:VerticalPanel>
 			<g:VerticalPanel styleName="rwFooterBlock">
 				<g:Hyperlink targetHistoryToken="{nameTokens.getData}">Data</g:Hyperlink>
-				<g:Hyperlink>Licence</g:Hyperlink>
+				<g:Hyperlink targetHistoryToken="{nameTokens.getLicense}">Licence</g:Hyperlink>
 				<g:Hyperlink>Source Code</g:Hyperlink>
 			</g:VerticalPanel>
 			<g:VerticalPanel styleName="rwFooterBlock">
