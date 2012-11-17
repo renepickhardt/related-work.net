@@ -13,7 +13,7 @@
 		<g:HorizontalPanel styleName="rwFooterLinkPanel">
 			<g:VerticalPanel styleName="rwFooterBlock">
 				<g:Hyperlink targetHistoryToken="{nameTokens.getImprint}">Imprint</g:Hyperlink>
-				<g:Hyperlink>About</g:Hyperlink>
+				<g:Hyperlink targetHistoryToken="{nameTokens.getAbout}">About</g:Hyperlink>
 				<g:Hyperlink>Blog</g:Hyperlink>
 			</g:VerticalPanel>
 			<g:VerticalPanel styleName="rwFooterBlock">

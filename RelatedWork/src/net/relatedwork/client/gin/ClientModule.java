@@ -15,6 +15,8 @@ import net.relatedwork.client.layout.BreadcrumbsPresenter;
 import net.relatedwork.client.layout.BreadcrumbsView;
 import net.relatedwork.client.HomePresenter;
 import net.relatedwork.client.HomeView;
+import net.relatedwork.client.staticpresenter.AboutPresenter;
+import net.relatedwork.client.staticpresenter.AboutView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -38,5 +40,8 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(HomePresenter.class, HomePresenter.MyView.class,
 				HomeView.class);
+
+		bindPresenter(AboutPresenter.class, AboutPresenter.MyView.class,
+				AboutView.class, AboutPresenter.MyProxy.class);
 	}
 }
