@@ -4,6 +4,8 @@ import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.NameToken;
+
+import net.relatedwork.client.navigation.HistoryTokenChangeEvent;
 import net.relatedwork.client.place.NameTokens;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.google.inject.Inject;
@@ -36,5 +38,11 @@ public class AboutPresenter extends
 	@Override
 	protected void onBind() {
 		super.onBind();
+	}
+	
+	@Override
+	protected void onReset() {
+		super.onReset();
+		getEventBus().fireEvent(new HistoryTokenChangeEvent(NameTokens.about, "About"));
 	}
 }

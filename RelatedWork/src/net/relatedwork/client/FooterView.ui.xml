@@ -14,7 +14,7 @@
 			<g:VerticalPanel styleName="rwFooterBlock">
 				<g:Hyperlink targetHistoryToken="{nameTokens.getImprint}">Imprint</g:Hyperlink>
 				<g:Hyperlink targetHistoryToken="{nameTokens.getAbout}">About</g:Hyperlink>
-				<g:Hyperlink>Blog</g:Hyperlink>
+				<g:Anchor href="http://blog.related-work.net/blog/">Blog</g:Anchor>
 			</g:VerticalPanel>
 			<g:VerticalPanel styleName="rwFooterBlock">
 				<g:Hyperlink>Data</g:Hyperlink>
