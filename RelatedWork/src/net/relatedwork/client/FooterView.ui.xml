@@ -1,0 +1,32 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+	<ui:with type="net.relatedwork.client.place.NameTokens"
+		field="nameTokens"></ui:with>
+
+	<g:HTMLPanel>
+		<hr/>
+		<g:HorizontalPanel styleName="rwFooterLinkPanel">
+			<g:VerticalPanel styleName="rwFooterBlock">
+				<g:Hyperlink targetHistoryToken="{nameTokens.getImprint}">Imprint</g:Hyperlink>
+				<g:Hyperlink>About</g:Hyperlink>
+				<g:Hyperlink>Blog</g:Hyperlink>
+			</g:VerticalPanel>
+			<g:VerticalPanel styleName="rwFooterBlock">
+				<g:Hyperlink>Data</g:Hyperlink>
+				<g:Hyperlink>Licence</g:Hyperlink>
+				<g:Hyperlink>Source Code</g:Hyperlink>
+			</g:VerticalPanel>
+			<g:VerticalPanel styleName="rwFooterBlock">
+				<g:Hyperlink>Developer</g:Hyperlink>
+				<g:Hyperlink>Projects / Open Ends</g:Hyperlink>
+				<g:Hyperlink>Roadmaps</g:Hyperlink>
+				<g:Hyperlink>Bug Tracker</g:Hyperlink>				
+			</g:VerticalPanel>
+		</g:HorizontalPanel>
+	</g:HTMLPanel>
+</ui:UiBinder>

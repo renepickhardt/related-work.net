@@ -1,0 +1,56 @@
+/* Add css rules here for your application. */
+
+div.rwHeader{
+	width:1024px;
+	margin-left: auto ;
+	margin-right: auto ;
+	
+	padding: 8px;
+	border-style: none none dotted none;
+	border-width: 1px;
+	background-color: #EEEEEE;	
+}
+
+div.rwBody{
+	width:1024px;
+	margin-left: auto ;
+	margin-right: auto ;
+}
+
+div.rwSidebar {
+	background-color: #DDDDFF;
+	width: 224px;
+	float: left;
+	min-height: 100px;
+}
+
+div.rwContent {
+	background-color: #FFFFDD;	
+	width: 800px;
+	float: left;
+	min-height: 100px;
+}
+
+div.rwFooter {
+	padding: 8px;
+	border-style: none none dotted none;
+	border-width: 1px;
+	background-color: #CCCCCC;
+	
+	clear: both;
+	width:1024px;
+	margin-left: auto ;
+	margin-right: auto ;
+}
+
+table.rwFooterLinkPanel {
+	width:100%;
+}
+
+td.rwFooterLinkPanel{
+	width:33%;
+}
+
+table.rwFooterBlock {
+	margin-left: 50px;
+}

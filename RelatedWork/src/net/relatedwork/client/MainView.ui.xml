@@ -29,25 +29,6 @@
 			</g:HTMLPanel>
 		</g:HTMLPanel>
 		<g:HTMLPanel ui:field="rwFooter" styleName="rwFooter">
-			<hr/>
-			<g:HorizontalPanel styleName="rwFooterLinkPanel">
-				<g:VerticalPanel styleName="rwFooterBlock">
-					<g:Hyperlink>Imprint</g:Hyperlink>
-					<g:Hyperlink>About</g:Hyperlink>
-					<g:Hyperlink>Blog</g:Hyperlink>
-				</g:VerticalPanel>
-				<g:VerticalPanel styleName="rwFooterBlock">
-					<g:Hyperlink>Data</g:Hyperlink>
-					<g:Hyperlink>Licence</g:Hyperlink>
-					<g:Hyperlink>Source Code</g:Hyperlink>
-				</g:VerticalPanel>
-				<g:VerticalPanel styleName="rwFooterBlock">
-					<g:Hyperlink>Developer</g:Hyperlink>
-					<g:Hyperlink>Projects / Open Ends</g:Hyperlink>
-					<g:Hyperlink>Roadmaps</g:Hyperlink>
-					<g:Hyperlink>Bug Tracker</g:Hyperlink>				
-				</g:VerticalPanel>
-			</g:HorizontalPanel>
 		</g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

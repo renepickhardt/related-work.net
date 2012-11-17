@@ -67,16 +67,26 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 
 	@Override
 	public void setInSlot(Object slot, Widget content) {
-		if (slot == MainPresenter.TYPE_SetMainContent) {
+		if (slot == MainPresenter.TYPE_Footer){
+			setFooter(content);			
+		}
+		else if (slot == MainPresenter.TYPE_SetMainContent) {
 			setMainContent(content);
-		} else {
+		} 
+		else {
 			super.setInSlot(slot, content);
+		}
+	}
+
+	private void setFooter(Widget content) {
+		rwFooter.clear();
+		if (content != null) {
+			rwFooter.add(content);
 		}
 	}
 
 	private void setMainContent(Widget content) {
 		rwContent.clear();
-
 		if (content != null) {
 			rwContent.add(content);
 		}

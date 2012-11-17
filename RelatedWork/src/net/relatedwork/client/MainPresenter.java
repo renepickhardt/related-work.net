@@ -21,6 +21,10 @@ public class MainPresenter extends
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> TYPE_SetMainContent = new Type<RevealContentHandler<?>>();
 
+	@ContentSlot
+	public static final Type<RevealContentHandler<?>> TYPE_Footer = new Type<RevealContentHandler<?>>();
+
+	
 	public interface MyView extends View {
 		public HTMLPanel getRwHeader();
 
@@ -45,6 +49,7 @@ public class MainPresenter extends
 	public interface MyProxy extends ProxyPlace<MainPresenter> {
 	}
 
+
 	@Inject
 	public MainPresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy) {
@@ -59,5 +64,13 @@ public class MainPresenter extends
 	@Override
 	protected void onBind() {
 		super.onBind();
+	}
+	
+	@Inject FooterPresenter footerPresenter;
+	
+	@Override
+	protected void onReveal() {
+		super.onReveal();
+		setInSlot(TYPE_Footer, footerPresenter);
 	}
 }
