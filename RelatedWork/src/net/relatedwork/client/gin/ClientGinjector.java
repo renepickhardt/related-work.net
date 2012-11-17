@@ -11,6 +11,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.google.gwt.inject.client.AsyncProvider;
 import net.relatedwork.client.MainPresenter;
 import net.relatedwork.client.FooterPresenter;
+import net.relatedwork.client.staticpresenter.AboutPresenter;
 
 @GinModules({ DispatchAsyncModule.class, ClientModule.class })
 public interface ClientGinjector extends Ginjector {
@@ -24,4 +25,6 @@ public interface ClientGinjector extends Ginjector {
 	AsyncProvider<FooterPresenter> getFooterPresenter();
 
 	AsyncProvider<ImprintPresenter> getImprintPresenter();
+
+	AsyncProvider<AboutPresenter> getAboutPresenter();
 }

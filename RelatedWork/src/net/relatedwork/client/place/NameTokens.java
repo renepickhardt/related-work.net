@@ -4,6 +4,7 @@ public class NameTokens {
 
 	public static final String main = "!main";
 	public static final String imprint = "!imprint";
+	public static final String about = "!about";
 
 	public static String getMain() {
 		return main;
@@ -11,5 +12,9 @@ public class NameTokens {
 
 	public static String getImprint() {
 		return imprint;
+	}
+
+	public static String getAbout() {
+		return about;
 	}
 }
