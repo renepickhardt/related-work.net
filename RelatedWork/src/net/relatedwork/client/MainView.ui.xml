@@ -17,7 +17,7 @@
 					</g:HTMLPanel>
 	    			<g:HTMLPanel ui:field="rwHeaderLogin"></g:HTMLPanel>	    
 				</g:HorizontalPanel>
-		    	<g:HTMLPanel ui:field="rwBreadCrumbs">BreadCrumbs</g:HTMLPanel>
+		    	<g:HTMLPanel ui:field="rwBreadcrumbs"></g:HTMLPanel>
 	    	</g:VerticalPanel>
 		</g:HTMLPanel>
 		<g:HTMLPanel ui:field="rwBody" styleName="rwBody">
