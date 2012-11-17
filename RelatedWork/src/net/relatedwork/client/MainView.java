@@ -1,28 +1,38 @@
 package net.relatedwork.client;
 
+import java.util.ArrayList;
+
+import net.relatedwork.shared.ItemSuggestion;
+import net.relatedwork.shared.RequestGlobalSearchSuggestion;
+import net.relatedwork.shared.RequestGlobalSearchSuggestionResult;
+
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.SuggestBox;
+import com.google.gwt.user.client.ui.SuggestOracle;
+import com.google.gwt.user.client.ui.SuggestOracle.Response;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.ViewImpl;
 
 public class MainView extends ViewImpl implements MainPresenter.MyView {
 
 	private final Widget widget;
 
-	@UiField
-	HTMLPanel rwHeader;
-	@UiField
-	HTMLPanel rwContent;
-	@UiField
-	HTMLPanel rwSidebar;
-	@UiField
-	HTMLPanel rwFooter;
-	@UiField
-	HTMLPanel rwBreadcrumbs;
-	
+	@UiField HTMLPanel rwHeader;
+	@UiField HTMLPanel rwContent;
+	@UiField HTMLPanel rwSidebar;
+	@UiField HTMLPanel rwFooter;
+	@UiField HTMLPanel rwBreadcrumbs;
+	@UiField HTMLPanel rwHeaderSearch;
 	@UiField HTMLPanel rwDiscussions;
+	
+	private final SuggestBox suggestBox;
+	private final Button reSearch;
 	
 	public HTMLPanel getRwHeader() {
 		return rwHeader;
@@ -59,9 +69,34 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 	public interface Binder extends UiBinder<Widget, MainView> {
 	}
 
+	@Inject DispatchAsync dispatcher;
+	
 	@Inject
-	public MainView(final Binder binder) {
+	public MainView(final Binder binder) {		
 		widget = binder.createAndBindUi(this);
+		SuggestOracle oracle = new SuggestOracle(){
+			@Override
+			public void requestSuggestions(final Request request,final Callback callback) {
+				dispatcher.execute(new RequestGlobalSearchSuggestion(request), new AsyncCallback<RequestGlobalSearchSuggestionResult>(){
+					@Override
+					public void onFailure(Throwable caught) {
+
+					}
+					@Override
+					public void onSuccess(
+							RequestGlobalSearchSuggestionResult result) {
+						callback.onSuggestionsReady(request, result.getResponse());
+					}});
+			}};
+		
+		suggestBox = new SuggestBox(oracle);
+		reSearch = new Button();
+		reSearch.setText("(re)search");	
+		rwHeaderSearch.add(suggestBox);
+		rwHeaderSearch.add(reSearch);
+		//rwHeaderSearch.add(suggestBox);
+		//rwHeaderSearch.add(reSearch);
+
 	}
 
 	@Override

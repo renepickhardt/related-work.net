@@ -11,11 +11,8 @@
 	    	<g:VerticalPanel>
 				<g:HorizontalPanel>
 		    		<g:HTMLPanel ui:field="rwLogo">LOGO</g:HTMLPanel>
-	    			<g:HTMLPanel ui:field="rwHeaderSearch">
-						<g:SuggestBox text="search me"></g:SuggestBox>
-						<g:Button>(re)search</g:Button>
-					</g:HTMLPanel>
-	    			<g:HTMLPanel ui:field="rwHeaderLogin"></g:HTMLPanel>	    
+	    			<g:HTMLPanel ui:field="rwHeaderSearch"/>
+	    			<g:HTMLPanel ui:field="rwHeaderLogin"/>	    
 				</g:HorizontalPanel>
 		    	<g:HTMLPanel ui:field="rwBreadcrumbs"></g:HTMLPanel>
 	    	</g:VerticalPanel>
