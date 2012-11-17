@@ -19,6 +19,8 @@ import net.relatedwork.client.Discussions.CommentPresenter;
 import net.relatedwork.client.Discussions.CommentView;
 import net.relatedwork.client.staticpresenter.AboutPresenter;
 import net.relatedwork.client.staticpresenter.AboutView;
+import net.relatedwork.client.staticpresenter.DataPresenter;
+import net.relatedwork.client.staticpresenter.DataView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -48,5 +50,8 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenter(AboutPresenter.class, AboutPresenter.MyView.class,
 				AboutView.class, AboutPresenter.MyProxy.class);
+
+		bindPresenter(DataPresenter.class, DataPresenter.MyView.class,
+				DataView.class, DataPresenter.MyProxy.class);
 	}
 }

@@ -17,7 +17,7 @@
 				<g:Anchor href="http://blog.related-work.net/blog/">Blog</g:Anchor>
 			</g:VerticalPanel>
 			<g:VerticalPanel styleName="rwFooterBlock">
-				<g:Hyperlink>Data</g:Hyperlink>
+				<g:Hyperlink targetHistoryToken="{nameTokens.getData}">Data</g:Hyperlink>
 				<g:Hyperlink>Licence</g:Hyperlink>
 				<g:Hyperlink>Source Code</g:Hyperlink>
 			</g:VerticalPanel>
