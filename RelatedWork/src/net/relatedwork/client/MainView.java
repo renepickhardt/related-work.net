@@ -22,6 +22,8 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 	@UiField
 	HTMLPanel rwBreadcrumbs;
 	
+	@UiField HTMLPanel rwDiscussions;
+	
 	public HTMLPanel getRwHeader() {
 		return rwHeader;
 	}
@@ -75,12 +77,22 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 		else if (slot == MainPresenter.TYPE_SetMainContent) {
 			setMainContent(content);
 		} 
+		else if (slot == MainPresenter.TYPE_Discussion) {
+			setDiscussions(content);
+		} 
 		else if (slot == MainPresenter.TYPE_Breadcrumbs) {
 			setBreadcrumbs(content);
 		} 
 		else {
 			super.setInSlot(slot, content);
 		}
+	}
+
+	private void setDiscussions(Widget content) {
+		rwDiscussions.clear();
+		if (content != null) {
+			rwDiscussions.add(content);
+		}		
 	}
 
 	private void setBreadcrumbs(Widget content) {

@@ -35,6 +35,14 @@ div.rwContent {
 	min-height: 100px;
 }
 
+div.rwDiscussions{
+	background-color: #DDFFDD;	
+	width: 800px;
+	float: left;
+	min-height: 100px;
+	clear: both;
+}
+
 div.rwFooter {
 	padding: 8px;
 	border-style: none none dotted none;

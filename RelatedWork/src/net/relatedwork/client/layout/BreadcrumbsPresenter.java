@@ -18,8 +18,7 @@ public class BreadcrumbsPresenter extends
 
 	public interface MyView extends View {
 		public HTMLPanel getBreadcrumbContainer();
-		public void setBreadcrumbContainer(HTMLPanel breadcrumbContainer);
-	
+		public void setBreadcrumbContainer(HTMLPanel breadcrumbContainer);	
 	}
 
 	@Inject

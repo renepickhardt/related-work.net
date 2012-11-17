@@ -21,12 +21,18 @@
 	    	</g:VerticalPanel>
 		</g:HTMLPanel>
 		<g:HTMLPanel ui:field="rwBody" styleName="rwBody">
-			<g:HTMLPanel ui:field="rwContent" styleName="rwContent">
-				<h1>Content  Title to put here</h1>
-			</g:HTMLPanel>
-			<g:HTMLPanel ui:field="rwSidebar" styleName="rwSidebar">
-				Side bar needs more HTML Fields for the elements. e.g. Search Box, Tags, Login, History, Recommendations,...
-			</g:HTMLPanel>
+			<g:VerticalPanel>
+				<g:HorizontalPanel>
+					<g:HTMLPanel ui:field="rwContent" styleName="rwContent">
+						<h1>Content  Title to put here</h1>
+					</g:HTMLPanel>
+					<g:HTMLPanel ui:field="rwSidebar" styleName="rwSidebar">
+					Side bar needs more HTML Fields for the elements. e.g. Search Box, Tags, Login, History, Recommendations,...
+					</g:HTMLPanel>
+				</g:HorizontalPanel>
+				<g:HTMLPanel ui:field="rwDiscussions" styleName="rwDiscussions"></g:HTMLPanel>
+			</g:VerticalPanel>
+			
 		</g:HTMLPanel>
 		<g:HTMLPanel ui:field="rwFooter" styleName="rwFooter">
 		</g:HTMLPanel>

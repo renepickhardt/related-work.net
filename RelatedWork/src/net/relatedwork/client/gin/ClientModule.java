@@ -15,6 +15,8 @@ import net.relatedwork.client.layout.BreadcrumbsPresenter;
 import net.relatedwork.client.layout.BreadcrumbsView;
 import net.relatedwork.client.HomePresenter;
 import net.relatedwork.client.HomeView;
+import net.relatedwork.client.Discussions.CommentPresenter;
+import net.relatedwork.client.Discussions.CommentView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -38,5 +40,8 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(HomePresenter.class, HomePresenter.MyView.class,
 				HomeView.class);
+
+		bindPresenterWidget(CommentPresenter.class,
+				CommentPresenter.MyView.class, CommentView.class);
 	}
 }
