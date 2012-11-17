@@ -7,17 +7,47 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel ui:field="rwMain">
-	    <g:HTMLPanel ui:field="rwHeader">
-			<h1>rwHeadder</h1> 
+	    <g:HTMLPanel ui:field="rwHeader" styleName="rwHeader">
+	    	<g:VerticalPanel>
+				<g:HorizontalPanel>
+		    		<g:HTMLPanel ui:field="rwLogo">LOGO</g:HTMLPanel>
+	    			<g:HTMLPanel ui:field="rwHeaderSearch">
+						<g:SuggestBox text="search me"></g:SuggestBox>
+						<g:Button>(re)search</g:Button>
+					</g:HTMLPanel>
+	    			<g:HTMLPanel ui:field="rwHeaderLogin"></g:HTMLPanel>	    
+				</g:HorizontalPanel>
+		    	<g:HTMLPanel ui:field="rwBreadCrumbs">BreadCrumbs</g:HTMLPanel>
+	    	</g:VerticalPanel>
 		</g:HTMLPanel>
-		<hr/>
-		<g:HTMLPanel ui:field="rwBody">
-			<g:HTMLPanel ui:field="rwContent" styleName="rwContent">rwContent</g:HTMLPanel>
-			<g:HTMLPanel ui:field="rwSidebar" styleName="rwSidebar">rwSidebar</g:HTMLPanel>
+		<g:HTMLPanel ui:field="rwBody" styleName="rwBody">
+			<g:HTMLPanel ui:field="rwContent" styleName="rwContent">
+				<h1>Content  Title to put here</h1>
+			</g:HTMLPanel>
+			<g:HTMLPanel ui:field="rwSidebar" styleName="rwSidebar">
+				Side bar needs more HTML Fields for the elements. e.g. Search Box, Tags, Login, History, Recommendations,...
+			</g:HTMLPanel>
 		</g:HTMLPanel>
-		<g:HTMLPanel ui:field="rwFooter" styleName="rwFooter">	
+		<g:HTMLPanel ui:field="rwFooter" styleName="rwFooter">
 			<hr/>
-			<h3>rwFooter</h3> 
+			<g:HorizontalPanel styleName="rwFooterLinkPanel">
+				<g:VerticalPanel styleName="rwFooterBlock">
+					<g:Hyperlink>Imprint</g:Hyperlink>
+					<g:Hyperlink>About</g:Hyperlink>
+					<g:Hyperlink>Blog</g:Hyperlink>
+				</g:VerticalPanel>
+				<g:VerticalPanel styleName="rwFooterBlock">
+					<g:Hyperlink>Data</g:Hyperlink>
+					<g:Hyperlink>Licence</g:Hyperlink>
+					<g:Hyperlink>Source Code</g:Hyperlink>
+				</g:VerticalPanel>
+				<g:VerticalPanel styleName="rwFooterBlock">
+					<g:Hyperlink>Developer</g:Hyperlink>
+					<g:Hyperlink>Projects / Open Ends</g:Hyperlink>
+					<g:Hyperlink>Roadmaps</g:Hyperlink>
+					<g:Hyperlink>Bug Tracker</g:Hyperlink>				
+				</g:VerticalPanel>
+			</g:HorizontalPanel>
 		</g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>
