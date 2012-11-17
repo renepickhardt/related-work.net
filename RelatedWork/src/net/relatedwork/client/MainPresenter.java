@@ -5,6 +5,9 @@ import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.NameToken;
+
+import net.relatedwork.client.layout.BreadcrumbsPresenter;
+import net.relatedwork.client.navigation.HistoryTokenChangeEvent;
 import net.relatedwork.client.place.NameTokens;
 
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
@@ -23,6 +26,9 @@ public class MainPresenter extends
 
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> TYPE_Footer = new Type<RevealContentHandler<?>>();
+
+	@ContentSlot
+	public static final Type<RevealContentHandler<?>> TYPE_Breadcrumbs = new Type<RevealContentHandler<?>>();
 
 	
 	public interface MyView extends View {
@@ -67,10 +73,19 @@ public class MainPresenter extends
 	}
 	
 	@Inject FooterPresenter footerPresenter;
-	
+	@Inject BreadcrumbsPresenter breadcrumbsPresenter;
+	@Inject HomePresenter homePresenter;
 	@Override
 	protected void onReveal() {
 		super.onReveal();
 		setInSlot(TYPE_Footer, footerPresenter);
+		setInSlot(TYPE_Breadcrumbs, breadcrumbsPresenter);
+	}
+	
+	@Override
+	protected void onReset() {
+		super.onReset();
+//		setInSlot(TYPE_SetMainContent, homePresenter);
+		getEventBus().fireEvent(new HistoryTokenChangeEvent(NameTokens.main, "Home"));
 	}
 }

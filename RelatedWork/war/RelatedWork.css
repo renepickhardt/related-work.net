@@ -1,5 +1,9 @@
 /* Add css rules here for your application. */
 
+div.float{
+	float: left;
+}
+
 div.rwHeader{
 	width:1024px;
 	margin-left: auto ;

@@ -19,7 +19,9 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 	HTMLPanel rwSidebar;
 	@UiField
 	HTMLPanel rwFooter;
-
+	@UiField
+	HTMLPanel rwBreadcrumbs;
+	
 	public HTMLPanel getRwHeader() {
 		return rwHeader;
 	}
@@ -73,8 +75,18 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 		else if (slot == MainPresenter.TYPE_SetMainContent) {
 			setMainContent(content);
 		} 
+		else if (slot == MainPresenter.TYPE_Breadcrumbs) {
+			setBreadcrumbs(content);
+		} 
 		else {
 			super.setInSlot(slot, content);
+		}
+	}
+
+	private void setBreadcrumbs(Widget content) {
+		rwBreadcrumbs.clear();
+		if (content != null) {
+			rwBreadcrumbs.add(content);
 		}
 	}
 
