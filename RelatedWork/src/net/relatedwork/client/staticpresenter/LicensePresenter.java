@@ -40,11 +40,18 @@ public class LicensePresenter extends
 		super.onBind();
 	}
 	
+	// A Java method using JSNI from
+	// http://googlewebtoolkit.blogspot.co.uk/2008/07/getting-to-really-know-gwt-part-1-jsni.html
+	native String sayHelloInJava(String name) /*-{
+	  $wnd.sayHello(name); // $wnd is a JSNI synonym for 'window'
+	  return "Test";
+	}-*/;
+	
 	@Override
 	protected void onReset() {
 		super.onReset();
-		
-		getEventBus().fireEvent(new HistoryTokenChangeEvent(NameTokens.license, "License"));
+		String js_return = sayHelloInJava("License View");
+		getEventBus().fireEvent(new HistoryTokenChangeEvent(NameTokens.license, "License" + js_return));
 	}
 	
 }
