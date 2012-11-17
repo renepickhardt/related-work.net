@@ -7,6 +7,8 @@ import net.relatedwork.gwtp.client.MainPresenter;
 import net.relatedwork.gwtp.client.MainView;
 import net.relatedwork.gwtp.client.place.DefaultPlace;
 import net.relatedwork.gwtp.client.place.NameTokens;
+import net.relatedwork.gwtp.client.staticpresenter.ImprintPresenter;
+import net.relatedwork.gwtp.client.staticpresenter.ImprintView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -18,5 +20,8 @@ public class ClientModule extends AbstractPresenterModule {
 				MainView.class, MainPresenter.MyProxy.class);
 
 		bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.main);
+
+		bindPresenter(ImprintPresenter.class, ImprintPresenter.MyView.class,
+				ImprintView.class, ImprintPresenter.MyProxy.class);
 	}
 }

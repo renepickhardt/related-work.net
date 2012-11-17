@@ -18,6 +18,7 @@
 		<g:HTMLPanel ui:field="rwFooter" styleName="rwFooter">	
 			<hr/>
 			<h3>rwFooter</h3> 
+			<g:Hyperlink targetHistoryToken="!imprint">Imprint</g:Hyperlink>
 		</g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>
