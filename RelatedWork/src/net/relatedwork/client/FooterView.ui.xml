@@ -14,18 +14,18 @@
 			<g:VerticalPanel styleName="rwFooterBlock">
 				<g:Hyperlink targetHistoryToken="{nameTokens.getImprint}">Imprint</g:Hyperlink>
 				<g:Hyperlink targetHistoryToken="{nameTokens.getAbout}">About</g:Hyperlink>
-				<g:Hyperlink>Blog</g:Hyperlink>
+				<g:Anchor href="http://blog.related-work.net/blog/">Blog</g:Anchor>
 			</g:VerticalPanel>
 			<g:VerticalPanel styleName="rwFooterBlock">
-				<g:Hyperlink>Data</g:Hyperlink>
-				<g:Hyperlink>Licence</g:Hyperlink>
-				<g:Hyperlink>Source Code</g:Hyperlink>
+				<g:Hyperlink targetHistoryToken="{nameTokens.getData}">Data</g:Hyperlink>
+				<g:Hyperlink targetHistoryToken="{nameTokens.getLicense}">Licence</g:Hyperlink>
+				<g:Anchor href="http://github.com/renepickhardt/related-work.net">Source Code</g:Anchor>
 			</g:VerticalPanel>
 			<g:VerticalPanel styleName="rwFooterBlock">
 				<g:Hyperlink>Developer</g:Hyperlink>
-				<g:Hyperlink>Projects / Open Ends</g:Hyperlink>
-				<g:Hyperlink>Roadmaps</g:Hyperlink>
-				<g:Hyperlink>Bug Tracker</g:Hyperlink>				
+				<g:Anchor href="https://github.com/renepickhardt/related-work.net/Open-ends">Open Ends</g:Anchor>
+				<g:Anchor href="https://github.com/renepickhardt/related-work.net/Roadmap">Road Map</g:Anchor>
+				<g:Anchor href="https://github.com/renepickhardt/related-work.net/issues">Bug Tracker</g:Anchor>
 			</g:VerticalPanel>
 		</g:HorizontalPanel>
 	</g:HTMLPanel>

@@ -13,19 +13,19 @@ import com.google.gwt.event.shared.EventBus;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import net.relatedwork.client.MainPresenter;
 
-public class AboutPresenter extends
-		Presenter<AboutPresenter.MyView, AboutPresenter.MyProxy> {
+public class LicensePresenter extends
+		Presenter<LicensePresenter.MyView, LicensePresenter.MyProxy> {
 
 	public interface MyView extends View {
 	}
 
 	@ProxyCodeSplit
-	@NameToken(NameTokens.about)
-	public interface MyProxy extends ProxyPlace<AboutPresenter> {
+	@NameToken(NameTokens.license)
+	public interface MyProxy extends ProxyPlace<LicensePresenter> {
 	}
 
 	@Inject
-	public AboutPresenter(final EventBus eventBus, final MyView view,
+	public LicensePresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy) {
 		super(eventBus, view, proxy);
 	}
@@ -40,9 +40,18 @@ public class AboutPresenter extends
 		super.onBind();
 	}
 	
+	// A Java method using JSNI from
+	// http://googlewebtoolkit.blogspot.co.uk/2008/07/getting-to-really-know-gwt-part-1-jsni.html
+	native String sayHelloInJava(String name) /*-{
+	  $wnd.sayHello(name); // $wnd is a JSNI synonym for 'window'
+	  return "Test";
+	}-*/;
+	
 	@Override
 	protected void onReset() {
 		super.onReset();
-		getEventBus().fireEvent(new HistoryTokenChangeEvent(NameTokens.about, "About"));
+		String js_return = sayHelloInJava("License View");
+		getEventBus().fireEvent(new HistoryTokenChangeEvent(NameTokens.license, "License" + js_return));
 	}
+	
 }

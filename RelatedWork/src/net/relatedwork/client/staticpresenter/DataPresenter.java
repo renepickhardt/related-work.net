@@ -13,19 +13,19 @@ import com.google.gwt.event.shared.EventBus;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import net.relatedwork.client.MainPresenter;
 
-public class AboutPresenter extends
-		Presenter<AboutPresenter.MyView, AboutPresenter.MyProxy> {
+public class DataPresenter extends
+		Presenter<DataPresenter.MyView, DataPresenter.MyProxy> {
 
 	public interface MyView extends View {
 	}
 
 	@ProxyCodeSplit
-	@NameToken(NameTokens.about)
-	public interface MyProxy extends ProxyPlace<AboutPresenter> {
+	@NameToken(NameTokens.data)
+	public interface MyProxy extends ProxyPlace<DataPresenter> {
 	}
 
 	@Inject
-	public AboutPresenter(final EventBus eventBus, final MyView view,
+	public DataPresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy) {
 		super(eventBus, view, proxy);
 	}
@@ -43,6 +43,6 @@ public class AboutPresenter extends
 	@Override
 	protected void onReset() {
 		super.onReset();
-		getEventBus().fireEvent(new HistoryTokenChangeEvent(NameTokens.about, "About"));
+		getEventBus().fireEvent(new HistoryTokenChangeEvent(NameTokens.data, "Data"));
 	}
 }

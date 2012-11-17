@@ -21,6 +21,10 @@ import net.relatedwork.client.staticpresenter.AboutPresenter;
 import net.relatedwork.client.staticpresenter.AboutView;
 import net.relatedwork.client.staticpresenter.NotYetImplementedPresenter;
 import net.relatedwork.client.staticpresenter.NotYetImplementedView;
+import net.relatedwork.client.staticpresenter.DataPresenter;
+import net.relatedwork.client.staticpresenter.DataView;
+import net.relatedwork.client.staticpresenter.LicensePresenter;
+import net.relatedwork.client.staticpresenter.LicenseView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -54,5 +58,11 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(NotYetImplementedPresenter.class,
 				NotYetImplementedPresenter.MyView.class,
 				NotYetImplementedView.class);
+
+		bindPresenter(DataPresenter.class, DataPresenter.MyView.class,
+				DataView.class, DataPresenter.MyProxy.class);
+
+		bindPresenter(LicensePresenter.class, LicensePresenter.MyView.class,
+				LicenseView.class, LicensePresenter.MyProxy.class);
 	}
 }
