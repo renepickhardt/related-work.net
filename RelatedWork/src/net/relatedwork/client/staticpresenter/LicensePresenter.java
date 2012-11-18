@@ -44,7 +44,7 @@ public class LicensePresenter extends
 	// http://googlewebtoolkit.blogspot.co.uk/2008/07/getting-to-really-know-gwt-part-1-jsni.html
 	native String sayHelloInJava(String name) /*-{
 	  $wnd.sayHello(name); // $wnd is a JSNI synonym for 'window'
-	  return "Test";
+	  return "Test JSNI return string";
 	}-*/;
 	
 	@Override
