@@ -1,5 +1,7 @@
 package net.relatedwork.server.action;
 
+import javax.servlet.ServletContext;
+
 import sun.security.x509.AuthorityInfoAccessExtension;
 
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
@@ -13,7 +15,7 @@ import com.gwtplatform.dispatch.shared.ActionException;
 
 public class DisplayAuthorActionHandler implements
 		ActionHandler<DisplayAuthor, DisplayAuthorResult> {
-
+	
 	@Inject
 	public DisplayAuthorActionHandler() {
 	}

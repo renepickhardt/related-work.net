@@ -85,7 +85,14 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 					@Override
 					public void onSuccess(
 							RequestGlobalSearchSuggestionResult result) {
-						callback.onSuggestionsReady(request, result.getResponse());
+						ArrayList<ItemSuggestion> list = new ArrayList<ItemSuggestion>();
+						for (Suggestion sug:result.getResponse().getSuggestions()){
+							if (((ItemSuggestion)sug).prepareForDisplay()==false)continue;
+							list.add((ItemSuggestion)sug);
+						}
+						Response r = new Response();
+						r.setSuggestions(list);
+						callback.onSuggestionsReady(request, r);
 					}});
 			}};
 		
