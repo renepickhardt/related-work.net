@@ -4,7 +4,7 @@ import org.neo4j.graphdb.DynamicRelationshipType;
 import org.neo4j.graphdb.RelationshipType;
 
 public class RelationshipTypes {
-	
+
 	public static DynamicRelationshipType CITES = DynamicRelationshipType.withName("ref");
 	public static DynamicRelationshipType AUTHOROF = DynamicRelationshipType.withName("author");
 	
@@ -14,5 +14,8 @@ public class RelationshipTypes {
 	
 	public static final RelationshipType SIM_AUTHOR = DynamicRelationshipType.withName("rw:dm:simAuthor");
 	
+	// by Heinrich
+	
+	public static DynamicRelationshipType TYPE = DynamicRelationshipType.withName("type");
 	
 }

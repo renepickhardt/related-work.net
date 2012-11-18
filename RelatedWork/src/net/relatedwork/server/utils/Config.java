@@ -26,10 +26,14 @@ public class Config extends Properties {
 	public boolean createSearchIndex;
 	private static final long serialVersionUID = -4439565094382127683L;
 
+	// by Heinrich
+	public String autoCompleteFile;
+
 	static Config instance = null;
 
 	public Config() {
-		String file = "/home/rpickhardt/data/source code/git/related-work-net/RelatedWorkBrowser/config.txt";
+		// config.txt should lie in package root folder i.e. RelatedWork in this case
+		String file = "config.txt";
 		try {
 			BufferedInputStream stream = new BufferedInputStream(
 					new FileInputStream(file));
