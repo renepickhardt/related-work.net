@@ -14,6 +14,7 @@ import net.relatedwork.client.FooterPresenter;
 import net.relatedwork.client.staticpresenter.AboutPresenter;
 import net.relatedwork.client.staticpresenter.DataPresenter;
 import net.relatedwork.client.staticpresenter.LicensePresenter;
+import net.relatedwork.client.content.AuthorPresenter;
 
 @GinModules({ DispatchAsyncModule.class, ClientModule.class })
 public interface ClientGinjector extends Ginjector {
@@ -33,4 +34,6 @@ public interface ClientGinjector extends Ginjector {
 	AsyncProvider<DataPresenter> getDataPresenter();
 
 	AsyncProvider<LicensePresenter> getLicensePresenter();
+
+	AsyncProvider<AuthorPresenter> getAuthorPresenter();
 }

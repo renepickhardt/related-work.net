@@ -25,6 +25,8 @@ import net.relatedwork.client.staticpresenter.DataPresenter;
 import net.relatedwork.client.staticpresenter.DataView;
 import net.relatedwork.client.staticpresenter.LicensePresenter;
 import net.relatedwork.client.staticpresenter.LicenseView;
+import net.relatedwork.client.content.AuthorPresenter;
+import net.relatedwork.client.content.AuthorView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -64,5 +66,8 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenter(LicensePresenter.class, LicensePresenter.MyView.class,
 				LicenseView.class, LicensePresenter.MyProxy.class);
+
+		bindPresenter(AuthorPresenter.class, AuthorPresenter.MyView.class,
+				AuthorView.class, AuthorPresenter.MyProxy.class);
 	}
 }
