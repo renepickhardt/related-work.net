@@ -42,6 +42,12 @@ public class ListView extends ViewImpl implements ListPresenter.MyView {
 	public void setListContent(HTMLPanel listContent) {
 		this.listContent = listContent;
 	}
-	
+
+	public void activateWidget(){
+		widget.setStyleName("active");
+	}
+	public void deActivateWidget(){
+		widget.setStyleName("");
+	}
 	
 }

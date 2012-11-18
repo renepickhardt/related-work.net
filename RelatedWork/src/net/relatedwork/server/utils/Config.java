@@ -33,7 +33,7 @@ public class Config extends Properties {
 
 	public Config() {
 		// config.txt should lie in package root folder i.e. RelatedWork in this case
-		String file = "config.txt";
+		String file = "/var/lib/datasets/rawdata/relatedwork/config.txt";
 		try {
 			BufferedInputStream stream = new BufferedInputStream(
 					new FileInputStream(file));

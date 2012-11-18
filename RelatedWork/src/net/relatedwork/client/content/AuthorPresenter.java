@@ -27,7 +27,10 @@ public class AuthorPresenter extends
 		Presenter<AuthorPresenter.MyView, AuthorPresenter.MyProxy> {
 
 	@ContentSlot public static final Type<RevealContentHandler<?>> TYPE_SimilarAuthors = new Type<RevealContentHandler<?>>();
-
+	@ContentSlot public static final Type<RevealContentHandler<?>> TYPE_CoAuthors = new Type<RevealContentHandler<?>>();
+	@ContentSlot public static final Type<RevealContentHandler<?>> TYPE_CitedAuthors = new Type<RevealContentHandler<?>>();
+	@ContentSlot public static final Type<RevealContentHandler<?>> TYPE_CitedByAuthors = new Type<RevealContentHandler<?>>();
+	@ContentSlot public static final Type<RevealContentHandler<?>> TYPE_Papers = new Type<RevealContentHandler<?>>();
 	
 	public interface MyView extends View {
 		public HTMLPanel getSimilarAuthors();
@@ -56,7 +59,13 @@ public class AuthorPresenter extends
 		super.onBind();
 	}
 	
-	@Inject ListPresenter similarAuthorsListPresenter;
+	@Inject ListPresenter<Author> similarAuthorsListPresenter;
+	@Inject ListPresenter<Author> coAuthorsListPresenter;
+	@Inject ListPresenter<Author> citedAuthorsListPresenter;
+	@Inject ListPresenter<Author> citedByAuthorsListPresenter;
+	//TODO: change to Paper template (need to create Paper implements IsRenderable first)
+	@Inject ListPresenter<Author> paperListPresenter;
+
 	
 	@Override
 	protected void onReveal() {
@@ -64,6 +73,10 @@ public class AuthorPresenter extends
 		super.onReveal();
 
 		setInSlot(TYPE_SimilarAuthors, similarAuthorsListPresenter);
+		setInSlot(TYPE_CitedAuthors, citedAuthorsListPresenter);
+		setInSlot(TYPE_CoAuthors, coAuthorsListPresenter);
+		setInSlot(TYPE_CitedByAuthors, citedByAuthorsListPresenter);
+		setInSlot(TYPE_Papers, paperListPresenter);
 		
 		dispatcher.execute(new DisplayAuthor("Bridgeland, Tom"), new AsyncCallback<DisplayAuthorResult>() {
 			@Override
@@ -73,12 +86,20 @@ public class AuthorPresenter extends
 			}
 			@Override
 			public void onSuccess(DisplayAuthorResult result) {
-				similarAuthorsListPresenter.setTitle("hard coded test title");
+				similarAuthorsListPresenter.setTitle("Bridgeland has similar authors");
 				similarAuthorsListPresenter.setList(result.getSimilarAuthors(2));
-//				getView().getSimilarAuthors().clear();
-//				for (Author similarAuthor:result.getSimilarAuthors(2)){
-//					getView().getSimilarAuthors().add(similarAuthor.getLink());
-//				}
+				
+				citedAuthorsListPresenter.setTitle("Authors that where cited by:");
+				citedAuthorsListPresenter.setList(result.getSimilarAuthors(2));
+				
+				citedByAuthorsListPresenter.setTitle("Bridgeland likes to cite following authors");
+				citedByAuthorsListPresenter.setList(result.getSimilarAuthors(2));
+				
+				coAuthorsListPresenter.setTitle("Bridgeland has the following coauthors");
+				coAuthorsListPresenter.setList(result.getSimilarAuthors(2));
+				
+				paperListPresenter.setTitle("Bridgeland composed papers");
+				paperListPresenter.setList(result.getSimilarAuthors(2));
 			}
 		});
 	}

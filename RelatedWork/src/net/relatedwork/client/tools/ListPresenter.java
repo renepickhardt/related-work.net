@@ -7,7 +7,12 @@ import net.relatedwork.shared.dto.Author;
 
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
+import com.gargoylesoftware.htmlunit.javascript.host.Window;
 import com.google.inject.Inject;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -20,6 +25,8 @@ public class ListPresenter<T extends IsRenderable> extends PresenterWidget<ListP
 		public void setListTitle(HTMLPanel listTitle);
 		public HTMLPanel getListContent();
 		public void setListContent(HTMLPanel listContent);
+		public void activateWidget();
+		public void deActivateWidget();
 	}
 
 	@Inject
@@ -30,6 +37,19 @@ public class ListPresenter<T extends IsRenderable> extends PresenterWidget<ListP
 	@Override
 	protected void onBind() {
 		super.onBind();
+		getEventBus().addHandler(MouseOverEvent.getType(), new MouseOverHandler() {
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				com.google.gwt.user.client.Window.alert("test");
+				getView().activateWidget();
+			}
+		});
+		getEventBus().addHandler(MouseOutEvent.getType(), new MouseOutHandler() {
+			@Override
+			public void onMouseOut(MouseOutEvent event) {
+				getView().deActivateWidget();
+			}
+		});
 	}
 
 	public void setList(ArrayList<T> list) {
@@ -41,6 +61,6 @@ public class ListPresenter<T extends IsRenderable> extends PresenterWidget<ListP
 	
 	public void setTitle(String title){
 		getView().getListTitle().clear();
-		getView().getListTitle().add(new HTML("<h2>title</h2>"));
+		getView().getListTitle().add(new HTML("<h2>"+title+"</h2>"));
 	}
 }

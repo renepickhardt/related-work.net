@@ -12,16 +12,15 @@
 				<g:VerticalPanel>
 					<g:HorizontalPanel>
 						<g:HTMLPanel ui:field="similarAuthors"></g:HTMLPanel>
-						<g:HTMLPanel ui:field="coAuthors">co author</g:HTMLPanel>
+						<g:HTMLPanel ui:field="coAuthors"></g:HTMLPanel>
 					</g:HorizontalPanel>
 					<g:HorizontalPanel>
-						<g:HTMLPanel ui:field="citedAuthors">cited authors</g:HTMLPanel>
-						<g:HTMLPanel ui:field="citedByAuthors">cited by authors</g:HTMLPanel>
+						<g:HTMLPanel ui:field="citedAuthors"></g:HTMLPanel>
+						<g:HTMLPanel ui:field="citedByAuthors"></g:HTMLPanel>
 					</g:HorizontalPanel>
 				</g:VerticalPanel>
 			</g:HTMLPanel>
 			<g:HTMLPanel ui:field="paperByAuthor">
-				papers
 			</g:HTMLPanel>			
 		</g:VerticalPanel>	
 	</g:HTMLPanel>

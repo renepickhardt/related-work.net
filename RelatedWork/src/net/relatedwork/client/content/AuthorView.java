@@ -39,12 +39,51 @@ public class AuthorView extends ViewImpl implements AuthorPresenter.MyView {
 		if (slot == AuthorPresenter.TYPE_SimilarAuthors){
 			setSimilarAuthors(content);			
 		}
-//		else if (slot == MainPresenter.TYPE_SetMainContent) {
-//			setMainContent(content);
-//		} 
+		else if (slot == AuthorPresenter.TYPE_CoAuthors) {
+			setCoAuthors(content);			
+		} 
+		else if (slot == AuthorPresenter.TYPE_CitedAuthors) {
+			setCitedAuthors(content);			
+		} 
+		else if (slot == AuthorPresenter.TYPE_CitedByAuthors) {
+			setCitedByAuthors(content);			
+		} 
+		else if (slot == AuthorPresenter.TYPE_Papers) {
+			setPapers(content);			
+		} 
 		else {
 			super.setInSlot(slot, content);
 		}
+	}
+	
+	private void setPapers(Widget content) {
+		paperByAuthor.clear();
+		if(content!=null){
+			paperByAuthor.add(content);
+		}
+	}
+
+	private void setCitedByAuthors(Widget content) {
+		citedAuthors.clear();
+		if (content!=null){
+			citedAuthors.add(content);
+		}
+	}
+
+	private void setCitedAuthors(Widget content) {
+		citedByAuthors.clear();
+		if (content!=null){
+			citedByAuthors.add(content);
+		}
+		
+	}
+
+	private void setCoAuthors(Widget content) {
+		coAuthors.clear();
+		if (content!=null){
+			coAuthors.add(content);
+		}
+		
 	}
 
 	private void setSimilarAuthors(Widget content) {

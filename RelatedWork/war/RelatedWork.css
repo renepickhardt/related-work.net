@@ -1,5 +1,9 @@
 /* Add css rules here for your application. */
 
+div.active{
+	background-color:#CC0000;
+}
+
 div.float{
 	float: left;
 }

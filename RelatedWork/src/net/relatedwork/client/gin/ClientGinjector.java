@@ -36,4 +36,5 @@ public interface ClientGinjector extends Ginjector {
 	AsyncProvider<LicensePresenter> getLicensePresenter();
 
 	AsyncProvider<AuthorPresenter> getAuthorPresenter();
+	
 }
