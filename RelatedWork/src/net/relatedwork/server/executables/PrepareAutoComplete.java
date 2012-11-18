@@ -64,9 +64,8 @@ public class PrepareAutoComplete {
 			}
 			
 			counter++;
-			if (counter % 1000 == 0){
+			if (counter % 100 == 0){
 				IOHelper.log("Adding entries. Processed " + counter + " nodes. Filled " + (PaperEntryList.size() + AuthorEntryList.size())+ " index entries.");
-				break;
 			}
 
 		}
@@ -115,13 +114,15 @@ public class PrepareAutoComplete {
 	}
 
 	private static boolean isPaperNode(Node node){
-		return getType(node).equals(DBNodeProperties.PAPER_LABEL_VALUE);
+		return node.hasProperty(DBNodeProperties.PAPER_TITLE);
+//		return getType(node).equals(DBNodeProperties.PAPER_LABEL_VALUE);
 	}
 
 	private static boolean isAuthorNode(Node node){
-		return getType(node).equals(DBNodeProperties.AUTHOR_LABEL_VALUE);
+		return node.hasProperty(DBNodeProperties.AUTHOR_NAME);
+//		return getType(node).equals(DBNodeProperties.AUTHOR_LABEL_VALUE);
 	}
-	
+
 	private static String getType(Node node){
 		for (Relationship type_rel: node.getRelationships(Direction.OUTGOING,RelationshipTypes.TYPE)) {
 			return (String)type_rel.getEndNode().getProperty(DBNodeProperties.LABEL);
@@ -138,9 +139,11 @@ public class PrepareAutoComplete {
 		private static Double maxPaperScore = 0.0;
 
 		private static final String SEP = "\t";
-		private static final String DSEP = "\t";
+		private static final String DOUBLE_SEP = "\t\t";
 		private static final String PAPER_IND = "p";
 		private static final String AUTHOR_IND = "a";
+		
+		private static final int MULTIPLICATOR = 100000;
 		
 		public String indexEntry;  // to be added to auto complete index
 		public Double score;       // used by ranking
@@ -175,9 +178,9 @@ public class PrepareAutoComplete {
 		public int getNormalizedScore(){
 			int nScore = 0;
 			if (nodeType == DBNodeProperties.PAPER_LABEL_VALUE) {
-				nScore = (int) Math.floor(score/maxPaperScore * 1000);
+				nScore = (int) Math.floor(score/maxPaperScore * MULTIPLICATOR);
 			} else if (nodeType == DBNodeProperties.AUTHOR_LABEL_VALUE) {
-				nScore = (int) Math.floor(score/maxAuthorScore * 1000);				
+				nScore = (int) Math.floor(score/maxAuthorScore * MULTIPLICATOR);				
 			}
 			return nScore;
 		}
@@ -185,7 +188,7 @@ public class PrepareAutoComplete {
 		public String getSerialization(){
 			String out = "";
 			for (String nEntry: getNormalizedEntries()) {
-				out += getNormalizedScore() + DSEP + nEntry + "\n";
+				out += getNormalizedScore() + DOUBLE_SEP + nEntry + "\n";
 			}
 			return out;
 		}
@@ -224,8 +227,8 @@ public class PrepareAutoComplete {
 				
 				if ( nameParts.length < 2) {
 					// Only one name? -> return
-					return out; 
-					}  
+					return out;
+					}
 
 				String firstName = nameParts[1];
 				String lastName = nameParts[0];
@@ -242,11 +245,11 @@ public class PrepareAutoComplete {
 					}
 				}
 				
-				if (goodTokens.size() < 2) { return out; }
+				if (goodTokens.size() == 0) { return out; }
 
 				String reverseIndexEntry = StringUtils.join(goodTokens, " ") + " " + lastName;
 				out.add(reverseIndexEntry.toLowerCase() + SEP + AUTHOR_IND + SEP + reverseIndexEntry);		
-			}			
+			}
 			return out;
 		}
 	} 
