@@ -27,6 +27,8 @@ import net.relatedwork.client.staticpresenter.LicensePresenter;
 import net.relatedwork.client.staticpresenter.LicenseView;
 import net.relatedwork.client.content.AuthorPresenter;
 import net.relatedwork.client.content.AuthorView;
+import net.relatedwork.client.tools.ListPresenter;
+import net.relatedwork.client.tools.ListView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -69,5 +71,8 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenter(AuthorPresenter.class, AuthorPresenter.MyView.class,
 				AuthorView.class, AuthorPresenter.MyProxy.class);
+
+		bindPresenterWidget(ListPresenter.class, ListPresenter.MyView.class,
+				ListView.class);
 	}
 }

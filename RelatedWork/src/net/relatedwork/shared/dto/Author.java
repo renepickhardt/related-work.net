@@ -1,6 +1,7 @@
 package net.relatedwork.shared.dto;
 
 import net.relatedwork.client.place.NameTokens;
+import net.relatedwork.shared.IsRenderable;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.Hyperlink;
@@ -19,7 +20,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
  *
  */
 
-public class Author implements Result, IsSerializable{
+public class Author implements Result, IsSerializable, IsRenderable{
 	public Author(){		
 	}
 

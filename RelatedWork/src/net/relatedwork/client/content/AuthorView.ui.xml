@@ -11,7 +11,7 @@
 			<g:HTMLPanel>
 				<g:VerticalPanel>
 					<g:HorizontalPanel>
-						<g:HTMLPanel ui:field="similarAuthors">sim author</g:HTMLPanel>
+						<g:HTMLPanel ui:field="similarAuthors"></g:HTMLPanel>
 						<g:HTMLPanel ui:field="coAuthors">co author</g:HTMLPanel>
 					</g:HorizontalPanel>
 					<g:HorizontalPanel>

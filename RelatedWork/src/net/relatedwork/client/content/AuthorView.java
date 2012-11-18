@@ -1,5 +1,7 @@
 package net.relatedwork.client.content;
 
+import net.relatedwork.client.MainPresenter;
+
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -31,6 +33,28 @@ public class AuthorView extends ViewImpl implements AuthorPresenter.MyView {
 		return widget;
 	}
 
+	
+	
+	public void setInSlot(Object slot, Widget content) {
+		if (slot == AuthorPresenter.TYPE_SimilarAuthors){
+			setSimilarAuthors(content);			
+		}
+//		else if (slot == MainPresenter.TYPE_SetMainContent) {
+//			setMainContent(content);
+//		} 
+		else {
+			super.setInSlot(slot, content);
+		}
+	}
+
+	private void setSimilarAuthors(Widget content) {
+		similarAuthors.clear();
+		if (content != null) {
+			similarAuthors.add(content);
+		}		
+	}
+
+	
 	public HTMLPanel getSimilarAuthors() {
 		return similarAuthors;
 	}
@@ -70,4 +94,7 @@ public class AuthorView extends ViewImpl implements AuthorPresenter.MyView {
 	public void setPaperByAuthor(HTMLPanel paperByAuthor) {
 		this.paperByAuthor = paperByAuthor;
 	}
+	
+	
+	
 }
