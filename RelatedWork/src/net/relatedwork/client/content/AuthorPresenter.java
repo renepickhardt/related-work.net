@@ -64,7 +64,6 @@ public class AuthorPresenter extends
 		super.onReveal();
 
 		setInSlot(TYPE_SimilarAuthors, similarAuthorsListPresenter);
-
 		
 		dispatcher.execute(new DisplayAuthor("Bridgeland, Tom"), new AsyncCallback<DisplayAuthorResult>() {
 			@Override
