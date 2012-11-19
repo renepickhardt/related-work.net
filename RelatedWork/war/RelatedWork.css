@@ -1,5 +1,9 @@
 /* Add css rules here for your application. */
 
+div.float{
+	float: left;
+}
+
 div.rwHeader{
 	width:1024px;
 	margin-left: auto ;
@@ -29,6 +33,14 @@ div.rwContent {
 	width: 800px;
 	float: left;
 	min-height: 100px;
+}
+
+div.rwDiscussions{
+	background-color: #DDFFDD;	
+	width: 800px;
+	float: left;
+	min-height: 100px;
+	clear: both;
 }
 
 div.rwFooter {
