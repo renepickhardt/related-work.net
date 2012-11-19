@@ -17,8 +17,8 @@ public class LoginActionActionHandler implements
 	@Override
 	public LoginActionResult execute(LoginAction action, ExecutionContext context)
 			throws ActionException {
-		long userId = action.getUsername().length() + action.getPassword().length(); 
-		return new LoginActionResult(userId);
+		String userId = Integer.toString((action.getUsername() + action.getPassword()).hashCode()); 
+		return new LoginActionResult(userId,action.getUsername());
 	}
 
 	@Override
