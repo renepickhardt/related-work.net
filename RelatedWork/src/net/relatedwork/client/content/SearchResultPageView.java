@@ -4,6 +4,7 @@ import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -28,5 +29,10 @@ public class SearchResultPageView extends ViewImpl implements
 	
 	public HTMLPanel getSerpContainer() {
 		return serpContainer;
+	}
+
+	@Override
+	public void addResult(Hyperlink result) {
+		serpContainer.add(result);
 	}
 }

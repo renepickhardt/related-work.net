@@ -3,9 +3,10 @@ package net.relatedwork.shared.dto;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.Hyperlink;
 
+import net.relatedwork.client.place.NameTokens;
 import net.relatedwork.shared.IsRenderable;
 
-public abstract class Renderable implements IsRenderable, IsSerializable{
+public class Renderable implements IsRenderable, IsSerializable{
 	public String displayName;
 	public String uri;
 
@@ -13,5 +14,7 @@ public abstract class Renderable implements IsRenderable, IsSerializable{
 	}
 
 	@Override
-	abstract public Hyperlink getLink(); 
+	public Hyperlink getLink(){
+		return new Hyperlink(displayName, NameTokens.author);
+	}
 }

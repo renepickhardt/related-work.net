@@ -88,25 +88,12 @@ public class SearchPresenter extends
 			getView().getSuggestBox().setText("");
 		}
 
-	
-		@Inject SearchResultPagePresenter serpPresenter;
 		
 		private void doSearch() {
 			final String query = getView().getSuggestBox().getText();
-			dispatcher.execute(new GlobalSearch(query), new AsyncCallback<GlobalSearchResult>() {
-				@Override
-				public void onFailure(Throwable caught) {
-					// TODO Auto-generated method stub
-					
-				}	
-				@Override
-				public void onSuccess(GlobalSearchResult result) {
-					PlaceRequest myRequest = new PlaceRequest(NameTokens.serp);
-					myRequest = myRequest.with( "q", query );
-					placeManager.revealPlace( myRequest );
-					serpPresenter.setResults(result.getSearchResults());
-				}
-			});
+			PlaceRequest myRequest = new PlaceRequest(NameTokens.serp);
+			myRequest = myRequest.with( "q", query );
+			placeManager.revealPlace( myRequest );
 		}
 	}
 	
