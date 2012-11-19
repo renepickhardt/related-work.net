@@ -7,19 +7,7 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel ui:field="rwMain">
-	    <g:HTMLPanel ui:field="rwHeader" styleName="rwHeader">
-	    	<g:VerticalPanel>
-				<g:HorizontalPanel>
-		    		<g:HTMLPanel ui:field="rwLogo">LOGO</g:HTMLPanel>
-	    			<g:HTMLPanel ui:field="rwHeaderSearch"/>
-	    			<g:HTMLPanel ui:field="rwHeaderLogin"/>	    
-				</g:HorizontalPanel>
-		    	<g:HTMLPanel ui:field="rwBreadcrumbs"></g:HTMLPanel>
-	    	</g:VerticalPanel>
-	    	<g:HTMLPanel ui:field="rwLoginControls">
-	    		<g:Hyperlink>Login</g:Hyperlink>
-	    	</g:HTMLPanel>
-		</g:HTMLPanel>
+	    <g:HTMLPanel ui:field="rwHeader" styleName="rwHeader"/>
 		<g:HTMLPanel ui:field="rwBody" styleName="rwBody">
 			<g:VerticalPanel>
 				<g:HorizontalPanel>

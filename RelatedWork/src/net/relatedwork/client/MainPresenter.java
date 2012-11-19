@@ -7,7 +7,9 @@ import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 
 import net.relatedwork.client.Discussions.CommentPresenter;
+import net.relatedwork.client.header.HeaderPresenter;
 import net.relatedwork.client.layout.BreadcrumbsPresenter;
+import net.relatedwork.client.login.LoginPopupPresenter;
 import net.relatedwork.client.navigation.HistoryTokenChangeEvent;
 import net.relatedwork.client.place.NameTokens;
 
@@ -21,6 +23,7 @@ import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
 
 public class MainPresenter extends
 		Presenter<MainPresenter.MyView, MainPresenter.MyProxy> {
+	
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> TYPE_Breadcrumbs = new Type<RevealContentHandler<?>>();
 
@@ -33,6 +36,8 @@ public class MainPresenter extends
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> TYPE_Footer = new Type<RevealContentHandler<?>>();
 
+	@ContentSlot
+	public static final Type<RevealContentHandler<?>> TYPE_Header = new Type<RevealContentHandler<?>>();
 
 	
 	public interface MyView extends View {
@@ -75,17 +80,20 @@ public class MainPresenter extends
 	protected void onBind() {
 		super.onBind();
 	}
-	
+
 	@Inject FooterPresenter footerPresenter;
 	@Inject BreadcrumbsPresenter breadcrumbsPresenter;
 	@Inject HomePresenter homePresenter;
 	@Inject CommentPresenter commentPresenter;
+	@Inject HeaderPresenter headerPresenter;
+
 	@Override
 	protected void onReveal() {
 		super.onReveal();
 		setInSlot(TYPE_Footer, footerPresenter);
-		setInSlot(TYPE_Breadcrumbs, breadcrumbsPresenter);
 		setInSlot(TYPE_Discussion, commentPresenter);
+		setInSlot(TYPE_Header, headerPresenter);
+		setInSlot(TYPE_Breadcrumbs, breadcrumbsPresenter);
 	}
 	
 	@Override

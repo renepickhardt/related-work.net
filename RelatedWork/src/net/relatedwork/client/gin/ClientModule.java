@@ -31,6 +31,8 @@ import net.relatedwork.client.tools.ListPresenter;
 import net.relatedwork.client.tools.ListView;
 import net.relatedwork.client.login.LoginPopupPresenter;
 import net.relatedwork.client.login.LoginPopupView;
+import net.relatedwork.client.header.HeaderPresenter;
+import net.relatedwork.client.header.HeaderView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -79,5 +81,8 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(LoginPopupPresenter.class,
 				LoginPopupPresenter.MyView.class, LoginPopupView.class);
+
+		bindPresenter(HeaderPresenter.class, HeaderPresenter.MyView.class,
+				HeaderView.class, HeaderPresenter.MyProxy.class);
 	}
 }

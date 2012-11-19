@@ -6,5 +6,9 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:PopupPanel><h2>Login view</h2></g:PopupPanel>
+	<g:PopupPanel>
+		<g:HTMLPanel>
+			<h2>Login view</h2>
+		</g:HTMLPanel>
+	</g:PopupPanel>
 </ui:UiBinder>

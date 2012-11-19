@@ -27,13 +27,8 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 	@UiField HTMLPanel rwContent;
 	@UiField HTMLPanel rwSidebar;
 	@UiField HTMLPanel rwFooter;
-	@UiField HTMLPanel rwBreadcrumbs;
-	@UiField HTMLPanel rwHeaderSearch;
 	@UiField HTMLPanel rwDiscussions;
-	
-	private final SuggestBox suggestBox;
-	private final Button reSearch;
-	
+		
 	public HTMLPanel getRwHeader() {
 		return rwHeader;
 	}
@@ -68,48 +63,18 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 
 	public interface Binder extends UiBinder<Widget, MainView> {
 	}
-
-	@Inject DispatchAsync dispatcher;
 	
 	@Inject
 	public MainView(final Binder binder) {		
 		widget = binder.createAndBindUi(this);
-		SuggestOracle oracle = new SuggestOracle(){
-			@Override
-			public void requestSuggestions(final Request request,final Callback callback) {
-				dispatcher.execute(new RequestGlobalSearchSuggestion(request), new AsyncCallback<RequestGlobalSearchSuggestionResult>(){
-					@Override
-					public void onFailure(Throwable caught) {
-
-					}
-					@Override
-					public void onSuccess(
-							RequestGlobalSearchSuggestionResult result) {
-						ArrayList<ItemSuggestion> list = new ArrayList<ItemSuggestion>();
-						for (Suggestion sug:result.getResponse().getSuggestions()){
-							if (((ItemSuggestion)sug).prepareForDisplay()==false)continue;
-							list.add((ItemSuggestion)sug);
-						}
-						Response r = new Response();
-						r.setSuggestions(list);
-						callback.onSuggestionsReady(request, r);
-					}});
-			}};
-		
-		suggestBox = new SuggestBox(oracle);
-		reSearch = new Button();
-		reSearch.setText("(re)search");	
-		rwHeaderSearch.add(suggestBox);
-		rwHeaderSearch.add(reSearch);
-		//rwHeaderSearch.add(suggestBox);
-		//rwHeaderSearch.add(reSearch);
-
 	}
-
+	
 	@Override
 	public Widget asWidget() {
 		return widget;
 	}
+	
+	// Nested presenter setters
 
 	@Override
 	public void setInSlot(Object slot, Widget content) {
@@ -122,11 +87,18 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 		else if (slot == MainPresenter.TYPE_Discussion) {
 			setDiscussions(content);
 		} 
-		else if (slot == MainPresenter.TYPE_Breadcrumbs) {
-			setBreadcrumbs(content);
-		} 
-		else {
+		else if (slot == MainPresenter.TYPE_Header) {
+			setHeader(content);
+		} else {
 			super.setInSlot(slot, content);
+		}
+	}
+	
+	
+	private void setHeader(Widget content) {
+		rwHeader.clear();
+		if (content != null) {
+			rwHeader.add(content);
 		}
 	}
 
@@ -135,13 +107,6 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 		if (content != null) {
 			rwDiscussions.add(content);
 		}		
-	}
-
-	private void setBreadcrumbs(Widget content) {
-		rwBreadcrumbs.clear();
-		if (content != null) {
-			rwBreadcrumbs.add(content);
-		}
 	}
 
 	private void setFooter(Widget content) {
