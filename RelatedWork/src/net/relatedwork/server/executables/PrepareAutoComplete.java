@@ -64,8 +64,9 @@ public class PrepareAutoComplete {
 			}
 			
 			counter++;
-			if (counter % 100 == 0){
+			if (counter % 10000 == 0){
 				IOHelper.log("Adding entries. Processed " + counter + " nodes. Filled " + (PaperEntryList.size() + AuthorEntryList.size())+ " index entries.");
+				break;
 			}
 
 		}
@@ -156,7 +157,7 @@ public class PrepareAutoComplete {
 
 		public void FromAuthorNode(Node node){
 			this.nodeType = DBNodeProperties.AUTHOR_LABEL_VALUE;
-			this.indexEntry = (String) node.getProperty(DBNodeProperties.AUTHOR_NAME);
+			this.indexEntry = ((String) node.getProperty(DBNodeProperties.AUTHOR_NAME)).replaceAll("[\\t\\n]", "");
 			this.score = (Double) node.getProperty(DBNodeProperties.PAGE_RANK_VALUE);
 
 			if (score > maxAuthorScore) { 
@@ -167,8 +168,9 @@ public class PrepareAutoComplete {
 		public void FromPaperNode(Node node) {
 			this.nodeType = DBNodeProperties.PAPER_LABEL_VALUE;
 			this.score = (Double) node.getProperty(DBNodeProperties.PAGE_RANK_VALUE);
-			this.indexEntry = (String) node.getProperty(DBNodeProperties.PAPER_TITLE);			
+			this.indexEntry = ((String) node.getProperty(DBNodeProperties.PAPER_TITLE)).replaceAll("[\\t\\n]", "");
 
+			
 			if (score > maxPaperScore) { 
 				maxPaperScore = score;
 			}
