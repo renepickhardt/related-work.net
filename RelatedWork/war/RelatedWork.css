@@ -8,6 +8,19 @@ div.float{
 	float: left;
 }
 
+div.rwList{
+	width:300px;
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-top:10 px;
+	margin-bottom:10 px;
+
+	padding: 8px;
+	border-style: none none dotted none;
+	border-width: 1px;
+	background-color: #FFFFFF;	
+}
+
 div.rwHeader{
 	width:1024px;
 	margin-left: auto ;
