@@ -37,7 +37,7 @@ public class ContextHelper {
 			
 			HashMap<String, Integer> map = new HashMap<String, Integer>();
 			//TODO: don't hardcode path use Config() class!
-			BufferedReader reader = IOHelper.openReadFile("/var/lib/datasets/rawdata/relatedwork/auto_complete_store.txt"/*Config.get().autoCompleteFile*/);
+			BufferedReader reader = IOHelper.openReadFile(Config.get().autoCompleteFile);
 			String line = "";
 			try {
 				while ((line=reader.readLine())!=null){

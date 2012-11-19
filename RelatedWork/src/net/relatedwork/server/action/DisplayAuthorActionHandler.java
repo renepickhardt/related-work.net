@@ -17,7 +17,9 @@ import sun.security.x509.AuthorityInfoAccessExtension;
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
 
 import net.relatedwork.server.ContextHelper;
+import net.relatedwork.server.neo4jHelper.DBNodeProperties;
 import net.relatedwork.server.neo4jHelper.DBRelationshipProperties;
+import net.relatedwork.server.neo4jHelper.NodeType;
 import net.relatedwork.server.neo4jHelper.RelationshipTypes;
 import net.relatedwork.shared.DisplayAuthor;
 import net.relatedwork.shared.DisplayAuthorResult;
@@ -55,29 +57,29 @@ public class DisplayAuthorActionHandler implements
 			return null;
 		
 		for (Node n : res) {
-			if (!n.hasProperty("pageRankValue"))continue;
-			Double pr = (Double)n.getProperty("pageRankValue");
-			if (n.hasProperty("name")) {
+			if (!n.hasProperty(DBNodeProperties.PAGE_RANK_VALUE))continue;
+			Double pr = (Double)n.getProperty(DBNodeProperties.PAGE_RANK_VALUE);
+			if (NodeType.isAuthorNode(n)) {
 //				apc.name = (String) n.getProperty("name");
 				
 				//TODO: benchmark if one look with conditional statements would be more efficient!
-//				for (Relationship rel:n.getRelationships(RelationshipTypes.CO_AUTHOR_COUNT)){
-//					Node coAuthor = rel.getEndNode();
-//					Integer count = (Integer)rel.getProperty(DBRelationshipProperties.CO_AUTHOR_COUNT);
-//					apc.coAuthors.add(new Author((String)coAuthor.getProperty("name") + "\t" + count));
-//				}
-//				
-//				for (Relationship rel:n.getRelationships(RelationshipTypes.CITES_AUTHOR,Direction.OUTGOING)){
-//					Node citedAuthor = rel.getEndNode();
-//					Integer count = (Integer)rel.getProperty(DBRelationshipProperties.CITATION_COUNT);
-//					apc.citedAuthors.add(new Author((String)citedAuthor.getProperty("name") + "\t" + count));
-//				}
-//
-//				for (Relationship rel:n.getRelationships(RelationshipTypes.CITES_AUTHOR,Direction.INCOMING)){
-//					Node citedAuthor = rel.getStartNode();
-//					Integer count = (Integer)rel.getProperty(DBRelationshipProperties.CITATION_COUNT);
-//					apc.citedByAuthors.add(new Author((String)citedAuthor.getProperty("name") + "\t" + count));
-//				}
+				for (Relationship rel:n.getRelationships(RelationshipTypes.CO_AUTHOR_COUNT)){
+					Node coAuthor = rel.getEndNode();
+					Integer count = (Integer)rel.getProperty(DBRelationshipProperties.CO_AUTHOR_COUNT);
+					result.addCoAuthor(new Author((String)coAuthor.getProperty("name"),"myURI", count));
+				}
+
+				for (Relationship rel:n.getRelationships(RelationshipTypes.CITES_AUTHOR,Direction.OUTGOING)){
+					Node citedAuthor = rel.getEndNode();
+					Integer count = (Integer)rel.getProperty(DBRelationshipProperties.CITATION_COUNT);
+					result.addCitedAuthor(new Author((String)citedAuthor.getProperty("name"),"myURI", count));
+				}
+
+				for (Relationship rel:n.getRelationships(RelationshipTypes.CITES_AUTHOR,Direction.INCOMING)){
+					Node citedAuthor = rel.getStartNode();
+					Integer count = (Integer)rel.getProperty(DBRelationshipProperties.CITATION_COUNT);
+					result.addCitedByAuthor(new Author((String)citedAuthor.getProperty("name"),"myURI", count));
+				}
 				
 				for (Relationship rel:n.getRelationships(RelationshipTypes.SIM_AUTHOR, Direction.OUTGOING)){
 					Node simAuthor = rel.getEndNode();
@@ -93,8 +95,6 @@ public class DisplayAuthorActionHandler implements
 //					p.pageRank = (Double)paper.getProperty(DBNodeProperties.PAGE_RANK_VALUE);
 //					apc.papers.add(p);
 //				}
-				
-//				apcCache.put(id, apc);
 				break;
 			}
 		}

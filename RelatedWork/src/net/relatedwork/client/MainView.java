@@ -154,7 +154,7 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 	private SuggestOracle getSuggestOracle() {
 		return new SuggestOracle(){
 			
-			private ItemSuggestion sug = new ItemSuggestion("asdf");
+			private ItemSuggestion sug = new ItemSuggestion("requesting Suggestions...");
 			
 			@Override
 			public void requestSuggestions(final Request request,
@@ -178,9 +178,9 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 							public void onSuccess(
 									RequestGlobalSearchSuggestionResult result) {
 								ArrayList<ItemSuggestion> list = new ArrayList<ItemSuggestion>();
-								for (ItemSuggestion s:local){
-									list.add(s);
-								}
+//								for (ItemSuggestion s:local){
+//									list.add(s);
+//								}
 								for (Suggestion sug : result.getResponse()
 										.getSuggestions()) {
 									if (((ItemSuggestion) sug).prepareForDisplay() == false)
