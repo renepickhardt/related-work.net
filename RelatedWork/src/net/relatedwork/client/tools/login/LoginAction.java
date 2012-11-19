@@ -1,10 +1,10 @@
 package net.relatedwork.client.tools.login;
 
 import com.gwtplatform.dispatch.shared.ActionImpl;
-import net.relatedwork.client.tools.login.LoginActionResult;
+import net.relatedwork.client.tools.login.UserInformation;
 import java.lang.String;
 
-public class LoginAction extends ActionImpl<LoginActionResult> {
+public class LoginAction extends ActionImpl<UserInformation> {
 
 	private String username;
 	private String password;

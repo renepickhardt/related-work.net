@@ -16,6 +16,7 @@ import net.relatedwork.client.layout.HeaderPresenter;
 import net.relatedwork.client.navigation.HistoryTokenChangeEvent;
 import net.relatedwork.client.place.NameTokens;
 import net.relatedwork.client.tools.login.LoginPopupPresenter;
+import net.relatedwork.client.tools.login.UserInformation;
 
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
@@ -96,4 +97,21 @@ public class MainPresenter extends
 //		setInSlot(TYPE_SetMainContent, homePresenter);
 		getEventBus().fireEvent(new HistoryTokenChangeEvent(NameTokens.main, "Home"));
 	}
+
+	// Session Management
+	public static UserInformation userInformation;
+	
+	public static boolean isAuthenticated(){
+		return userInformation != null;
+	}
+
+	public static UserInformation getUserInformation() {
+		return userInformation;
+	}
+
+	public static void setUserInformation(UserInformation userInformation) {
+		MainPresenter.userInformation = userInformation;
+	}
+
+	
 }

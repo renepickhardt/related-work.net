@@ -1,5 +1,7 @@
 package net.relatedwork.client.tools.login;
 
+import net.relatedwork.client.MainPresenter;
+
 import com.gwtplatform.dispatch.shared.Result;
 
 /**
@@ -19,20 +21,22 @@ import com.gwtplatform.dispatch.shared.Result;
  *
  */
 
-public class LoginActionResult implements Result {
+public class UserInformation implements Result {
 
 	public String userId;
 	public String username;
 	public String email;
 
-	public LoginActionResult(String userId, String username) {
+	public UserInformation(String userId, String username) {
 		this.userId = userId;
 		this.username = username;
+
+		MainPresenter.setUserInformation(this);
 	}
 	
 	
 	@SuppressWarnings("unused")
-	private LoginActionResult() {
+	private UserInformation() {
 		// For serialization only
 	}
 

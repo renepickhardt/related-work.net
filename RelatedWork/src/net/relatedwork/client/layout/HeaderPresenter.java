@@ -23,6 +23,7 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import net.relatedwork.client.MainPresenter;
 import net.relatedwork.client.handler.StartSearchHandler;
 import net.relatedwork.client.tools.login.LoginPopupPresenter;
+import net.relatedwork.client.tools.login.UserInformation;
 
 public class HeaderPresenter extends
 		Presenter<HeaderPresenter.MyView, HeaderPresenter.MyProxy> {
@@ -63,6 +64,11 @@ public class HeaderPresenter extends
 	protected void onReveal() {
 		super.onReveal();
 		setInSlot(TYPE_Breadcrumbs, breadcrumbsPresenter);
+		
+		if (MainPresenter.isAuthenticated()) {
+			Window.alert("Welcome back!");
+		}
+
 	}
 	
 	@Override
@@ -81,5 +87,5 @@ public class HeaderPresenter extends
 		
 		registerHandler(getView().getReSearch().addClickHandler(new StartSearchHandler(getView(),dispatcher)));
 		registerHandler(getView().getSuggestBox().addKeyUpHandler(new StartSearchHandler(getView(),dispatcher)));
-	}
+		}
 }

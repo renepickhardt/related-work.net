@@ -44,7 +44,7 @@ public class LoginPopupPresenter extends
 		}));
 	}
 
-	private AsyncCallback<LoginActionResult> getLoginCallback = new AsyncCallback<LoginActionResult>() {
+	private AsyncCallback<UserInformation> getLoginCallback = new AsyncCallback<UserInformation>() {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -53,7 +53,7 @@ public class LoginPopupPresenter extends
 		}
 
 		@Override
-		public void onSuccess(LoginActionResult result) {
+		public void onSuccess(UserInformation result) {
 			Window.alert("Login Action Returned!! " + result.getUserId());			
 		}
 
