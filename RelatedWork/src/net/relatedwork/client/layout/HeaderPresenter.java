@@ -99,7 +99,6 @@ public class HeaderPresenter extends
 
 	
 	private LoginHandler loginHandler = new LoginHandler() {
-		
 		@Override
 		public void onLogin(LoginEvent event) {
 			// TODO Auto-generated method stub
