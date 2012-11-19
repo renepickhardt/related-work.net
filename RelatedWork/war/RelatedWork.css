@@ -72,6 +72,11 @@ div.rwFooter {
 	margin-right: auto ;
 }
 
+div.rwLogin {
+	float: right;
+	
+}
+
 table.rwFooterLinkPanel {
 	width:100%;
 }

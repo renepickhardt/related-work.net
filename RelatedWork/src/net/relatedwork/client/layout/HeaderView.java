@@ -11,6 +11,7 @@ import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -108,6 +109,8 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 			rwBreadcrumbs.add(content);
 		}
 	}
+	
+	
 		
 	/**
 	 * this function and logic should not be in the view. but i cant move it to the presenter

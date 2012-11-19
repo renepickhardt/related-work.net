@@ -22,6 +22,7 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.google.inject.Inject;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
@@ -45,19 +46,12 @@ public class MainPresenter extends
 	
 	public interface MyView extends View {
 		public HTMLPanel getRwHeader();
-
 		public void setRwHeader(HTMLPanel rwHeader);
-
 		public HTMLPanel getRwContent();
-
 		public void setRwContent(HTMLPanel rwContent);
-
 		public HTMLPanel getRwSidebar();
-
 		public void setRwSidebar(HTMLPanel rwSidebar);
-
 		public HTMLPanel getRwFooter();
-
 		public void setRwFooter(HTMLPanel rwFooter);
 	}
 	
@@ -65,7 +59,6 @@ public class MainPresenter extends
 	@NameToken(NameTokens.main)
 	public interface MyProxy extends ProxyPlace<MainPresenter> {
 	}
-
 
 	@Inject
 	public MainPresenter(final EventBus eventBus, final MyView view,
@@ -87,7 +80,8 @@ public class MainPresenter extends
 	@Inject HomePresenter homePresenter;
 	@Inject CommentPresenter commentPresenter;
 	@Inject HeaderPresenter headerPresenter;
-
+	@Inject BreadcrumbsPresenter breadcrumbsPresenter;
+	
 	@Override
 	protected void onReveal() {
 		super.onReveal();

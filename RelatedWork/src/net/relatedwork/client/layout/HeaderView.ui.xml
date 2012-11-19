@@ -11,14 +11,13 @@
 			<g:HorizontalPanel>
 				<g:HTMLPanel ui:field="rwLogo">LOGO</g:HTMLPanel>
 				<g:HTMLPanel ui:field="rwHeaderSearch" />
-				<g:HTMLPanel ui:field="rwHeaderLogin" />
+				<g:HTMLPanel ui:field="rwHeaderControls">
+					<g:HTMLPanel ui:field="rwLoginControls" styleName="rwLogin">
+						<g:Hyperlink>Login</g:Hyperlink>
+					</g:HTMLPanel>
+				</g:HTMLPanel>
 			</g:HorizontalPanel>
 			<g:HTMLPanel ui:field="rwBreadcrumbs"></g:HTMLPanel>
 		</g:VerticalPanel>
-		
-		<g:HTMLPanel ui:field="rwLoginControls">
-			<g:Hyperlink>Login</g:Hyperlink>
-		</g:HTMLPanel>
-
 	</g:HTMLPanel>
 </ui:UiBinder>

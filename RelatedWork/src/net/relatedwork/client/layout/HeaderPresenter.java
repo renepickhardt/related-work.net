@@ -10,6 +10,7 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.google.inject.Inject;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
@@ -25,7 +26,8 @@ public class HeaderPresenter extends
 	public static final Type<RevealContentHandler<?>> TYPE_Breadcrumbs = new Type<RevealContentHandler<?>>();
 	
 	public interface MyView extends View {
-		public void setRwBreadcrumbs(HTMLPanel rwBreadcrumbs);	
+		public HTMLPanel getRwBreadcrumbs();
+		public void setRwBreadcrumbs(HTMLPanel rwBreadcrumbs);
 		public void setRwHeaderSearch(HTMLPanel rwHeaderSearch);
 		public HTMLPanel getRwHeaderSearch();
 		public SuggestBox getSuggestBox();
@@ -44,14 +46,20 @@ public class HeaderPresenter extends
 
 	@Override
 	protected void revealInParent() {
-		RevealContentEvent.fire(this, HeaderPresenter.TYPE_Breadcrumbs, this);
+		RevealContentEvent.fire(this, MainPresenter.TYPE_Header, this);
 	}
 
+	@Inject BreadcrumbsPresenter breadcrumbsPresenter;
 	@Inject DispatchAsync dispatcher; 
+
+	protected void onReveal() {
+		super.onReveal();
+		setInSlot(TYPE_Breadcrumbs, breadcrumbsPresenter);
+	}
 	
 	@Override
-	protected void onBind() {
-		super.onBind();
+	protected void onReset() {
+		super.onReset();
 		registerHandler(getView().getReSearch().addClickHandler(new StartSearchHandler(getView(),dispatcher)));
 		registerHandler(getView().getSuggestBox().addKeyUpHandler(new StartSearchHandler(getView(),dispatcher)));
 	}
