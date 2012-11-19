@@ -42,16 +42,14 @@ public class DisplayAuthorActionHandler implements
 	public DisplayAuthorResult execute(DisplayAuthor action,
 			ExecutionContext context) throws ActionException {
 		DisplayAuthorResult result = new DisplayAuthorResult();
-
-//		EmbeddedReadOnlyGraphDatabase graphDB = ContextHelper.getReadOnlyGraphDatabase(servletContext);
-		
-//		id = id.replace(' ', '?');
+		String id = action.getUri();
+		id = id.replace(' ', '?');
 				
 		Sort s = new Sort();
 		s.setSort(new SortField("pr", SortField.DOUBLE, true));
 
 		Index<Node> index = ContextHelper.getSearchIndex(servletContext);
-		IndexHits<Node> res = index.query(new QueryContext("title:Bridgeland*").sort(s).top(10));
+		IndexHits<Node> res = index.query(new QueryContext("title:"+id+"*").sort(s).top(10));
 		
 		if (res == null)
 			return null;
@@ -60,31 +58,34 @@ public class DisplayAuthorActionHandler implements
 			if (!n.hasProperty(DBNodeProperties.PAGE_RANK_VALUE))continue;
 			Double pr = (Double)n.getProperty(DBNodeProperties.PAGE_RANK_VALUE);
 			if (NodeType.isAuthorNode(n)) {
-//				apc.name = (String) n.getProperty("name");
-				
+				result.setName((String)n.getProperty(DBNodeProperties.AUTHOR_NAME));
 				//TODO: benchmark if one look with conditional statements would be more efficient!
 				for (Relationship rel:n.getRelationships(RelationshipTypes.CO_AUTHOR_COUNT)){
 					Node coAuthor = rel.getEndNode();
 					Integer count = (Integer)rel.getProperty(DBRelationshipProperties.CO_AUTHOR_COUNT);
-					result.addCoAuthor(new Author((String)coAuthor.getProperty("name"),"myURI", count));
+					String name =(String)coAuthor.getProperty("name");
+					result.addCoAuthor(new Author(name, name, count));
 				}
 
 				for (Relationship rel:n.getRelationships(RelationshipTypes.CITES_AUTHOR,Direction.OUTGOING)){
 					Node citedAuthor = rel.getEndNode();
 					Integer count = (Integer)rel.getProperty(DBRelationshipProperties.CITATION_COUNT);
-					result.addCitedAuthor(new Author((String)citedAuthor.getProperty("name"),"myURI", count));
+					String name = (String)citedAuthor.getProperty("name");
+					result.addCitedAuthor(new Author(name, name, count));
 				}
 
 				for (Relationship rel:n.getRelationships(RelationshipTypes.CITES_AUTHOR,Direction.INCOMING)){
 					Node citedAuthor = rel.getStartNode();
 					Integer count = (Integer)rel.getProperty(DBRelationshipProperties.CITATION_COUNT);
-					result.addCitedByAuthor(new Author((String)citedAuthor.getProperty("name"),"myURI", count));
+					String name = (String)citedAuthor.getProperty("name");
+					result.addCitedByAuthor(new Author(name, name, count));
 				}
 				
 				for (Relationship rel:n.getRelationships(RelationshipTypes.SIM_AUTHOR, Direction.OUTGOING)){
 					Node simAuthor = rel.getEndNode();
 					Double score = (Double)rel.getProperty(DBRelationshipProperties.SIM_AUTHOR_SCORE);
-					result.addSimilarAuthor(new Author((String)simAuthor.getProperty("name"),"myURI", (int)(score*1000)));
+					String name = (String)simAuthor.getProperty("name");
+					result.addSimilarAuthor(new Author(name,name, (int)(score*1000)));
 				}
 				
 //				for (Relationship rel:n.getRelationships(RelationshipTypes.AUTHOROF)){
@@ -98,13 +99,6 @@ public class DisplayAuthorActionHandler implements
 				break;
 			}
 		}
-		
-//		Author a = new Author("least similar", "198h123", 5);
-//		result.addSimilarAuthor(a);
-//		a = new Author("most similar author", "9123h123", 10);
-//		result.addSimilarAuthor(a);
-//		a = new Author("medium similar author", "8234lj", 7);
-//		result.addSimilarAuthor(a);
 		return result;
 	}
 

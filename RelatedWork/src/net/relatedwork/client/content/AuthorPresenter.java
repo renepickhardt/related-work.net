@@ -9,6 +9,7 @@ import com.gwtplatform.mvp.client.annotations.NameToken;
 import net.relatedwork.client.place.NameTokens;
 import net.relatedwork.client.tools.ListPresenter;
 
+import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.google.inject.Inject;
@@ -65,7 +66,6 @@ public class AuthorPresenter extends
 	@Inject ListPresenter<Author> citedByAuthorsListPresenter;
 	//TODO: change to Paper template (need to create Paper implements IsRenderable first)
 	@Inject ListPresenter<Author> paperListPresenter;
-
 	
 	@Override
 	protected void onReveal() {
@@ -77,8 +77,13 @@ public class AuthorPresenter extends
 		setInSlot(TYPE_CoAuthors, coAuthorsListPresenter);
 		setInSlot(TYPE_CitedByAuthors, citedByAuthorsListPresenter);
 		setInSlot(TYPE_Papers, paperListPresenter);
-		
-		dispatcher.execute(new DisplayAuthor("Bridgeland, Tom"), new AsyncCallback<DisplayAuthorResult>() {
+	}
+	
+	@Override
+	public void prepareFromRequest(PlaceRequest request) {
+		// TODO Auto-generated method stub
+		super.prepareFromRequest(request);
+		dispatcher.execute(new DisplayAuthor(request.getParameter("q", "Bridgeland")), new AsyncCallback<DisplayAuthorResult>() {
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
@@ -86,21 +91,22 @@ public class AuthorPresenter extends
 			}
 			@Override
 			public void onSuccess(DisplayAuthorResult result) {
-				similarAuthorsListPresenter.setTitle("Bridgeland has similar authors");
+				similarAuthorsListPresenter.setTitle(result.getName() + " has similar authors");
 				similarAuthorsListPresenter.setList(result.getSimilarAuthors(5));
 				
-				citedAuthorsListPresenter.setTitle("Authors that where cited by:");
+				citedAuthorsListPresenter.setTitle(result.getName() + " cites:");
 				citedAuthorsListPresenter.setList(result.getCitedAuthors(5));
 				
-				citedByAuthorsListPresenter.setTitle("Bridgeland likes to cite following authors");
+				citedByAuthorsListPresenter.setTitle(result.getName() + " is cited by:");
 				citedByAuthorsListPresenter.setList(result.getCitedByAuthors(5));
 				
-				coAuthorsListPresenter.setTitle("Bridgeland has the following coauthors");
+				coAuthorsListPresenter.setTitle("important coauthors of " + result.getName());
 				coAuthorsListPresenter.setList(result.getCoAuthors(5));
 				
 				paperListPresenter.setTitle("Bridgeland composed papers");
 				paperListPresenter.setList(result.getSimilarAuthors(5));
 			}
 		});
+		
 	}
 }

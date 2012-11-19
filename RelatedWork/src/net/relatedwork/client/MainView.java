@@ -196,5 +196,13 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 			}
 		};
 	}
+
+	public SuggestBox getSuggestBox() {
+		return suggestBox;
+	}
+
+	public Button getReSearch() {
+		return reSearch;
+	}
 	
 }

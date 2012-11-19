@@ -1,5 +1,6 @@
 package net.relatedwork.client;
 
+import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
@@ -7,6 +8,7 @@ import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 
 import net.relatedwork.client.Discussions.CommentPresenter;
+import net.relatedwork.client.handler.StartSearchHandler;
 import net.relatedwork.client.layout.BreadcrumbsPresenter;
 import net.relatedwork.client.navigation.HistoryTokenChangeEvent;
 import net.relatedwork.client.place.NameTokens;
@@ -16,7 +18,9 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.google.inject.Inject;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
 
 public class MainPresenter extends
@@ -52,8 +56,13 @@ public class MainPresenter extends
 
 		public void setRwFooter(HTMLPanel rwFooter);
 
+		public SuggestBox getSuggestBox();
+
+		public Button getReSearch();
 	}
 
+	@Inject DispatchAsync dispatcher; 
+	
 	@ProxyCodeSplit
 	@NameToken(NameTokens.main)
 	public interface MyProxy extends ProxyPlace<MainPresenter> {
@@ -74,6 +83,8 @@ public class MainPresenter extends
 	@Override
 	protected void onBind() {
 		super.onBind();
+		registerHandler(getView().getReSearch().addClickHandler(new StartSearchHandler(getView(),dispatcher)));
+		registerHandler(getView().getSuggestBox().addKeyUpHandler(new StartSearchHandler(getView(),dispatcher)));
 	}
 	
 	@Inject FooterPresenter footerPresenter;

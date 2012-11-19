@@ -14,6 +14,7 @@ public class DisplayAuthorResult implements Result {
 	private ArrayList<Author> coAuthors = new ArrayList<Author>();
 	private ArrayList<Author> citedAuthors = new ArrayList<Author>();
 	private ArrayList<Author> citedByAuthors = new ArrayList<Author>();
+	private String name;
 	
 	public DisplayAuthorResult() {
 	}
@@ -58,4 +59,13 @@ public class DisplayAuthorResult implements Result {
 		});
 		return new ArrayList<Author>(list.subList(0, Math.min(k, list.size())));		
 	}
+
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+
 }
