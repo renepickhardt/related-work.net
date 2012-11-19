@@ -2,6 +2,9 @@ package net.relatedwork.client.tools.login;
 
 import com.gwtplatform.mvp.client.PopupViewImpl;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
@@ -14,6 +17,10 @@ public class LoginPopupView extends PopupViewImpl implements
 	public interface Binder extends UiBinder<Widget, LoginPopupView> {
 	}
 
+	@UiField TextBox rwLoginUsername;
+	@UiField TextBox rwLoginPassword;
+	@UiField Button rwLoginButton;
+	
 	@Inject
 	public LoginPopupView(final EventBus eventBus, final Binder binder) {
 		super(eventBus);
@@ -24,4 +31,30 @@ public class LoginPopupView extends PopupViewImpl implements
 	public Widget asWidget() {
 		return widget;
 	}
+
+	public TextBox getRwLoginUsername() {
+		return rwLoginUsername;
+	}
+
+	public void setRwLoginUsername(TextBox rwLoginUsername) {
+		this.rwLoginUsername = rwLoginUsername;
+	}
+
+	public TextBox getRwLoginPassword() {
+		return rwLoginPassword;
+	}
+
+	public void setRwLoginPassword(TextBox rwLoginPassword) {
+		this.rwLoginPassword = rwLoginPassword;
+	}
+
+	public Button getRwLoginButton() {
+		return rwLoginButton;
+	}
+
+	public void setRwLoginButton(Button rwLoginButton) {
+		this.rwLoginButton = rwLoginButton;
+	}
+	
+	
 }

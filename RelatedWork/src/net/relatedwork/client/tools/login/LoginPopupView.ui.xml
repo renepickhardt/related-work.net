@@ -9,10 +9,10 @@
 	<g:PopupPanel  animationEnabled="true" glassEnabled="true" autoHideEnabled="true">
 		<g:HTMLPanel>
 			<h2>Login</h2>
-			<g:Label text="Username"/> <g:TextBox/>
-			<g:Label text="Password"/> <g:TextBox/>
-			<g:Button text="Login"/> <br/>
-			<g:Button text="New User"/>
+			<g:Label text="Username" /> <g:TextBox ui:field="rwLoginUsername"/>
+			<g:Label text="Password" /> <g:TextBox ui:field="rwLoginPassword" />
+			<g:Button text="Login" ui:field="rwLoginButton" /> <br/>
+			<g:Button text="New User" ui:field="rwLoginNewUserButton"/>
 		</g:HTMLPanel>
 	</g:PopupPanel>
 </ui:UiBinder>
