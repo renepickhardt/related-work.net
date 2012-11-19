@@ -19,12 +19,15 @@ import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
 import net.relatedwork.server.ContextHelper;
 import net.relatedwork.server.neo4jHelper.DBNodeProperties;
 import net.relatedwork.server.neo4jHelper.DBRelationshipProperties;
+import net.relatedwork.server.neo4jHelper.Neo4jToDTOHelper;
 import net.relatedwork.server.neo4jHelper.NodeType;
 import net.relatedwork.server.neo4jHelper.RelationshipTypes;
 import net.relatedwork.shared.dto.Author;
 import net.relatedwork.shared.dto.DisplayAuthor;
 import net.relatedwork.shared.dto.DisplayAuthorResult;
+import net.relatedwork.shared.dto.Paper;
 
+import com.google.gwt.dev.util.DefaultTextOutput;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
@@ -88,14 +91,9 @@ public class DisplayAuthorActionHandler implements
 					result.addSimilarAuthor(new Author(name,name, (int)(score*1000)));
 				}
 				
-//				for (Relationship rel:n.getRelationships(RelationshipTypes.AUTHOROF)){
-//					Node paper = rel.getOtherNode(n);
-//					Paper p = new Paper();
-//					p.title = (String)paper.getProperty(DBNodeProperties.PAPER_TITLE);
-//					p.citationCount = (Integer)paper.getProperty(DBNodeProperties.PAPER_CITATION_COUNT);
-//					p.pageRank = (Double)paper.getProperty(DBNodeProperties.PAGE_RANK_VALUE);
-//					apc.papers.add(p);
-//				}
+				for (Relationship rel:n.getRelationships(RelationshipTypes.AUTHOROF)){
+					//Paper p = Neo4jToDTOHelper.generatePaperFromNode(n);
+				}
 				break;
 			}
 		}

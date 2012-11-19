@@ -20,13 +20,10 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
  *
  */
 
-public class Author implements Result, IsSerializable, IsRenderable{
+public class Author extends Renderable implements Result, IsSerializable, IsRenderable{
 	public Author(){		
 	}
 
-	
-	private String displayName;
-	private String uri;
 	private Integer score;	
 
 	public Author(String displayName, String uri, Integer score){

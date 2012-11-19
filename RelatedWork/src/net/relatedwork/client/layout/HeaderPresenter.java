@@ -18,20 +18,22 @@ import com.google.gwt.user.client.ui.Widget;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import net.relatedwork.client.MainPresenter;
 import net.relatedwork.client.handler.StartSearchHandler;
+import net.relatedwork.client.tools.SearchPresenter;
 
 public class HeaderPresenter extends
 		Presenter<HeaderPresenter.MyView, HeaderPresenter.MyProxy> {
 
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> TYPE_Breadcrumbs = new Type<RevealContentHandler<?>>();
-	
+
+	@ContentSlot
+	public static final Type<RevealContentHandler<?>> TYPE_Search = new Type<RevealContentHandler<?>>();
+
 	public interface MyView extends View {
 		public HTMLPanel getRwBreadcrumbs();
 		public void setRwBreadcrumbs(HTMLPanel rwBreadcrumbs);
 		public void setRwHeaderSearch(HTMLPanel rwHeaderSearch);
 		public HTMLPanel getRwHeaderSearch();
-		public SuggestBox getSuggestBox();
-		public Button getReSearch();
 	}
 
 	@ProxyCodeSplit
@@ -50,17 +52,17 @@ public class HeaderPresenter extends
 	}
 
 	@Inject BreadcrumbsPresenter breadcrumbsPresenter;
+	@Inject SearchPresenter searchPresenter;
 	@Inject DispatchAsync dispatcher; 
 
 	protected void onReveal() {
 		super.onReveal();
 		setInSlot(TYPE_Breadcrumbs, breadcrumbsPresenter);
+		setInSlot(TYPE_Search, searchPresenter);
 	}
 	
 	@Override
 	protected void onReset() {
 		super.onReset();
-		registerHandler(getView().getReSearch().addClickHandler(new StartSearchHandler(getView(),dispatcher)));
-		registerHandler(getView().getSuggestBox().addKeyUpHandler(new StartSearchHandler(getView(),dispatcher)));
 	}
 }
