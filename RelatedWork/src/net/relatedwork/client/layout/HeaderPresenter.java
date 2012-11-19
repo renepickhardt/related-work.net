@@ -17,11 +17,14 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import net.relatedwork.client.MainPresenter;
 import net.relatedwork.client.handler.StartSearchHandler;
+import net.relatedwork.client.tools.login.LoginEvent.LoginHandler;
+import net.relatedwork.client.tools.login.LoginEvent;
 import net.relatedwork.client.tools.login.LoginPopupPresenter;
 import net.relatedwork.client.tools.login.UserInformation;
 
@@ -32,6 +35,7 @@ public class HeaderPresenter extends
 	public static final Type<RevealContentHandler<?>> TYPE_Breadcrumbs = new Type<RevealContentHandler<?>>();
 	
 	public interface MyView extends View {
+		public Label getLoginStatus();
 		public Anchor getRwLoginLink();
 		public void setRwLoginLink(Anchor rwLoginLink);
 		public HTMLPanel getRwBreadcrumbs();
@@ -73,11 +77,6 @@ public class HeaderPresenter extends
 		registerHandler(getView().getReSearch().addClickHandler(new StartSearchHandler(getView(),dispatcher)));
 		registerHandler(getView().getSuggestBox().addKeyUpHandler(new StartSearchHandler(getView(),dispatcher)));
 		
-		if (MainPresenter.isAuthenticated()) {
-			Window.alert("Welcome back!");
-		} else {
-			Window.alert("Not Logged in!");
-		}		
 		}
 
 	protected void onBind() {
@@ -94,6 +93,19 @@ public class HeaderPresenter extends
 
 				}));
 
+		// listen to LoginEvents
+		registerHandler(getEventBus().addHandler(LoginEvent.getType(), loginHandler));
 	}
 
+	
+	private LoginHandler loginHandler = new LoginHandler() {
+		
+		@Override
+		public void onLogin(LoginEvent event) {
+			// TODO Auto-generated method stub
+			String username = event.getUserInformation().getUsername();
+			getView().getLoginStatus().setText("Logged in as " + username);
+		}
+	};
+	
 }

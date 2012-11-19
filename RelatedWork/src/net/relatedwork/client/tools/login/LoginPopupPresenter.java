@@ -24,9 +24,12 @@ public class LoginPopupPresenter extends
 		public void setRwLoginButton(Button rwLoginButton);
 	}
 
+	private EventBus eventBus;
+	
 	@Inject
 	public LoginPopupPresenter(final EventBus eventBus, final MyView view) {
 		super(eventBus, view);
+		this.eventBus = eventBus;
 	}
 
 	@Inject DispatchAsync dispatchAsync;
@@ -58,7 +61,8 @@ public class LoginPopupPresenter extends
 
 		@Override
 		public void onSuccess(UserInformation result) {
-			Window.alert("Login Action Returned!! " + result.getUserId());
+			LoginEvent loginEvent = new LoginEvent(result);
+			LoginPopupPresenter.this.eventBus.fireEvent(loginEvent);
 			getView().hide();
 		}
 
