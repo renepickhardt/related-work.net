@@ -29,6 +29,8 @@ import net.relatedwork.client.content.AuthorPresenter;
 import net.relatedwork.client.content.AuthorView;
 import net.relatedwork.client.tools.ListPresenter;
 import net.relatedwork.client.tools.ListView;
+import net.relatedwork.client.login.LoginPopupPresenter;
+import net.relatedwork.client.login.LoginPopupView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -74,5 +76,8 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(ListPresenter.class, ListPresenter.MyView.class,
 				ListView.class);
+
+		bindPresenterWidget(LoginPopupPresenter.class,
+				LoginPopupPresenter.MyView.class, LoginPopupView.class);
 	}
 }

@@ -16,6 +16,9 @@
 				</g:HorizontalPanel>
 		    	<g:HTMLPanel ui:field="rwBreadcrumbs"></g:HTMLPanel>
 	    	</g:VerticalPanel>
+	    	<g:HTMLPanel ui:field="rwLoginControls">
+	    		<g:Hyperlink>Login</g:Hyperlink>
+	    	</g:HTMLPanel>
 		</g:HTMLPanel>
 		<g:HTMLPanel ui:field="rwBody" styleName="rwBody">
 			<g:VerticalPanel>
