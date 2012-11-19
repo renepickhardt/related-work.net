@@ -1,5 +1,6 @@
 package net.relatedwork.client;
 
+import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
@@ -8,6 +9,7 @@ import com.gwtplatform.mvp.client.annotations.NameToken;
 
 import net.relatedwork.client.Discussions.CommentPresenter;
 import net.relatedwork.client.header.HeaderPresenter;
+import net.relatedwork.client.handler.StartSearchHandler;
 import net.relatedwork.client.layout.BreadcrumbsPresenter;
 import net.relatedwork.client.login.LoginPopupPresenter;
 import net.relatedwork.client.navigation.HistoryTokenChangeEvent;
@@ -18,15 +20,14 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.google.inject.Inject;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
 
 public class MainPresenter extends
 		Presenter<MainPresenter.MyView, MainPresenter.MyProxy> {
 	
-	@ContentSlot
-	public static final Type<RevealContentHandler<?>> TYPE_Breadcrumbs = new Type<RevealContentHandler<?>>();
-
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> TYPE_SetMainContent = new Type<RevealContentHandler<?>>();
 
@@ -56,9 +57,8 @@ public class MainPresenter extends
 		public HTMLPanel getRwFooter();
 
 		public void setRwFooter(HTMLPanel rwFooter);
-
 	}
-
+	
 	@ProxyCodeSplit
 	@NameToken(NameTokens.main)
 	public interface MyProxy extends ProxyPlace<MainPresenter> {
@@ -82,7 +82,6 @@ public class MainPresenter extends
 	}
 
 	@Inject FooterPresenter footerPresenter;
-	@Inject BreadcrumbsPresenter breadcrumbsPresenter;
 	@Inject HomePresenter homePresenter;
 	@Inject CommentPresenter commentPresenter;
 	@Inject HeaderPresenter headerPresenter;
@@ -93,7 +92,6 @@ public class MainPresenter extends
 		setInSlot(TYPE_Footer, footerPresenter);
 		setInSlot(TYPE_Discussion, commentPresenter);
 		setInSlot(TYPE_Header, headerPresenter);
-		setInSlot(TYPE_Breadcrumbs, breadcrumbsPresenter);
 	}
 	
 	@Override

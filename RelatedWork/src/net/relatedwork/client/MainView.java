@@ -2,6 +2,8 @@ package net.relatedwork.client;
 
 import java.util.ArrayList;
 
+import org.mortbay.jetty.servlet.Dispatcher;
+
 import net.relatedwork.shared.ItemSuggestion;
 import net.relatedwork.shared.RequestGlobalSearchSuggestion;
 import net.relatedwork.shared.RequestGlobalSearchSuggestionResult;
@@ -13,7 +15,10 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
+import com.google.gwt.user.client.ui.SuggestOracle.Callback;
+import com.google.gwt.user.client.ui.SuggestOracle.Request;
 import com.google.gwt.user.client.ui.SuggestOracle.Response;
+import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
@@ -121,5 +126,5 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 		if (content != null) {
 			rwContent.add(content);
 		}
-	}
+	}	
 }

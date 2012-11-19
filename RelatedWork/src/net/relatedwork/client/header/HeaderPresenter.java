@@ -1,5 +1,6 @@
 package net.relatedwork.client.header;
 
+import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
@@ -9,10 +10,13 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.google.inject.Inject;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import net.relatedwork.client.MainPresenter;
+import net.relatedwork.client.handler.StartSearchHandler;
 
 public class HeaderPresenter extends
 		Presenter<HeaderPresenter.MyView, HeaderPresenter.MyProxy> {
@@ -24,6 +28,8 @@ public class HeaderPresenter extends
 		public void setRwBreadcrumbs(HTMLPanel rwBreadcrumbs);	
 		public void setRwHeaderSearch(HTMLPanel rwHeaderSearch);
 		public HTMLPanel getRwHeaderSearch();
+		public SuggestBox getSuggestBox();
+		public Button getReSearch();
 	}
 
 	@ProxyCodeSplit
@@ -38,11 +44,15 @@ public class HeaderPresenter extends
 
 	@Override
 	protected void revealInParent() {
-		RevealContentEvent.fire(this, MainPresenter.TYPE_Breadcrumbs, this);
+		RevealContentEvent.fire(this, HeaderPresenter.TYPE_Breadcrumbs, this);
 	}
 
+	@Inject DispatchAsync dispatcher; 
+	
 	@Override
 	protected void onBind() {
 		super.onBind();
+		registerHandler(getView().getReSearch().addClickHandler(new StartSearchHandler(getView(),dispatcher)));
+		registerHandler(getView().getSuggestBox().addKeyUpHandler(new StartSearchHandler(getView(),dispatcher)));
 	}
 }

@@ -9,6 +9,7 @@ import com.gwtplatform.mvp.client.annotations.NameToken;
 import net.relatedwork.client.place.NameTokens;
 import net.relatedwork.client.tools.ListPresenter;
 
+import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.google.inject.Inject;
@@ -27,7 +28,10 @@ public class AuthorPresenter extends
 		Presenter<AuthorPresenter.MyView, AuthorPresenter.MyProxy> {
 
 	@ContentSlot public static final Type<RevealContentHandler<?>> TYPE_SimilarAuthors = new Type<RevealContentHandler<?>>();
-
+	@ContentSlot public static final Type<RevealContentHandler<?>> TYPE_CoAuthors = new Type<RevealContentHandler<?>>();
+	@ContentSlot public static final Type<RevealContentHandler<?>> TYPE_CitedAuthors = new Type<RevealContentHandler<?>>();
+	@ContentSlot public static final Type<RevealContentHandler<?>> TYPE_CitedByAuthors = new Type<RevealContentHandler<?>>();
+	@ContentSlot public static final Type<RevealContentHandler<?>> TYPE_Papers = new Type<RevealContentHandler<?>>();
 	
 	public interface MyView extends View {
 		public HTMLPanel getSimilarAuthors();
@@ -56,7 +60,12 @@ public class AuthorPresenter extends
 		super.onBind();
 	}
 	
-	@Inject ListPresenter similarAuthorsListPresenter;
+	@Inject ListPresenter<Author> similarAuthorsListPresenter;
+	@Inject ListPresenter<Author> coAuthorsListPresenter;
+	@Inject ListPresenter<Author> citedAuthorsListPresenter;
+	@Inject ListPresenter<Author> citedByAuthorsListPresenter;
+	//TODO: change to Paper template (need to create Paper implements IsRenderable first)
+	@Inject ListPresenter<Author> paperListPresenter;
 	
 	@Override
 	protected void onReveal() {
@@ -64,8 +73,17 @@ public class AuthorPresenter extends
 		super.onReveal();
 
 		setInSlot(TYPE_SimilarAuthors, similarAuthorsListPresenter);
-		
-		dispatcher.execute(new DisplayAuthor("Bridgeland, Tom"), new AsyncCallback<DisplayAuthorResult>() {
+		setInSlot(TYPE_CitedAuthors, citedAuthorsListPresenter);
+		setInSlot(TYPE_CoAuthors, coAuthorsListPresenter);
+		setInSlot(TYPE_CitedByAuthors, citedByAuthorsListPresenter);
+		setInSlot(TYPE_Papers, paperListPresenter);
+	}
+	
+	@Override
+	public void prepareFromRequest(PlaceRequest request) {
+		// TODO Auto-generated method stub
+		super.prepareFromRequest(request);
+		dispatcher.execute(new DisplayAuthor(request.getParameter("q", "Bridgeland")), new AsyncCallback<DisplayAuthorResult>() {
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
@@ -73,13 +91,22 @@ public class AuthorPresenter extends
 			}
 			@Override
 			public void onSuccess(DisplayAuthorResult result) {
-				similarAuthorsListPresenter.setTitle("hard coded test title");
-				similarAuthorsListPresenter.setList(result.getSimilarAuthors(2));
-//				getView().getSimilarAuthors().clear();
-//				for (Author similarAuthor:result.getSimilarAuthors(2)){
-//					getView().getSimilarAuthors().add(similarAuthor.getLink());
-//				}
+				similarAuthorsListPresenter.setTitle(result.getName() + " has similar authors");
+				similarAuthorsListPresenter.setList(result.getSimilarAuthors(5));
+				
+				citedAuthorsListPresenter.setTitle(result.getName() + " cites:");
+				citedAuthorsListPresenter.setList(result.getCitedAuthors(5));
+				
+				citedByAuthorsListPresenter.setTitle(result.getName() + " is cited by:");
+				citedByAuthorsListPresenter.setList(result.getCitedByAuthors(5));
+				
+				coAuthorsListPresenter.setTitle("important coauthors of " + result.getName());
+				coAuthorsListPresenter.setList(result.getCoAuthors(5));
+				
+				paperListPresenter.setTitle("Bridgeland composed papers");
+				paperListPresenter.setList(result.getSimilarAuthors(5));
 			}
 		});
+		
 	}
 }
