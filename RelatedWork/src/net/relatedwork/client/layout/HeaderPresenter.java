@@ -8,16 +8,21 @@ import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.google.inject.Inject;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import net.relatedwork.client.MainPresenter;
 import net.relatedwork.client.handler.StartSearchHandler;
+import net.relatedwork.client.tools.login.LoginPopupPresenter;
 
 public class HeaderPresenter extends
 		Presenter<HeaderPresenter.MyView, HeaderPresenter.MyProxy> {
@@ -26,6 +31,8 @@ public class HeaderPresenter extends
 	public static final Type<RevealContentHandler<?>> TYPE_Breadcrumbs = new Type<RevealContentHandler<?>>();
 	
 	public interface MyView extends View {
+		public Anchor getRwLoginLink();
+		public void setRwLoginLink(Anchor rwLoginLink);
 		public HTMLPanel getRwBreadcrumbs();
 		public void setRwBreadcrumbs(HTMLPanel rwBreadcrumbs);
 		public void setRwHeaderSearch(HTMLPanel rwHeaderSearch);
@@ -50,6 +57,7 @@ public class HeaderPresenter extends
 	}
 
 	@Inject BreadcrumbsPresenter breadcrumbsPresenter;
+	@Inject LoginPopupPresenter loginPopupPresenter;
 	@Inject DispatchAsync dispatcher; 
 
 	protected void onReveal() {
@@ -60,6 +68,17 @@ public class HeaderPresenter extends
 	@Override
 	protected void onReset() {
 		super.onReset();
+		registerHandler(getView().getRwLoginLink().addClickHandler(new ClickHandler(){
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				event.preventDefault(); // do not follow the link!
+				addToPopupSlot(loginPopupPresenter);
+			}
+			
+			}
+			));
+		
 		registerHandler(getView().getReSearch().addClickHandler(new StartSearchHandler(getView(),dispatcher)));
 		registerHandler(getView().getSuggestBox().addKeyUpHandler(new StartSearchHandler(getView(),dispatcher)));
 	}

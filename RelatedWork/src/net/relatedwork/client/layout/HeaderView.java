@@ -13,8 +13,10 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.Widget;
@@ -30,10 +32,20 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 
 	@UiField HTMLPanel rwBreadcrumbs;
 	@UiField HTMLPanel rwHeaderSearch;
+	@UiField Anchor rwLoginLink;
 	
 	// Search button and and box
 	private final Button reSearch;
 	private final SuggestBox suggestBox;
+
+	// Geters and Setters
+	public Anchor getRwLoginLink() {
+		return rwLoginLink;
+	}
+
+	public void setRwLoginLink(Anchor rwLoginLink) {
+		this.rwLoginLink = rwLoginLink;
+	}
 
 	public HTMLPanel getRwBreadcrumbs() {
 		return rwBreadcrumbs;
