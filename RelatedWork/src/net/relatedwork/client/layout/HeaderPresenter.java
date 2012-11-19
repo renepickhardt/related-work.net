@@ -64,28 +64,36 @@ public class HeaderPresenter extends
 	protected void onReveal() {
 		super.onReveal();
 		setInSlot(TYPE_Breadcrumbs, breadcrumbsPresenter);
-		
-		if (MainPresenter.isAuthenticated()) {
-			Window.alert("Welcome back!");
-		}
-
 	}
 	
 	@Override
 	protected void onReset() {
 		super.onReset();
-		registerHandler(getView().getRwLoginLink().addClickHandler(new ClickHandler(){
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				event.preventDefault(); // do not follow the link!
-				addToPopupSlot(loginPopupPresenter);
-			}
-			
-			}
-			));
 		
 		registerHandler(getView().getReSearch().addClickHandler(new StartSearchHandler(getView(),dispatcher)));
 		registerHandler(getView().getSuggestBox().addKeyUpHandler(new StartSearchHandler(getView(),dispatcher)));
+		
+		if (MainPresenter.isAuthenticated()) {
+			Window.alert("Welcome back!");
+		} else {
+			Window.alert("Not Logged in!");
+		}		
 		}
+
+	protected void onBind() {
+		super.onBind();
+
+		registerHandler(getView().getRwLoginLink().addClickHandler(
+				new ClickHandler() {
+
+					@Override
+					public void onClick(ClickEvent event) {
+						event.preventDefault(); // do not follow the link!
+						addToPopupSlot(loginPopupPresenter);
+					}
+
+				}));
+
+	}
+
 }

@@ -38,7 +38,11 @@ public class LoginPopupPresenter extends
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				LoginAction action = new LoginAction(getView().getRwLoginUsername().getText(), getView().getRwLoginPassword().getText());
+				LoginAction action = new LoginAction(
+						getView().getRwLoginUsername().getText(), 
+						getView().getRwLoginPassword().getText()
+						);
+				
 				dispatchAsync.execute(action, getLoginCallback);
 			}
 		}));
@@ -54,7 +58,8 @@ public class LoginPopupPresenter extends
 
 		@Override
 		public void onSuccess(UserInformation result) {
-			Window.alert("Login Action Returned!! " + result.getUserId());			
+			Window.alert("Login Action Returned!! " + result.getUserId());
+			getView().hide();
 		}
 
 	};
