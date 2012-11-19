@@ -9,8 +9,8 @@ import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
 import net.relatedwork.server.utils.SuggestTree;
 import net.relatedwork.server.utils.SuggestTree.SuggestionList;
 import net.relatedwork.shared.ItemSuggestion;
-import net.relatedwork.shared.RequestGlobalSearchSuggestion;
-import net.relatedwork.shared.RequestGlobalSearchSuggestionResult;
+import net.relatedwork.shared.dto.RequestGlobalSearchSuggestion;
+import net.relatedwork.shared.dto.RequestGlobalSearchSuggestionResult;
 
 import com.google.gwt.user.client.ui.SuggestOracle.Response;
 import com.google.inject.Inject;

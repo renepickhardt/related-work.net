@@ -1,7 +1,7 @@
 package net.relatedwork.client.handler;
 
-import net.relatedwork.client.header.HeaderPresenter;
-import net.relatedwork.client.header.HeaderPresenter.MyView;
+import net.relatedwork.client.layout.HeaderPresenter;
+import net.relatedwork.client.layout.HeaderPresenter.MyView;
 import net.relatedwork.client.place.NameTokens;
 import net.relatedwork.shared.dto.GlobalSearch;
 import net.relatedwork.shared.dto.GlobalSearchResult;

@@ -8,12 +8,14 @@ import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 
 import net.relatedwork.client.Discussions.CommentPresenter;
-import net.relatedwork.client.header.HeaderPresenter;
+import net.relatedwork.client.content.HomePresenter;
 import net.relatedwork.client.handler.StartSearchHandler;
 import net.relatedwork.client.layout.BreadcrumbsPresenter;
-import net.relatedwork.client.login.LoginPopupPresenter;
+import net.relatedwork.client.layout.FooterPresenter;
+import net.relatedwork.client.layout.HeaderPresenter;
 import net.relatedwork.client.navigation.HistoryTokenChangeEvent;
 import net.relatedwork.client.place.NameTokens;
+import net.relatedwork.client.tools.login.LoginPopupPresenter;
 
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;

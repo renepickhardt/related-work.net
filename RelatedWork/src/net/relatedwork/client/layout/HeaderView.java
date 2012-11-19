@@ -1,11 +1,11 @@
-package net.relatedwork.client.header;
+package net.relatedwork.client.layout;
 
 import java.util.ArrayList;
 
 import net.relatedwork.client.MainPresenter;
 import net.relatedwork.shared.ItemSuggestion;
-import net.relatedwork.shared.RequestGlobalSearchSuggestion;
-import net.relatedwork.shared.RequestGlobalSearchSuggestionResult;
+import net.relatedwork.shared.dto.RequestGlobalSearchSuggestion;
+import net.relatedwork.shared.dto.RequestGlobalSearchSuggestionResult;
 
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.ViewImpl;

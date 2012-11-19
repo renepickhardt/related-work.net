@@ -1,4 +1,4 @@
-package net.relatedwork.client;
+package net.relatedwork.client.content;
 
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.uibinder.client.UiBinder;

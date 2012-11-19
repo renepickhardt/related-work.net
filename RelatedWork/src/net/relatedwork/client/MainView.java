@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import org.mortbay.jetty.servlet.Dispatcher;
 
 import net.relatedwork.shared.ItemSuggestion;
-import net.relatedwork.shared.RequestGlobalSearchSuggestion;
-import net.relatedwork.shared.RequestGlobalSearchSuggestionResult;
+import net.relatedwork.shared.dto.RequestGlobalSearchSuggestion;
+import net.relatedwork.shared.dto.RequestGlobalSearchSuggestionResult;
 
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;

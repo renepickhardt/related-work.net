@@ -1,9 +1,10 @@
-package net.relatedwork.shared;
+package net.relatedwork.shared.dto;
 
 import com.gwtplatform.dispatch.shared.ActionImpl;
 import com.gwtplatform.dispatch.shared.UnsecuredActionImpl;
 
-import net.relatedwork.shared.RequestGlobalSearchSuggestionResult;
+import net.relatedwork.shared.dto.RequestGlobalSearchSuggestionResult;
+
 import com.google.gwt.user.client.ui.SuggestOracle.Request;
 
 public class RequestGlobalSearchSuggestion extends

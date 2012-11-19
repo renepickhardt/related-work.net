@@ -21,9 +21,9 @@ import net.relatedwork.server.neo4jHelper.DBNodeProperties;
 import net.relatedwork.server.neo4jHelper.DBRelationshipProperties;
 import net.relatedwork.server.neo4jHelper.NodeType;
 import net.relatedwork.server.neo4jHelper.RelationshipTypes;
-import net.relatedwork.shared.DisplayAuthor;
-import net.relatedwork.shared.DisplayAuthorResult;
 import net.relatedwork.shared.dto.Author;
+import net.relatedwork.shared.dto.DisplayAuthor;
+import net.relatedwork.shared.dto.DisplayAuthorResult;
 
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;

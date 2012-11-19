@@ -1,10 +1,9 @@
-package net.relatedwork.shared;
+package net.relatedwork.shared.dto;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import net.relatedwork.shared.dto.Author;
 
 import com.gwtplatform.dispatch.shared.Result;
 

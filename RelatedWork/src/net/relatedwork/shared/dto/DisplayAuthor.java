@@ -1,9 +1,10 @@
-package net.relatedwork.shared;
+package net.relatedwork.shared.dto;
 
 import com.gwtplatform.dispatch.shared.ActionImpl;
 import com.gwtplatform.dispatch.shared.UnsecuredActionImpl;
 
-import net.relatedwork.shared.DisplayAuthorResult;
+import net.relatedwork.shared.dto.DisplayAuthorResult;
+
 import java.lang.String;
 
 public class DisplayAuthor extends UnsecuredActionImpl<DisplayAuthorResult> {

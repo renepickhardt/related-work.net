@@ -1,4 +1,4 @@
-package net.relatedwork.shared;
+package net.relatedwork.shared.dto;
 
 import com.gwtplatform.dispatch.shared.Result;
 import com.google.gwt.user.client.ui.SuggestOracle.Response;

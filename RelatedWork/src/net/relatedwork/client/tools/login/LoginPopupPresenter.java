@@ -1,4 +1,4 @@
-package net.relatedwork.client.login;
+package net.relatedwork.client.tools.login;
 
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.PopupView;

@@ -20,9 +20,9 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import net.relatedwork.client.MainPresenter;
-import net.relatedwork.shared.DisplayAuthor;
-import net.relatedwork.shared.DisplayAuthorResult;
 import net.relatedwork.shared.dto.Author;
+import net.relatedwork.shared.dto.DisplayAuthor;
+import net.relatedwork.shared.dto.DisplayAuthorResult;
 
 public class AuthorPresenter extends
 		Presenter<AuthorPresenter.MyView, AuthorPresenter.MyProxy> {

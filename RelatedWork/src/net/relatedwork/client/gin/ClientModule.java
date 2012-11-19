@@ -9,12 +9,12 @@ import net.relatedwork.client.place.DefaultPlace;
 import net.relatedwork.client.place.NameTokens;
 import net.relatedwork.client.staticpresenter.ImprintPresenter;
 import net.relatedwork.client.staticpresenter.ImprintView;
-import net.relatedwork.client.FooterPresenter;
-import net.relatedwork.client.FooterView;
 import net.relatedwork.client.layout.BreadcrumbsPresenter;
 import net.relatedwork.client.layout.BreadcrumbsView;
-import net.relatedwork.client.HomePresenter;
-import net.relatedwork.client.HomeView;
+import net.relatedwork.client.layout.FooterPresenter;
+import net.relatedwork.client.layout.FooterView;
+import net.relatedwork.client.layout.HeaderPresenter;
+import net.relatedwork.client.layout.HeaderView;
 import net.relatedwork.client.Discussions.CommentPresenter;
 import net.relatedwork.client.Discussions.CommentView;
 import net.relatedwork.client.staticpresenter.AboutPresenter;
@@ -27,12 +27,12 @@ import net.relatedwork.client.staticpresenter.LicensePresenter;
 import net.relatedwork.client.staticpresenter.LicenseView;
 import net.relatedwork.client.content.AuthorPresenter;
 import net.relatedwork.client.content.AuthorView;
+import net.relatedwork.client.content.HomePresenter;
+import net.relatedwork.client.content.HomeView;
 import net.relatedwork.client.tools.ListPresenter;
 import net.relatedwork.client.tools.ListView;
-import net.relatedwork.client.login.LoginPopupPresenter;
-import net.relatedwork.client.login.LoginPopupView;
-import net.relatedwork.client.header.HeaderPresenter;
-import net.relatedwork.client.header.HeaderView;
+import net.relatedwork.client.tools.login.LoginPopupPresenter;
+import net.relatedwork.client.tools.login.LoginPopupView;
 
 public class ClientModule extends AbstractPresenterModule {
 

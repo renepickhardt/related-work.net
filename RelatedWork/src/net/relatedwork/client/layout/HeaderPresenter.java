@@ -1,4 +1,4 @@
-package net.relatedwork.client.header;
+package net.relatedwork.client.layout;
 
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;

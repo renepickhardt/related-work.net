@@ -1,4 +1,4 @@
-package net.relatedwork.client;
+package net.relatedwork.client.content;
 
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
