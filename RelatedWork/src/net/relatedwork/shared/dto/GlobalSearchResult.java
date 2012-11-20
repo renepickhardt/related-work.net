@@ -1,8 +1,11 @@
 package net.relatedwork.shared.dto;
 
+
 import com.gwtplatform.dispatch.shared.Result;
 import java.lang.Integer;
 import java.util.ArrayList;
+
+import net.relatedwork.shared.IsRenderable;
 
 
 public class GlobalSearchResult implements Result {
@@ -10,7 +13,7 @@ public class GlobalSearchResult implements Result {
 	private Integer resultSize;
 
 	
-	private ArrayList<Renderable> searchResults = new ArrayList<Renderable>();
+	private ArrayList<IsRenderable> searchResults = new ArrayList<IsRenderable>();
 	
 	@SuppressWarnings("unused")
 	public GlobalSearchResult() {
@@ -32,7 +35,7 @@ public class GlobalSearchResult implements Result {
 		return resultSize;
 	}
 	
-	public ArrayList<Renderable> getSearchResults() {
+	public ArrayList<IsRenderable> getSearchResults() {
 		return searchResults;
 	}
 	

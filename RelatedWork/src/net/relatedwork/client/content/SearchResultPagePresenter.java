@@ -16,11 +16,16 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Label;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import net.relatedwork.client.MainPresenter;
+import net.relatedwork.shared.IsRenderable;
+import net.relatedwork.shared.dto.Author;
 import net.relatedwork.shared.dto.GlobalSearch;
 import net.relatedwork.shared.dto.GlobalSearchResult;
+import net.relatedwork.shared.dto.Paper;
 import net.relatedwork.shared.dto.Renderable;
 
 public class SearchResultPagePresenter
@@ -30,6 +35,7 @@ public class SearchResultPagePresenter
 	public interface MyView extends View {
 		public HTMLPanel getSerpContainer();
 		public void addResult(Hyperlink result);
+		public void addResultElement(HorizontalPanel element);
 	}
 
 	@ProxyCodeSplit
@@ -58,7 +64,7 @@ public class SearchResultPagePresenter
 		super.onReveal();
 	}
 
-	 @Inject DispatchAsync dispatcher;
+	@Inject DispatchAsync dispatcher;
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		// TODO Auto-generated method stub
@@ -76,12 +82,26 @@ public class SearchResultPagePresenter
 			}
 		});
 	}
-	public void setResults(ArrayList<Renderable> searchResults) {
+	public void setResults(ArrayList<IsRenderable> searchResults) {
 		getView().getSerpContainer().clear();
-		
-		for (Renderable r:searchResults){
+		for (IsRenderable r:searchResults){
 			//getView().getSerpContainer().add(r.getLink());
-			getView().addResult(r.getLink());
+			HorizontalPanel panel = new HorizontalPanel();
+			Label authorLabel = new Label("Author: ");
+			Label paperLabel = new Label("Paper: ");
+
+			if (r instanceof Paper){
+				Paper p = (Paper)r;
+				panel.add(paperLabel);
+				panel.add(p.getLink());
+				getView().addResultElement(panel);
+			}else if (r instanceof Author){
+				Author a = (Author)r;
+				panel.add(authorLabel);
+				panel.add(a.getLink());
+				getView().addResultElement(panel);
+			}
+
 		}
 		
 	}

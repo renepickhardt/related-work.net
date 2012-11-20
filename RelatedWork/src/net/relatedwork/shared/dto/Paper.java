@@ -14,22 +14,19 @@ import com.google.gwt.user.client.ui.Hyperlink;
  *
  */
 
-public class Paper extends Renderable implements IsRenderable, IsSerializable {
+public class Paper implements IsRenderable, IsSerializable {
 
 	private String title;
 	private String uri;
 	private String source;
-	private String date;
 	private Integer citationCount;
 	
 	Paper(){}
 	
-	public Paper(String title, String uri, String source, String date,
-			Integer citeCnt) {
+	public Paper(String title, String uri, String source, Integer citeCnt) {
 		this.title = title;
 		this.uri = uri;
 		this.source = source;
-		this.date = date;
 		this.citationCount = citeCnt;
 	}
 
@@ -41,4 +38,35 @@ public class Paper extends Renderable implements IsRenderable, IsSerializable {
 		return link;
 	}
 
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
+	}
+
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
+	public Integer getCitationCount() {
+		return citationCount;
+	}
+
+	public void setCitationCount(Integer citationCount) {
+		this.citationCount = citationCount;
+	}
 }

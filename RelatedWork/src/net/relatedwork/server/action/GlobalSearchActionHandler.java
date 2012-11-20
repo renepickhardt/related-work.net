@@ -21,6 +21,7 @@ import net.relatedwork.server.neo4jHelper.DBRelationshipProperties;
 import net.relatedwork.server.neo4jHelper.Neo4jToDTOHelper;
 import net.relatedwork.server.neo4jHelper.NodeType;
 import net.relatedwork.server.neo4jHelper.RelationshipTypes;
+import net.relatedwork.server.utils.IOHelper;
 import net.relatedwork.shared.dto.Author;
 import net.relatedwork.shared.dto.DisplayAuthorResult;
 import net.relatedwork.shared.dto.GlobalSearch;
@@ -47,7 +48,6 @@ public class GlobalSearchActionHandler implements
 		GlobalSearchResult result = new GlobalSearchResult();
 		String query = action.getQuery();
 		//TODO: log user ID / session and search query / time stamp - later log what the user clicks in search results
-		
 		query = query.replace(' ', '?');
 				
 		Sort s = new Sort();
@@ -63,11 +63,13 @@ public class GlobalSearchActionHandler implements
 			if (!n.hasProperty(DBNodeProperties.PAGE_RANK_VALUE))continue;
 			Double pr = (Double)n.getProperty(DBNodeProperties.PAGE_RANK_VALUE);
 			if (NodeType.isAuthorNode(n)) {
+				IOHelper.log("add author node: ");
 				String name = (String)n.getProperty(DBNodeProperties.AUTHOR_NAME);
 				Author a = new Author(name, name, (int)(pr*1000.));
 				result.addAuthor(a);
 			}
 			if (NodeType.isPaperNode(n)){
+				IOHelper.log("add paper node:");
 				Paper p = Neo4jToDTOHelper.generatePaperFromNode(n);
 				result.addPaper(p);
 			}

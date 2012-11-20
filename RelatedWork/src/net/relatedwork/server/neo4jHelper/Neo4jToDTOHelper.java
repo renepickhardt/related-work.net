@@ -9,9 +9,8 @@ public class Neo4jToDTOHelper {
 	public static Paper generatePaperFromNode(Node n){
 		String name = (String)n.getProperty(DBNodeProperties.PAPER_TITLE);
 		String source = (String)n.getProperty(DBNodeProperties.PAPER_SOURCE_URI);
-		String date = (String)n.getProperty(DBNodeProperties.PAPER_DATE);
 		Integer citeCnt = (Integer)n.getProperty(DBNodeProperties.PAPER_CITATION_COUNT);
-		return new Paper(name,name, source, date, citeCnt);
+		return new Paper(name,name, source, citeCnt);
 	}
 
 }
