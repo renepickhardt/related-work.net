@@ -16,16 +16,21 @@ import net.relatedwork.client.layout.HeaderPresenter;
 import net.relatedwork.client.navigation.HistoryTokenChangeEvent;
 import net.relatedwork.client.place.NameTokens;
 import net.relatedwork.client.tools.login.LoginEvent.LoginHandler;
+import net.relatedwork.client.tools.login.LoginAction;
 import net.relatedwork.client.tools.login.LoginEvent;
 import net.relatedwork.client.tools.login.LoginPopupPresenter;
 import net.relatedwork.client.tools.login.UserInformation;
+import net.relatedwork.client.tools.session.RegisterSesssionAction;
+import net.relatedwork.client.tools.session.RegisterSesssionActionResult;
 
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.google.inject.Inject;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
@@ -80,12 +85,18 @@ public class MainPresenter extends
 	@Inject HeaderPresenter headerPresenter;
 	@Inject BreadcrumbsPresenter breadcrumbsPresenter;
 
+	@Inject DispatchAsync dispatchAsync;
 	
 	@Override
 	protected void onBind() {
 		super.onBind();
-		registerHandler(getEventBus().addHandler(LoginEvent.getType(), loginHandler));
+		registerHandler(getEventBus().addHandler(LoginEvent.getType(), loginHandler));				
+
+		// Register session Fails with null exceptions for now reason!!
+		RegisterSesssionAction action = new RegisterSesssionAction("agra");
+		dispatchAsync.execute(action, sessionCallback);
 	}
+	
 
 	@Override
 	protected void onReveal() {
@@ -100,9 +111,13 @@ public class MainPresenter extends
 		super.onReset();
 //		setInSlot(TYPE_SetMainContent, homePresenter);
 		getEventBus().fireEvent(new HistoryTokenChangeEvent(NameTokens.main, "Home"));
-	}
 
-	// Session Management
+
+	}
+	
+	/**
+	 *  User Management
+	 */
 	public static UserInformation userInformation;
 	
 	public static boolean isAuthenticated(){
@@ -122,10 +137,27 @@ public class MainPresenter extends
 		@Override
 		public void onLogin(LoginEvent event) {
 			setUserInformation(event.getUserInformation());			
-//			Window.alert("Stored user information");
 		}
 		
 	};
+	
+
+	/**
+	 * Session Management
+	 */	
+	
+	private AsyncCallback<RegisterSesssionActionResult> sessionCallback = new AsyncCallback<RegisterSesssionActionResult>(){
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(RegisterSesssionActionResult result) {
+			// TODO Auto-generated method stub
+		}};	
 
 	
 }
