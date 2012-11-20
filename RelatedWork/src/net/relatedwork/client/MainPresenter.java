@@ -112,6 +112,10 @@ public class MainPresenter extends
 	
 	private static SessionInformation sessionInformation = new SessionInformation();
 	
+	public static SessionInformation getSessionInformation() {
+		return sessionInformation;
+	}
+
 	private LoginHandler loginHandler = new LoginHandler() {
 		@Override
 		public void onLogin(LoginEvent event) {

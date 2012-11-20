@@ -6,6 +6,7 @@ import net.relatedwork.client.tools.login.LoginActionResult;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.inject.Inject;
 
 
@@ -18,8 +19,7 @@ import com.google.inject.Inject;
  * @author heinrich
  *
  */
-public class SessionInformation {
-	
+public class SessionInformation implements IsSerializable {
 	// Session info
 	public String sessionId;
 	
@@ -50,5 +50,20 @@ public class SessionInformation {
 		this.username = login.getUsername();
 		this.emailAddress = login.getEmailAddress();		
 	}
+
+	
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+	
+	
 	
 }

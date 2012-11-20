@@ -14,6 +14,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Label;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
+
+import net.relatedwork.client.MainPresenter;
 import net.relatedwork.client.layout.HeaderPresenter;
 import net.relatedwork.client.tools.login.LoginEvent.LoginHandler;
 
@@ -45,6 +47,15 @@ public class LoginControlsPresenter
 	@Inject LoginPopupPresenter loginPopupPresenter;
 	@Inject DispatchAsync dispatcher;
 
+	@Override
+	protected void onReveal() {
+		super.onReveal();
+		
+		// Printout Session Id:
+		getView().getLoginStatus().setText("Session id: " + MainPresenter.getSessionInformation().getSessionId());
+		
+	}
+	
 	@Override
 	protected void onBind() {
 		super.onBind();

@@ -21,10 +21,13 @@ public class LoginActionActionHandler implements
 		// Check login
 		String username = action.getUsername();
 		String password = action.getPassword();
-
+		String sessionId = action.getSessionId();
 		
 		// Lookup data from userdb
 		String emailAddress = "userseamil@hotmail.com";
+
+		// register session to user
+		// userAccount.addSession(sessionId);
 		
 		// return LoginResult object with userdata
         return new LoginActionResult(emailAddress,username);

@@ -1,5 +1,7 @@
 package net.relatedwork.client.tools.login;
 
+import net.relatedwork.client.MainPresenter;
+
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.PopupView;
@@ -34,17 +36,22 @@ public class LoginPopupPresenter extends
 
 	@Inject DispatchAsync dispatchAsync;
 	
+	
 	@Override
 	protected void onBind() {
 		super.onBind();
 		registerHandler(getView().getRwLoginButton().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
+
 				LoginAction action = new LoginAction(
+						//username
 						getView().getRwLoginUsername().getText(), 
 						// hash password for security reasons
-						Integer.toString(getView().getRwLoginPassword().getText().hashCode())
+						Integer.toString(getView().getRwLoginPassword().getText().hashCode()),
+						// session info
+						MainPresenter.getSessionInformation()
 						);
 				
 				dispatchAsync.execute(action, getLoginCallback);

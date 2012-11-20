@@ -2,12 +2,15 @@ package net.relatedwork.client.tools.login;
 
 import com.gwtplatform.dispatch.shared.ActionImpl;
 import net.relatedwork.client.tools.login.LoginActionResult;
+import net.relatedwork.client.tools.session.SessionInformation;
+
 import java.lang.String;
 
 public class LoginAction extends ActionImpl<LoginActionResult> {
 
 	private String username;
 	private String password;
+	private String sessionId;
 
 	// as explained in the video we disable security checks
 	@Override
@@ -20,9 +23,10 @@ public class LoginAction extends ActionImpl<LoginActionResult> {
 		// For serialization only
 	}
 
-	public LoginAction(String username, String password) {
+	public LoginAction(String username, String password, SessionInformation session) {
 		this.username = username;
 		this.password = password;
+		this.sessionId = session.getSessionId();
 	}
 
 	public String getUsername() {
@@ -31,5 +35,9 @@ public class LoginAction extends ActionImpl<LoginActionResult> {
 
 	public String getPassword() {
 		return password;
+	}
+	
+	public String getSessionId() {
+		return sessionId;
 	}
 }
