@@ -16,8 +16,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import net.relatedwork.client.layout.HeaderPresenter;
 import net.relatedwork.client.tools.login.LoginEvent.LoginHandler;
-import net.relatedwork.client.tools.session.RegisterSesssionAction;
-import net.relatedwork.client.tools.session.SesssionInformation;
 
 public class LoginControlsPresenter
 		extends
@@ -61,17 +59,16 @@ public class LoginControlsPresenter
 					}	
 				}));
 
-		// listen to LoginEvents
+		// Listen to LoginEvents to set Username
 		registerHandler(getEventBus().addHandler(LoginEvent.getType(), loginHandler));
-
 	}
 
 	
 	private LoginHandler loginHandler = new LoginHandler() {
 		@Override
 		public void onLogin(LoginEvent event) {
-			// TODO Auto-generated method stub
-			String username = event.getUserInformation().getUsername();
+			// Set username in Login control panel
+			String username = event.getLoginResult().getUsername();
 			getView().getLoginStatus().setText("Logged in as " + username);
 		}
 	};

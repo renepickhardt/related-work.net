@@ -21,27 +21,23 @@ import com.gwtplatform.dispatch.shared.Result;
  *
  */
 
-public class UserInformation implements Result {
+public class LoginActionResult implements Result {
 
-	public String userId;
 	public String username;
-	public String email;
+	public String emailAddress;
 
-	public UserInformation(String userId, String username) {
-		this.userId = userId;
+	public LoginActionResult(String emailAddress, String username) {
 		this.username = username;
-
-		MainPresenter.setUserInformation(this);
+		this.emailAddress = emailAddress;
 	}
-	
-	
+		
 	@SuppressWarnings("unused")
-	private UserInformation() {
+	private LoginActionResult() {
 		// For serialization only
 	}
 
-	public String getUserId() {
-		return userId;
+	public String getEmailAddress() {
+		return emailAddress;
 	}
 	
 	public String getUsername(){

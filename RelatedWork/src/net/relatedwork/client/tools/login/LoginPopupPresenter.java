@@ -43,7 +43,8 @@ public class LoginPopupPresenter extends
 			public void onClick(ClickEvent event) {
 				LoginAction action = new LoginAction(
 						getView().getRwLoginUsername().getText(), 
-						getView().getRwLoginPassword().getText()
+						// hash password for security reasons
+						Integer.toString(getView().getRwLoginPassword().getText().hashCode())
 						);
 				
 				dispatchAsync.execute(action, getLoginCallback);
@@ -51,7 +52,7 @@ public class LoginPopupPresenter extends
 		}));
 	}
 
-	private AsyncCallback<UserInformation> getLoginCallback = new AsyncCallback<UserInformation>() {
+	private AsyncCallback<LoginActionResult> getLoginCallback = new AsyncCallback<LoginActionResult>() {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -60,7 +61,7 @@ public class LoginPopupPresenter extends
 		}
 
 		@Override
-		public void onSuccess(UserInformation result) {
+		public void onSuccess(LoginActionResult result) {
 			LoginEvent loginEvent = new LoginEvent(result);
 			LoginPopupPresenter.this.eventBus.fireEvent(loginEvent);
 			getView().hide();

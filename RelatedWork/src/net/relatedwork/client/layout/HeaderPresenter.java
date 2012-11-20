@@ -27,7 +27,7 @@ import net.relatedwork.client.tools.login.LoginControlsPresenter;
 import net.relatedwork.client.tools.login.LoginEvent.LoginHandler;
 import net.relatedwork.client.tools.login.LoginEvent;
 import net.relatedwork.client.tools.login.LoginPopupPresenter;
-import net.relatedwork.client.tools.login.UserInformation;
+import net.relatedwork.client.tools.login.LoginActionResult;
 import net.relatedwork.client.tools.SearchPresenter;
 
 public class HeaderPresenter extends

@@ -8,11 +8,9 @@ import net.relatedwork.shared.dto.GlobalSearch;
 import net.relatedwork.shared.dto.RequestGlobalSearchSuggestion;
 import net.relatedwork.server.action.GlobalSearchActionHandler;
 import net.relatedwork.client.tools.login.LoginAction;
-import net.relatedwork.client.tools.session.RegisterSesssionAction;
 import net.relatedwork.server.action.LoginActionActionHandler;
 import net.relatedwork.shared.dto.RequestLocalSearchSuggestion;
 import net.relatedwork.server.RequestLocalSearchSuggestionActionHandler;
-import net.relatedwork.server.action.RegisterSesssionActionActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -30,9 +28,7 @@ public class ServerModule extends HandlerModule {
 
 		bindHandler(RequestLocalSearchSuggestion.class,
 				RequestLocalSearchSuggestionActionHandler.class);
-
-		bindHandler(RegisterSesssionAction.class,
-				RegisterSesssionActionActionHandler.class);
 		
+
 	}
 }
