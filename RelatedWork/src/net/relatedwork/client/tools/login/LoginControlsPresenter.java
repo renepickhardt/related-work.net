@@ -79,7 +79,7 @@ public class LoginControlsPresenter
 		@Override
 		public void onLogin(LoginEvent event) {
 			// Set username in Login control panel
-			String username = event.getLoginResult().getUsername();
+			String username = MainPresenter.getSessionInformation().getUsername();
 			getView().getLoginStatus().setText("Logged in as " + username);
 		}
 	};

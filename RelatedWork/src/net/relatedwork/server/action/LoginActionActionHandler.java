@@ -3,6 +3,8 @@ package net.relatedwork.server.action;
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
 import net.relatedwork.client.tools.login.LoginAction;
 import net.relatedwork.client.tools.login.LoginActionResult;
+import net.relatedwork.client.tools.session.SessionInformation;
+
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
@@ -21,16 +23,19 @@ public class LoginActionActionHandler implements
 		// Check login
 		String username = action.getUsername();
 		String password = action.getPassword();
-		String sessionId = action.getSessionId();
+		SessionInformation session = action.getSession();
 		
 		// Lookup data from userdb
 		String emailAddress = "userseamil@hotmail.com";
+		
 
 		// register session to user
 		// userAccount.addSession(sessionId);
 		
 		// return LoginResult object with userdata
-        return new LoginActionResult(emailAddress,username);
+		
+		session.setEmailAddress(emailAddress);
+        return new LoginActionResult(session);
 	}
 
 	@Override

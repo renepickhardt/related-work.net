@@ -1,6 +1,8 @@
 package net.relatedwork.client.tools.login;
 
 import net.relatedwork.client.MainPresenter;
+import net.relatedwork.client.tools.events.ClearPopupsEvent;
+import net.relatedwork.client.tools.events.ClearPopupsEvent.ClearPopupsHandler;
 
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
@@ -61,12 +63,26 @@ public class NewUserPresenter extends PresenterWidget<NewUserPresenter.MyView> {
 							public void onSuccess(NewUserActionResult result) {
 								// Window.alert("New User Returned: "+result.getSession().username );
 								MainPresenter.setSessionInformation(result.getSession());
+								
+								// Login user
+								getEventBus().fireEvent(new LoginEvent());
+
 								// Close all 
-								getView().hide();
+								getEventBus().fireEvent(new ClearPopupsEvent());
 							}
 							}
 						);
 			}
 		}));
+
+		registerHandler(getEventBus().addHandler(ClearPopupsEvent.getType(), new ClearPopupsHandler() {
+			@Override
+			public void onclearP(ClearPopupsEvent event) {
+				// TODO Auto-generated method stub
+				getView().hide();
+			}
+		}
+		));
 	}
+
 }

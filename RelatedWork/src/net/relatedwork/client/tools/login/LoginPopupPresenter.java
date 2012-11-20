@@ -1,6 +1,8 @@
 package net.relatedwork.client.tools.login;
 
 import net.relatedwork.client.MainPresenter;
+import net.relatedwork.client.tools.events.ClearPopupsEvent;
+import net.relatedwork.client.tools.events.ClearPopupsEvent.ClearPopupsHandler;
 
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
@@ -42,10 +44,11 @@ public class LoginPopupPresenter extends
 	@Override
 	protected void onBind() {
 		super.onBind();
+
+		// Click on Login Button
 		registerHandler(getView().getRwLoginButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-
 				LoginAction action = new LoginAction(
 						//username
 						getView().getRwLoginUsername().getText(), 
@@ -54,22 +57,32 @@ public class LoginPopupPresenter extends
 						// session info
 						MainPresenter.getSessionInformation()
 						);
+				
 				dispatchAsync.execute(action, getLoginCallback);
 			}
 		}));
 		
-		registerHandler(getView().getRwNewUserButton().addClickHandler(new ClickHandler() {
-			
+		// Click on NewUser Button
+		registerHandler(getView().getRwNewUserButton().addClickHandler(new ClickHandler() {			
 			@Override
 			public void onClick(ClickEvent event) {
 				addToPopupSlot(newUserPresenter);
-			}
-			
+			}			
 		}));
+		
+		// Hide on ClearPopups Event
+		registerHandler(getEventBus().addHandler(ClearPopupsEvent.getType(), new ClearPopupsHandler() {
+			@Override
+			public void onclearP(ClearPopupsEvent event) {
+				// TODO Auto-generated method stub
+				getView().hide();
+			}
+		}
+		));
+
 	}
 
 	private AsyncCallback<LoginActionResult> getLoginCallback = new AsyncCallback<LoginActionResult>() {
-
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
@@ -78,8 +91,12 @@ public class LoginPopupPresenter extends
 
 		@Override
 		public void onSuccess(LoginActionResult result) {
-			LoginEvent loginEvent = new LoginEvent(result);
-			LoginPopupPresenter.this.eventBus.fireEvent(loginEvent);
+			// LoginScucessfull:
+			// Update sessionInformation
+			MainPresenter.setSessionInformation(result.getSession());
+			// fire LoginEvent
+			LoginPopupPresenter.this.eventBus.fireEvent(new LoginEvent());
+			// hide Popup window.
 			getView().hide();
 		}
 

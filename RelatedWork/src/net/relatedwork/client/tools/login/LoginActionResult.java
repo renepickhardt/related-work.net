@@ -1,6 +1,7 @@
 package net.relatedwork.client.tools.login;
 
 import net.relatedwork.client.MainPresenter;
+import net.relatedwork.client.tools.session.SessionInformation;
 
 import com.gwtplatform.dispatch.shared.Result;
 
@@ -23,12 +24,12 @@ import com.gwtplatform.dispatch.shared.Result;
 
 public class LoginActionResult implements Result {
 
-	public String username;
-	public String emailAddress;
+	public SessionInformation session;
+//	public String username;
+//	public String emailAddress;
 
-	public LoginActionResult(String emailAddress, String username) {
-		this.username = username;
-		this.emailAddress = emailAddress;
+	public LoginActionResult(SessionInformation session) {
+		this.session = session;
 	}
 		
 	@SuppressWarnings("unused")
@@ -37,10 +38,20 @@ public class LoginActionResult implements Result {
 	}
 
 	public String getEmailAddress() {
-		return emailAddress;
+		return session.getEmailAddress();
 	}
 	
 	public String getUsername(){
-		return username; 
+		return session.getUsername(); 
 	}
+
+	public SessionInformation getSession() {
+		return session;
+	}
+
+	public void setSession(SessionInformation session) {
+		this.session = session;
+	}
+	
+	
 }

@@ -81,7 +81,6 @@ public class MainPresenter extends
 	@Override
 	protected void onBind() {
 		super.onBind();
-		registerHandler(getEventBus().addHandler(LoginEvent.getType(), loginHandler));
 	}
 	
 
@@ -106,6 +105,7 @@ public class MainPresenter extends
 		getEventBus().fireEvent(new HistoryTokenChangeEvent(NameTokens.main, "Home"));
 	}
 	
+
 	/**
 	 * User Management
 	 */	
@@ -119,12 +119,5 @@ public class MainPresenter extends
 	public static void setSessionInformation(SessionInformation sessionInformation) {
 		MainPresenter.sessionInformation = sessionInformation;
 	}
-
-	private LoginHandler loginHandler = new LoginHandler() {
-		@Override
-		public void onLogin(LoginEvent event) {
-			sessionInformation.RegisterLogIn(event.getLoginResult());			
-		}
-	};
 
 }

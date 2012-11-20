@@ -10,7 +10,7 @@ public class LoginAction extends ActionImpl<LoginActionResult> {
 
 	private String username;
 	private String password;
-	private String sessionId;
+	private SessionInformation session;
 
 	// as explained in the video we disable security checks
 	@Override
@@ -26,7 +26,7 @@ public class LoginAction extends ActionImpl<LoginActionResult> {
 	public LoginAction(String username, String password, SessionInformation session) {
 		this.username = username;
 		this.password = password;
-		this.sessionId = session.getSessionId();
+		this.session = session;
 	}
 
 	public String getUsername() {
@@ -38,6 +38,12 @@ public class LoginAction extends ActionImpl<LoginActionResult> {
 	}
 	
 	public String getSessionId() {
-		return sessionId;
+		return session.getSessionId();
 	}
+
+	public SessionInformation getSession() {
+		return session;
+	}
+
+
 }
