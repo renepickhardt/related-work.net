@@ -92,9 +92,6 @@ public class MainPresenter extends
 		super.onBind();
 		registerHandler(getEventBus().addHandler(LoginEvent.getType(), loginHandler));				
 
-		// Register session Fails with null exceptions for now reason!!
-		RegisterSesssionAction action = new RegisterSesssionAction("agra");
-		dispatchAsync.execute(action, sessionCallback);
 	}
 	
 
@@ -142,22 +139,6 @@ public class MainPresenter extends
 	};
 	
 
-	/**
-	 * Session Management
-	 */	
-	
-	private AsyncCallback<RegisterSesssionActionResult> sessionCallback = new AsyncCallback<RegisterSesssionActionResult>(){
-
-		@Override
-		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void onSuccess(RegisterSesssionActionResult result) {
-			// TODO Auto-generated method stub
-		}};	
 
 	
 }

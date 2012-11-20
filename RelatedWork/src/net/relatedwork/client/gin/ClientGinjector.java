@@ -18,6 +18,7 @@ import net.relatedwork.client.content.AuthorPresenter;
 import net.relatedwork.client.layout.FooterPresenter;
 import net.relatedwork.client.layout.HeaderPresenter;
 import net.relatedwork.client.content.SearchResultPagePresenter;
+import net.relatedwork.client.tools.login.LoginControlsPresenter;
 
 @GinModules({ DispatchAsyncModule.class, ClientModule.class })
 public interface ClientGinjector extends Ginjector {
@@ -45,4 +46,6 @@ public interface ClientGinjector extends Ginjector {
 	AsyncProvider<SearchPresenter> getSearchPresenter();
 
 	AsyncProvider<SearchResultPagePresenter> getSearchResultPagePresenter();
+
+	AsyncProvider<LoginControlsPresenter> getLoginControlsPresenter();
 }
