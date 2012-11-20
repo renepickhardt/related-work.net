@@ -63,6 +63,18 @@ public class SessionInformation implements IsSerializable {
 	public String getEmailAddress() {
 		return emailAddress;
 	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
 	
 	
 	

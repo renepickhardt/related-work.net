@@ -116,10 +116,15 @@ public class MainPresenter extends
 		return sessionInformation;
 	}
 
+	public static void setSessionInformation(SessionInformation sessionInformation) {
+		MainPresenter.sessionInformation = sessionInformation;
+	}
+
 	private LoginHandler loginHandler = new LoginHandler() {
 		@Override
 		public void onLogin(LoginEvent event) {
 			sessionInformation.RegisterLogIn(event.getLoginResult());			
 		}
 	};
+
 }
