@@ -15,7 +15,7 @@ import org.neo4j.kernel.EmbeddedReadOnlyGraphDatabase;
 
 import net.relatedwork.server.utils.Config;
 import net.relatedwork.server.utils.IOHelper;
-import net.relatedwork.server.utils.SuggestTree;
+import net.relatedwork.shared.SuggestTree;
 
 public class ContextHelper {
 

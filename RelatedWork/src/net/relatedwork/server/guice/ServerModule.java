@@ -7,6 +7,8 @@ import net.relatedwork.shared.dto.DisplayAuthor;
 import net.relatedwork.shared.dto.GlobalSearch;
 import net.relatedwork.shared.dto.RequestGlobalSearchSuggestion;
 import net.relatedwork.server.action.GlobalSearchActionHandler;
+import net.relatedwork.shared.dto.RequestLocalSearchSuggestion;
+import net.relatedwork.server.RequestLocalSearchSuggestionActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -19,5 +21,8 @@ public class ServerModule extends HandlerModule {
 		bindHandler(DisplayAuthor.class, DisplayAuthorActionHandler.class);
 
 		bindHandler(GlobalSearch.class, GlobalSearchActionHandler.class);
+
+		bindHandler(RequestLocalSearchSuggestion.class,
+				RequestLocalSearchSuggestionActionHandler.class);
 	}
 }

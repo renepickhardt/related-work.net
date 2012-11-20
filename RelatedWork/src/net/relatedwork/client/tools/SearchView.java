@@ -3,8 +3,12 @@ package net.relatedwork.client.tools;
 import java.util.ArrayList;
 
 import net.relatedwork.shared.ItemSuggestion;
+import net.relatedwork.shared.SuggestTree;
+import net.relatedwork.shared.SuggestTree.SuggestionList;
 import net.relatedwork.shared.dto.RequestGlobalSearchSuggestion;
 import net.relatedwork.shared.dto.RequestGlobalSearchSuggestionResult;
+import net.relatedwork.shared.dto.RequestLocalSearchSuggestion;
+import net.relatedwork.shared.dto.RequestLocalSearchSuggestionResult;
 
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.ViewImpl;
@@ -21,6 +25,13 @@ import com.google.gwt.user.client.ui.SuggestOracle.Request;
 import com.google.gwt.user.client.ui.SuggestOracle.Response;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.inject.Inject;
+
+//TODO: nice data structure but it forgets the ranking values. After runtime tests are alright extend data structure to remember doubles within suggestionlist
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class SearchView extends ViewImpl implements SearchPresenter.MyView {
 
@@ -75,21 +86,58 @@ public class SearchView extends ViewImpl implements SearchPresenter.MyView {
 	 * @return
 	 */
 	private SuggestOracle getSuggestOracle() {
+			
 		return new SuggestOracle(){
 			
 			private ItemSuggestion sug = new ItemSuggestion("requesting Suggestions...");
+		
+			boolean flag=false;
+			
+			SuggestTree<Integer> tree;
 			
 			@Override
 			public void requestSuggestions(final Request request,
 					final Callback callback) {
-				//TODO: getLocallyCached personal suggestions
-				Response r = new Response();
+				final Response r = new Response();
 				final ArrayList<ItemSuggestion> local = new ArrayList<ItemSuggestion>();
-				local.add(sug); 
+
+				if (flag==false){
+					  tree = new SuggestTree<Integer>(3,new Comparator<Integer>(){
+							@Override
+							public int compare(Integer o1, Integer o2) {
+								return -o1.compareTo(o2);
+							}});
+						dispatcher.execute(new RequestLocalSearchSuggestion(), new AsyncCallback<RequestLocalSearchSuggestionResult>() {
+
+							@Override
+							public void onFailure(Throwable caught) {
+								// TODO Auto-generated method stub
+								
+							}
+
+							@Override
+							public void onSuccess(RequestLocalSearchSuggestionResult result) {
+								// TODO Auto-generated method stub
+								HashMap<String,Integer> map = result.getLocalSuggestions();
+								tree.build(map);
+								flag = true;
+							}
+						}); 									
+				}
+				
+				SuggestionList list = tree.getBestSuggestions(request.getQuery());						
+				for (int i=0;i< list.length();i++){
+					local.add(new ItemSuggestion(list.get(i)));
+				}
 				r.setSuggestions(local);
 				callback.onSuggestionsReady(request, r);
+
+				//TODO: getLocallyCached personal suggestions
+//				local.add(sug); 
+//				r.setSuggestions(local);
+//				callback.onSuggestionsReady(request, r);
 				
-				//callback.onSuggestionsReady(request, response
+								//callback.onSuggestionsReady(request, response
 				//make rpc request!
 				dispatcher.execute(
 						new RequestGlobalSearchSuggestion(request),
@@ -100,7 +148,7 @@ public class SearchView extends ViewImpl implements SearchPresenter.MyView {
 							@Override
 							public void onSuccess(
 									RequestGlobalSearchSuggestionResult result) {
-								ArrayList<ItemSuggestion> list = new ArrayList<ItemSuggestion>();
+//								ArrayList<ItemSuggestion> list = new ArrayList<ItemSuggestion>();
 //								for (ItemSuggestion s:local){
 //									list.add(s);
 //								}
@@ -108,10 +156,9 @@ public class SearchView extends ViewImpl implements SearchPresenter.MyView {
 										.getSuggestions()) {
 									if (((ItemSuggestion) sug).prepareForDisplay() == false)
 										continue;
-									list.add((ItemSuggestion) sug);
+									local.add((ItemSuggestion) sug);
 								}
-								Response r = new Response();
-								r.setSuggestions(list);
+								r.setSuggestions(local);
 								//TODO: Merge with local suggestions!
 								callback.onSuggestionsReady(request, r);
 							}
@@ -119,7 +166,7 @@ public class SearchView extends ViewImpl implements SearchPresenter.MyView {
 			}
 		};
 	}
-
+	
 	public SuggestBox getSuggestBox() {
 		return suggestBox;
 	}
