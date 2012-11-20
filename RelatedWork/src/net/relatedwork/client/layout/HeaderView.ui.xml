@@ -13,7 +13,8 @@
 				<g:HTMLPanel ui:field="rwHeaderSearch" />
 				<g:HTMLPanel ui:field="rwHeaderControls">
 					<g:HTMLPanel ui:field="rwLoginControls" styleName="rwLogin">
-						<g:Hyperlink>Login</g:Hyperlink>
+						<g:Anchor href="" ui:field="rwLoginLink">Login</g:Anchor>
+						<g:Label ui:field="rwLoginStatus" text="NotLoogedIn"/>
 					</g:HTMLPanel>
 				</g:HTMLPanel>
 			</g:HorizontalPanel>

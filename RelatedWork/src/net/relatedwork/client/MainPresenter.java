@@ -15,7 +15,10 @@ import net.relatedwork.client.layout.FooterPresenter;
 import net.relatedwork.client.layout.HeaderPresenter;
 import net.relatedwork.client.navigation.HistoryTokenChangeEvent;
 import net.relatedwork.client.place.NameTokens;
+import net.relatedwork.client.tools.login.LoginEvent.LoginHandler;
+import net.relatedwork.client.tools.login.LoginEvent;
 import net.relatedwork.client.tools.login.LoginPopupPresenter;
+import net.relatedwork.client.tools.login.UserInformation;
 
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
@@ -71,17 +74,19 @@ public class MainPresenter extends
 		RevealRootContentEvent.fire(this, this);
 	}
 
-	@Override
-	protected void onBind() {
-		super.onBind();
-	}
-
 	@Inject FooterPresenter footerPresenter;
 	@Inject HomePresenter homePresenter;
 	@Inject CommentPresenter commentPresenter;
 	@Inject HeaderPresenter headerPresenter;
 	@Inject BreadcrumbsPresenter breadcrumbsPresenter;
+
 	
+	@Override
+	protected void onBind() {
+		super.onBind();
+		registerHandler(getEventBus().addHandler(LoginEvent.getType(), loginHandler));
+	}
+
 	@Override
 	protected void onReveal() {
 		super.onReveal();
@@ -96,4 +101,31 @@ public class MainPresenter extends
 //		setInSlot(TYPE_SetMainContent, homePresenter);
 		getEventBus().fireEvent(new HistoryTokenChangeEvent(NameTokens.main, "Home"));
 	}
+
+	// Session Management
+	public static UserInformation userInformation;
+	
+	public static boolean isAuthenticated(){
+		return userInformation != null;
+	}
+
+	public static UserInformation getUserInformation() {
+		return userInformation;
+	}
+
+	public static void setUserInformation(UserInformation userInformation) {
+		MainPresenter.userInformation = userInformation;
+	}
+
+	private LoginHandler loginHandler = new LoginHandler() {
+		
+		@Override
+		public void onLogin(LoginEvent event) {
+			setUserInformation(event.getUserInformation());			
+//			Window.alert("Stored user information");
+		}
+		
+	};
+
+	
 }

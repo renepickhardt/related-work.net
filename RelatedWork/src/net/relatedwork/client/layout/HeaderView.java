@@ -2,7 +2,6 @@ package net.relatedwork.client.layout;
 
 import java.util.ArrayList;
 
-import net.relatedwork.client.MainPresenter;
 import net.relatedwork.shared.ItemSuggestion;
 import net.relatedwork.shared.dto.RequestGlobalSearchSuggestion;
 import net.relatedwork.shared.dto.RequestGlobalSearchSuggestionResult;
@@ -11,17 +10,14 @@ import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.SuggestOracle.Callback;
-import com.google.gwt.user.client.ui.SuggestOracle.Request;
-import com.google.gwt.user.client.ui.SuggestOracle.Response;
-import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.inject.Inject;
 
 public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
@@ -30,10 +26,26 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 
 	@UiField HTMLPanel rwBreadcrumbs;
 	@UiField HTMLPanel rwHeaderSearch;
+	@UiField Anchor rwLoginLink;
+	@UiField Label rwLoginStatus;
+	
+	public Label getLoginStatus(){
+		return rwLoginStatus;
+	}
+	
 	
 	// Search button and and box
 	private final Button reSearch;
 	private final SuggestBox suggestBox;
+
+	// Geters and Setters
+	public Anchor getRwLoginLink() {
+		return rwLoginLink;
+	}
+
+	public void setRwLoginLink(Anchor rwLoginLink) {
+		this.rwLoginLink = rwLoginLink;
+	}
 
 	public HTMLPanel getRwBreadcrumbs() {
 		return rwBreadcrumbs;
