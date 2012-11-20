@@ -127,7 +127,7 @@ public class SearchView extends ViewImpl implements SearchPresenter.MyView {
 				
 				SuggestionList list = tree.getBestSuggestions(request.getQuery());						
 				for (int i=0;i< list.length();i++){
-					local.add(new ItemSuggestion(list.get(i)));
+					local.add(new ItemSuggestion("<span style='color:#0000FF'><em>"+list.get(i).replaceFirst(request.getQuery(), "<b>"+request.getQuery()+"</b>")+"</em></span>"));
 				}
 				r.setSuggestions(local);
 				callback.onSuggestionsReady(request, r);
@@ -163,6 +163,11 @@ public class SearchView extends ViewImpl implements SearchPresenter.MyView {
 								callback.onSuggestionsReady(request, r);
 							}
 						});		
+			}
+			@Override
+			public boolean isDisplayStringHTML() {
+				// TODO Auto-generated method stub
+				return true;
 			}
 		};
 	}
