@@ -3,29 +3,29 @@ package net.relatedwork.server.action;
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
 
 import net.relatedwork.client.tools.session.RegisterSesssionAction;
-import net.relatedwork.client.tools.session.RegisterSesssionActionResult;
+import net.relatedwork.client.tools.session.SesssionInformation;
 
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 public class RegisterSesssionActionActionHandler implements
-		ActionHandler<RegisterSesssionAction, RegisterSesssionActionResult> {
+		ActionHandler<RegisterSesssionAction, SesssionInformation> {
 
 	@Inject
 	public RegisterSesssionActionActionHandler() {
 	}
 
 	@Override
-	public RegisterSesssionActionResult execute(RegisterSesssionAction action,
+	public SesssionInformation execute(RegisterSesssionAction action,
 			ExecutionContext context) throws ActionException {
 		System.out.println("Called Session Handler");
-		return new RegisterSesssionActionResult("myNewSessionId");
+		return new SesssionInformation("myNewSessionId");
 	}
 
 	@Override
 	public void undo(RegisterSesssionAction action,
-			RegisterSesssionActionResult result, ExecutionContext context)
+			SesssionInformation result, ExecutionContext context)
 			throws ActionException {
 	}
 

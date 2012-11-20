@@ -21,7 +21,7 @@ import net.relatedwork.client.tools.login.LoginEvent;
 import net.relatedwork.client.tools.login.LoginPopupPresenter;
 import net.relatedwork.client.tools.login.UserInformation;
 import net.relatedwork.client.tools.session.RegisterSesssionAction;
-import net.relatedwork.client.tools.session.RegisterSesssionActionResult;
+import net.relatedwork.client.tools.session.SesssionInformation;
 
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
@@ -101,6 +101,12 @@ public class MainPresenter extends
 		setInSlot(TYPE_Footer, footerPresenter);
 		setInSlot(TYPE_Discussion, commentPresenter);
 		setInSlot(TYPE_Header, headerPresenter);
+		
+		// Register Session
+		registerSession();
+		
+		// Remark: RPC calls have to be in onReveal! 
+		// Does not work at onBind, onReset! -> null object exception
 	}
 	
 	@Override
@@ -108,8 +114,6 @@ public class MainPresenter extends
 		super.onReset();
 //		setInSlot(TYPE_SetMainContent, homePresenter);
 		getEventBus().fireEvent(new HistoryTokenChangeEvent(NameTokens.main, "Home"));
-
-
 	}
 	
 	/**
@@ -130,15 +134,39 @@ public class MainPresenter extends
 	}
 
 	private LoginHandler loginHandler = new LoginHandler() {
-		
 		@Override
 		public void onLogin(LoginEvent event) {
 			setUserInformation(event.getUserInformation());			
 		}
-		
 	};
 	
+	
+	/**
+	 * Session Management
+	 */	
+	
+	private static SesssionInformation sessionInformation;
 
+	private void registerSession() {		
+		RegisterSesssionAction action = new RegisterSesssionAction("agra");
+		dispatchAsync.execute(action, sessionCallback);
+	}
+	
+	private AsyncCallback<SesssionInformation> sessionCallback = new AsyncCallback<SesssionInformation>(){
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(SesssionInformation result) {
+			Cookies.setCookie(NameTokens.SESSION_ID, result.getSessionId());
+			MainPresenter.sessionInformation = result;
+			Window.alert(result.getSessionId());
+			// TODO Auto-generated method stub
+		}};	
 
 	
 }

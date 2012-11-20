@@ -8,14 +8,14 @@ import com.gwtplatform.dispatch.shared.Result;
  * This is a shared document transfer object (dto) used created 
  * by the login action handler. It contains all session information 
  * about the user, like:
- * 
- *  userId     (for cookie)
- *  username
- *  email      (not implemented, yet)
+ *
+ *  email          (not implemented, yet)
+ *  username   
+ *  session id
  *  etc.
- * 
- *  It should be available for all presenters in a given session, therefore
- *  we store it as a static variable in the Main presenter.
+ *
+ * It should be available for all presenters in a given session, therefore
+ * we store it as a static variable in the Main presenter.
  *  
  * @author heinrich
  *

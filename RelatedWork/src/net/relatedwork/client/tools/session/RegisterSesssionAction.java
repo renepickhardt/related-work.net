@@ -2,12 +2,12 @@ package net.relatedwork.client.tools.session;
 
 import com.gwtplatform.dispatch.shared.ActionImpl;
 
-import net.relatedwork.client.tools.session.RegisterSesssionActionResult;
+import net.relatedwork.client.tools.session.SesssionInformation;
 
 import java.lang.String;
 
 public class RegisterSesssionAction extends
-		ActionImpl<RegisterSesssionActionResult> {
+		ActionImpl<SesssionInformation> {
 
 	private String sessionId;
 	

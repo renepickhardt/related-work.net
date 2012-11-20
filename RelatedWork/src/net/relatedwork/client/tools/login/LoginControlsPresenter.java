@@ -17,7 +17,7 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import net.relatedwork.client.layout.HeaderPresenter;
 import net.relatedwork.client.tools.login.LoginEvent.LoginHandler;
 import net.relatedwork.client.tools.session.RegisterSesssionAction;
-import net.relatedwork.client.tools.session.RegisterSesssionActionResult;
+import net.relatedwork.client.tools.session.SesssionInformation;
 
 public class LoginControlsPresenter
 		extends
@@ -66,15 +66,6 @@ public class LoginControlsPresenter
 
 	}
 
-	@Override
-	protected void onReveal() {
-		super.onReveal();
-
-		// Register session Fails with null exceptions for now reason!!
-		RegisterSesssionAction action = new RegisterSesssionAction("agra");
-		dispatcher.execute(action, sessionCallback);
-
-	}
 	
 	private LoginHandler loginHandler = new LoginHandler() {
 		@Override
@@ -84,25 +75,6 @@ public class LoginControlsPresenter
 			getView().getLoginStatus().setText("Logged in as " + username);
 		}
 	};
-
-	
-	/**
-	 * Session Management
-	 */	
-	
-	private AsyncCallback<RegisterSesssionActionResult> sessionCallback = new AsyncCallback<RegisterSesssionActionResult>(){
-
-		@Override
-		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void onSuccess(RegisterSesssionActionResult result) {
-			Window.alert("Called back!");
-			// TODO Auto-generated method stub
-		}};	
 
 	
 	
