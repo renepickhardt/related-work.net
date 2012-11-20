@@ -6,9 +6,9 @@ import javax.servlet.ServletContext;
 
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
 
-import net.relatedwork.server.utils.SuggestTree;
-import net.relatedwork.server.utils.SuggestTree.SuggestionList;
 import net.relatedwork.shared.ItemSuggestion;
+import net.relatedwork.shared.SuggestTree;
+import net.relatedwork.shared.SuggestTree.SuggestionList;
 import net.relatedwork.shared.dto.RequestGlobalSearchSuggestion;
 import net.relatedwork.shared.dto.RequestGlobalSearchSuggestionResult;
 

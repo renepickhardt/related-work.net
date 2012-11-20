@@ -1,4 +1,4 @@
-package net.relatedwork.server.utils;
+package net.relatedwork.shared;
 
 /**
 *

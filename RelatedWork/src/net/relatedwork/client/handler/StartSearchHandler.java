@@ -1,8 +1,8 @@
 package net.relatedwork.client.handler;
 
-import net.relatedwork.client.layout.HeaderPresenter;
-import net.relatedwork.client.layout.HeaderPresenter.MyView;
 import net.relatedwork.client.place.NameTokens;
+import net.relatedwork.client.tools.SearchPresenter;
+import net.relatedwork.client.tools.SearchPresenter.MyView;
 import net.relatedwork.shared.dto.GlobalSearch;
 import net.relatedwork.shared.dto.GlobalSearchResult;
 
@@ -23,8 +23,8 @@ public class StartSearchHandler implements ClickHandler, KeyUpHandler {
 	private final MyView view;
 	private final DispatchAsync dispatcher;
 	
-	public StartSearchHandler(MyView view, DispatchAsync dispatcher) {
-		this.view = view;
+	public StartSearchHandler(MyView myView, DispatchAsync dispatcher) {
+		this.view = myView;
 		this.dispatcher = dispatcher;
 	}
 
