@@ -24,7 +24,7 @@ from shared import group_generator
 from time import time
 
 DEBUG = 1
-db    = GraphDatabase('db_folder')
+db    = GraphDatabase('../DATA/NEO4J/')
 ROOT  = None
 
 match_file = '../DATA/ALL_MATCH.txt'
@@ -45,11 +45,21 @@ def main():
     # Write unmatched reference arrays
     unmatched_reference_fill_db()
 
-    # Calculate Metrics (now done better by Rene in Java)
-    #write_caches()
+
+    # The following statistics/metrics are now better implemented by Rene in Java
+    # However, they are still required for the Python DemoApp 
+
+    # Write Search index (now done better by Rene in Java)
+    build_search_index()
+
+    # Store citation counts, reference counts, author names at each node 
+    write_caches()
+
+    # Calculate page rank on citation network
     #write_cite_rank()
+    
     db.shutdown()
-    pass
+
     
 def setup_db(db=db):
     global ROOT, PAPER, AUTHOR
@@ -95,8 +105,11 @@ def meta_fill_db(db=db,limit = -1):
     # Create Paper Nodes
     # 
     start = time()
-    for batch_count, batch in enumerate(group_generator(get_json_from_dir(meta_json_dir, limit = limit),1000)):
-        print 'Processing metadata batch %d. Time elapsed: %d sec.' % (batch_count, time() - start)
+    chunk_size = 1000
+    for batch_count, batch in enumerate(group_generator(
+            get_json_from_dir(meta_json_dir, limit = limit),
+            chunk_size)):
+        print 'Processing metadata record %d. Time elapsed: %d sec.' % (batch_count * chunk_size, time() - start)
         with db.transaction:
             for rec_id, meta_dict in batch:
                 # create a new node
@@ -112,7 +125,7 @@ def meta_fill_db(db=db,limit = -1):
                     )
 
                 # add a relation paper_node --[type]--> PAPER
-                # paper_node.type(PAPER)
+                paper_node.type(PAPER)
 
                 # register in source_id index
                 source_idx['id'][paper_node['source_id']] = paper_node
@@ -120,7 +133,7 @@ def meta_fill_db(db=db,limit = -1):
                 for author_name in meta_dict['creator']:
                     # create an author name node
                     author_node = add_get_author(author_name)
-                
+
                     # create a relation paper_node --[author]--> author_node
                     paper_node.author(author_node)
             print 'closing transaction'
@@ -301,12 +314,12 @@ def build_search_index():
     start = time()
     try:
         search_idx = db.nodes.indexes.get('search_idx')
-#        with db.transaction:
-#            search_idx.delete()
+        with db.transaction:
+            search_idx.delete()
     except ValueError:
         pass
     
-#    search_idx = db.nodes.indexes.create('search_idx',type='fulltext')
+    search_idx = db.nodes.indexes.create('search_idx',type='fulltext')
 
     # Loop through papers
     for batch_count, batch in enumerate(group_generator(PAPER.type.incoming, 1000)):
