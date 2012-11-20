@@ -20,7 +20,9 @@ public class LoginPopupView extends PopupViewImpl implements
 	@UiField TextBox rwLoginUsername;
 	@UiField TextBox rwLoginPassword;
 	@UiField Button rwLoginButton;
+	@UiField Button rwLoginNewUserButton;
 	
+
 	@Inject
 	public LoginPopupView(final EventBus eventBus, final Binder binder) {
 		super(eventBus);
@@ -30,6 +32,14 @@ public class LoginPopupView extends PopupViewImpl implements
 	@Override
 	public Widget asWidget() {
 		return widget;
+	}
+
+	public Button getRwNewUserButton() {
+		return rwLoginNewUserButton;
+	}
+
+	public void setRwNewUserButton(Button rwNewUserButton) {
+		this.rwLoginNewUserButton = rwNewUserButton;
 	}
 
 	public TextBox getRwLoginUsername() {

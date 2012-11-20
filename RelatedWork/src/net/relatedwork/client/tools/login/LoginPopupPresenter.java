@@ -24,6 +24,8 @@ public class LoginPopupPresenter extends
 		public void setRwLoginPassword(TextBox rwLoginPassword);
 		public Button getRwLoginButton();
 		public void setRwLoginButton(Button rwLoginButton);
+		public Button getRwNewUserButton();
+		public void setRwNewUserButton(Button rwLoginButton);
 	}
 
 	private EventBus eventBus;
@@ -35,13 +37,12 @@ public class LoginPopupPresenter extends
 	}
 
 	@Inject DispatchAsync dispatchAsync;
-	
+	@Inject NewUserPresenter newUserPresenter;
 	
 	@Override
 	protected void onBind() {
 		super.onBind();
 		registerHandler(getView().getRwLoginButton().addClickHandler(new ClickHandler() {
-
 			@Override
 			public void onClick(ClickEvent event) {
 
@@ -53,9 +54,17 @@ public class LoginPopupPresenter extends
 						// session info
 						MainPresenter.getSessionInformation()
 						);
-				
 				dispatchAsync.execute(action, getLoginCallback);
 			}
+		}));
+		
+		registerHandler(getView().getRwNewUserButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				addToPopupSlot(newUserPresenter);
+			}
+			
 		}));
 	}
 

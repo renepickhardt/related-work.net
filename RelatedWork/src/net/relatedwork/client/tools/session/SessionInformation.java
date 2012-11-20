@@ -37,7 +37,7 @@ public class SessionInformation implements IsSerializable {
 		if (sessionCookie == null) {
 			// new user
 			this.sessionId = Integer.toString(Random.nextInt());
-			Cookies.setCookie(NameTokens.SESSION_ID, sessionCookie);
+			Cookies.setCookie(NameTokens.SESSION_ID, sessionId);
 //			Window.alert("Set new Cookie!");
 		} else {
 			// old user
