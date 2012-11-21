@@ -66,8 +66,9 @@ public class NewUserPresenter extends PresenterWidget<NewUserPresenter.MyView> {
 								
 								// Login user
 								getEventBus().fireEvent(new LoginEvent());
-
+								
 								// Close all 
+								getView().hide();
 								getEventBus().fireEvent(new ClearPopupsEvent());
 							}
 							}

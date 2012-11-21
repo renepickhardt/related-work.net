@@ -28,13 +28,13 @@ public class LoginActionActionHandler implements
 		// Lookup data from userdb
 		String emailAddress = "userseamil@hotmail.com";
 		
-
 		// register session to user
 		// userAccount.addSession(sessionId);
 		
 		// return LoginResult object with userdata
-		
 		session.setEmailAddress(emailAddress);
+		session.setUsername(username);
+		
         return new LoginActionResult(session);
 	}
 

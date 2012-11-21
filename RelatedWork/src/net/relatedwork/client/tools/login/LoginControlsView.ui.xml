@@ -8,6 +8,7 @@
 
 	<g:HTMLPanel>
 	<g:Anchor href="" ui:field="rwLoginLink">Login</g:Anchor>
+	<g:Anchor href="" ui:field="rwLogoutLink">Logout</g:Anchor>
 	<g:Label ui:field="rwLoginStatus" text="NotLoogedIn"/>	
 	</g:HTMLPanel>
 </ui:UiBinder>

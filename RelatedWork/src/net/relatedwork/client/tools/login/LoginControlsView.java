@@ -14,7 +14,13 @@ public class LoginControlsView extends ViewImpl implements
 	private final Widget widget;
 
 	@UiField Anchor rwLoginLink;
+	@UiField Anchor rwLogoutLink;
 	@UiField Label rwLoginStatus;
+
+	
+	public Anchor getRwLogoutLink() {
+		return rwLogoutLink;
+	}
 
 	public Label getLoginStatus(){
 		return rwLoginStatus;
@@ -41,4 +47,16 @@ public class LoginControlsView extends ViewImpl implements
 	public Widget asWidget() {
 		return widget;
 	}
+	
+	public void hideLoginLink() {
+		rwLoginLink.setVisible(false);
+		rwLogoutLink.setVisible(true);
+	}
+
+	public void hideLogoutLink() {
+		rwLoginLink.setVisible(true);
+		rwLogoutLink.setVisible(false);
+	}
+	
+	
 }

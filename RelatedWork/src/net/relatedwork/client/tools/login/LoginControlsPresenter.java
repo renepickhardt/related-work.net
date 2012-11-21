@@ -18,6 +18,8 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import net.relatedwork.client.MainPresenter;
 import net.relatedwork.client.layout.HeaderPresenter;
 import net.relatedwork.client.tools.login.LoginEvent.LoginHandler;
+import net.relatedwork.client.tools.login.LogoutEvent.LogoutHandler;
+import net.relatedwork.client.tools.session.SessionInformation;
 
 public class LoginControlsPresenter
 		extends
@@ -26,7 +28,11 @@ public class LoginControlsPresenter
 	public interface MyView extends View {
 		public Label getLoginStatus();
 		public Anchor getRwLoginLink();
+		public Anchor getRwLogoutLink();		
 		public void setRwLoginLink(Anchor rwLoginLink);
+		
+		public void hideLoginLink();
+		public void hideLogoutLink();
 	}
 
 	@ProxyCodeSplit
@@ -50,9 +56,9 @@ public class LoginControlsPresenter
 	@Override
 	protected void onReveal() {
 		super.onReveal();
-		
+				
 		// Printout Session Id:
-		getView().getLoginStatus().setText("Session id: " + MainPresenter.getSessionInformation().getSessionId());
+		updateLabel();
 		
 	}
 	
@@ -60,7 +66,7 @@ public class LoginControlsPresenter
 	protected void onBind() {
 		super.onBind();
 
-		// Bind LoginPopup to ClickEvent 
+		// Bind LoginPopup to LoginLink
 		registerHandler(getView().getRwLoginLink().addClickHandler(
 				new ClickHandler() {
 					@Override
@@ -70,20 +76,45 @@ public class LoginControlsPresenter
 					}	
 				}));
 
-		// Listen to LoginEvents to set Username
-		registerHandler(getEventBus().addHandler(LoginEvent.getType(), loginHandler));
+		// Bind Logout Event
+		registerHandler(getView().getRwLogoutLink().addClickHandler(
+				new ClickHandler() {
+					@Override
+					public void onClick(ClickEvent event) {
+						event.preventDefault(); // do not follow the link!
+						getEventBus().fireEvent(new LogoutEvent());
+//						Window.alert("Logout");
+					}	
+				}));
+
+		
+		// On LoginEvents update Label
+		registerHandler(getEventBus().addHandler(LoginEvent.getType(), new LoginHandler(){
+			@Override
+			public void onLogin(LoginEvent event) {
+				// Hide Login button and updatet Label
+				getView().hideLoginLink();
+				updateLabel();
+			}}));
+		
+		// On LoginEvents update Label
+		registerHandler(getEventBus().addHandler(LogoutEvent.getType(), new LogoutHandler(){
+			@Override
+			public void onLogout(LogoutEvent event) {
+				getView().hideLogoutLink();
+				updateLabel();				
+			}
+		}));
+
 	}
 
 	
-	private LoginHandler loginHandler = new LoginHandler() {
-		@Override
-		public void onLogin(LoginEvent event) {
-			// Set username in Login control panel
-			String username = MainPresenter.getSessionInformation().getUsername();
-			getView().getLoginStatus().setText("Logged in as " + username);
-		}
-	};
-
-	
+	private void updateLabel() {
+		SessionInformation session = MainPresenter.getSessionInformation();
+//		Window.alert("UpdatingLabel " + session.getSessionId());
+		getView().getLoginStatus().setText(
+				"Username:" + session.getUsername() + " -- " +
+				"SessionId:" + session.getSessionId() );
+	}
 	
 }

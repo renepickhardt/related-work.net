@@ -67,7 +67,7 @@ public class LoginPopupPresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				addToPopupSlot(newUserPresenter);
-			}			
+			}
 		}));
 		
 		// Hide on ClearPopups Event
