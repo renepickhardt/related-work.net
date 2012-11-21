@@ -37,6 +37,13 @@ public class NewUserView extends PopupViewImpl implements
 		return rwNewUsername;
 	}
 
+	public void clearFields() {
+		rwNewUsername.setText("");
+		rwNewEmail.setText("");
+		rwNewPassword.setText("");
+		rwNewPasswordRepeat.setText("");
+	}
+	
 	public void setRwNewUsername(TextBox rwNewUsername) {
 		this.rwNewUsername = rwNewUsername;
 	}

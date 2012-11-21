@@ -29,6 +29,7 @@ public class NewUserPresenter extends PresenterWidget<NewUserPresenter.MyView> {
 		public void setRwNewPasswordRepeat(TextBox rwNewPasswordRepeat);
 		public Button getRwNewUserSubmit();
 		public void setRwNewUserSubmit(Button rwNewUserSubmit);
+		public void clearFields();
 	}
 
 	@Inject
@@ -62,10 +63,12 @@ public class NewUserPresenter extends PresenterWidget<NewUserPresenter.MyView> {
 							@Override
 							public void onSuccess(NewUserActionResult result) {
 								// Window.alert("New User Returned: "+result.getSession().username );
-								//MainPresenter.setSessionInformation(result.getSession());
-								
+
 								// Login user !!
 								getEventBus().fireEvent(new LoginEvent(result.getSession()));
+								
+								// ClearFields
+								getView().clearFields();
 								
 								// Close all 
 								getView().hide();
