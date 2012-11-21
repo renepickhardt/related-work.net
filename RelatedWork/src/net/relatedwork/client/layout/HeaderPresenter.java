@@ -23,10 +23,11 @@ import com.google.gwt.user.client.ui.Widget;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import net.relatedwork.client.MainPresenter;
 import net.relatedwork.client.handler.StartSearchHandler;
+import net.relatedwork.client.tools.login.LoginControlsPresenter;
 import net.relatedwork.client.tools.login.LoginEvent.LoginHandler;
 import net.relatedwork.client.tools.login.LoginEvent;
 import net.relatedwork.client.tools.login.LoginPopupPresenter;
-import net.relatedwork.client.tools.login.UserInformation;
+import net.relatedwork.client.tools.login.LoginActionResult;
 import net.relatedwork.client.tools.SearchPresenter;
 
 public class HeaderPresenter extends
@@ -38,14 +39,14 @@ public class HeaderPresenter extends
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> TYPE_Search = new Type<RevealContentHandler<?>>();
 
+	@ContentSlot
+	public static final Type<RevealContentHandler<?>> TYPE_LoginControls = new Type<RevealContentHandler<?>>();
+	
 	public interface MyView extends View {
-		public Label getLoginStatus();
-		public Anchor getRwLoginLink();
-		public void setRwLoginLink(Anchor rwLoginLink);
 		public HTMLPanel getRwBreadcrumbs();
 		public void setRwBreadcrumbs(HTMLPanel rwBreadcrumbs);
-		public void setRwHeaderSearch(HTMLPanel rwHeaderSearch);
 		public HTMLPanel getRwHeaderSearch();
+		public void setRwHeaderSearch(HTMLPanel rwHeaderSearch);
 	}
 
 	@ProxyCodeSplit
@@ -66,50 +67,15 @@ public class HeaderPresenter extends
 	@Inject BreadcrumbsPresenter breadcrumbsPresenter;
 	@Inject LoginPopupPresenter loginPopupPresenter;
 	@Inject SearchPresenter searchPresenter;
+	@Inject LoginControlsPresenter loginControlsPresenter;
 	@Inject DispatchAsync dispatcher; 
 
 	protected void onReveal() {
 		super.onReveal();
 		setInSlot(TYPE_Breadcrumbs, breadcrumbsPresenter);
 		setInSlot(TYPE_Search, searchPresenter);
+		setInSlot(TYPE_LoginControls,loginControlsPresenter);
 	}
 	
-	@Override
-	protected void onReset() {
-		super.onReset();
-		
-//		registerHandler(getView().getReSearch().addClickHandler(new StartSearchHandler(getView(),dispatcher)));
-//		registerHandler(getView().getSuggestBox().addKeyUpHandler(new StartSearchHandler(getView(),dispatcher)));
-		
-		}
-
-	protected void onBind() {
-		super.onBind();
-
-		registerHandler(getView().getRwLoginLink().addClickHandler(
-				new ClickHandler() {
-
-					@Override
-					public void onClick(ClickEvent event) {
-						event.preventDefault(); // do not follow the link!
-						addToPopupSlot(loginPopupPresenter);
-					}
-
-				}));
-
-		// listen to LoginEvents
-		registerHandler(getEventBus().addHandler(LoginEvent.getType(), loginHandler));
-
-	}
-
-	
-	private LoginHandler loginHandler = new LoginHandler() {
-		@Override
-		public void onLogin(LoginEvent event) {
-			// TODO Auto-generated method stub
-			String username = event.getUserInformation().getUsername();
-			getView().getLoginStatus().setText("Logged in as " + username);
-		}
-	};
 	
 }

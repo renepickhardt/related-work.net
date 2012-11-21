@@ -16,6 +16,9 @@ public class NameTokens implements IsSerializable {
 	public static final String author = "!author";
 	public static final String serp = "serp";
 
+	public static final String SESSION_ID = "sessionId";
+
+	
 	public static String getMain() {
 		return main;
 	}

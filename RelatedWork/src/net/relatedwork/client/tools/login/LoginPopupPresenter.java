@@ -1,5 +1,9 @@
 package net.relatedwork.client.tools.login;
 
+import net.relatedwork.client.MainPresenter;
+import net.relatedwork.client.tools.events.ClearPopupsEvent;
+import net.relatedwork.client.tools.events.ClearPopupsEvent.ClearPopupsHandler;
+
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.PopupView;
@@ -22,6 +26,9 @@ public class LoginPopupPresenter extends
 		public void setRwLoginPassword(TextBox rwLoginPassword);
 		public Button getRwLoginButton();
 		public void setRwLoginButton(Button rwLoginButton);
+		public Button getRwNewUserButton();
+		public void setRwNewUserButton(Button rwLoginButton);
+		public void clearFields();
 	}
 
 	private EventBus eventBus;
@@ -33,39 +40,67 @@ public class LoginPopupPresenter extends
 	}
 
 	@Inject DispatchAsync dispatchAsync;
+	@Inject NewUserPresenter newUserPresenter;
 	
 	@Override
 	protected void onBind() {
 		super.onBind();
-		registerHandler(getView().getRwLoginButton().addClickHandler(new ClickHandler() {
-			
+
+		// Click on LoginButton:
+		registerHandler(getView().getRwLoginButton().addClickHandler(
+				new ClickHandler() {
+					@Override
+					public void onClick(ClickEvent event) {
+						dispatchAsync.execute(
+								new LoginAction(
+								// username
+										getView().getRwLoginUsername().getText(),
+										// hash password for security reasons
+										Integer.toString(getView().getRwLoginPassword().getText().hashCode()),
+										// session info
+										MainPresenter.getSessionInformation()
+										),
+								new AsyncCallback<LoginActionResult>() {
+									@Override
+									public void onFailure(Throwable caught) {
+										// TODO Auto-generated method stub
+									}
+
+									@Override
+									public void onSuccess(
+											LoginActionResult result) {
+										// LoginScucessfull
+										// fire LoginEvent
+										LoginPopupPresenter.this.eventBus.fireEvent(new LoginEvent(result.getSession()));
+
+										// Clear username/pw from login popup
+										getView().clearFields();
+										
+										// hide Popups
+										getView().hide();
+									}});
+					}
+				}));
+
+		
+		// Click on NewUser Button
+		registerHandler(getView().getRwNewUserButton().addClickHandler(new ClickHandler() {			
 			@Override
 			public void onClick(ClickEvent event) {
-				LoginAction action = new LoginAction(
-						getView().getRwLoginUsername().getText(), 
-						getView().getRwLoginPassword().getText()
-						);
-				
-				dispatchAsync.execute(action, getLoginCallback);
+				addToPopupSlot(newUserPresenter);
 			}
 		}));
+		
+		// Hide on ClearPopups Event
+		registerHandler(getEventBus().addHandler(ClearPopupsEvent.getType(), new ClearPopupsHandler() {
+			@Override
+			public void onclearP(ClearPopupsEvent event) {
+				// TODO Auto-generated method stub
+				getView().hide();
+			}
+		}
+		));
+
 	}
-
-	private AsyncCallback<UserInformation> getLoginCallback = new AsyncCallback<UserInformation>() {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void onSuccess(UserInformation result) {
-			LoginEvent loginEvent = new LoginEvent(result);
-			LoginPopupPresenter.this.eventBus.fireEvent(loginEvent);
-			getView().hide();
-		}
-
-	};
 
 }

@@ -37,6 +37,10 @@ import net.relatedwork.client.tools.login.LoginPopupPresenter;
 import net.relatedwork.client.tools.login.LoginPopupView;
 import net.relatedwork.client.content.SearchResultPagePresenter;
 import net.relatedwork.client.content.SearchResultPageView;
+import net.relatedwork.client.tools.login.LoginControlsPresenter;
+import net.relatedwork.client.tools.login.LoginControlsView;
+import net.relatedwork.client.tools.login.NewUserPresenter;
+import net.relatedwork.client.tools.login.NewUserView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -96,5 +100,12 @@ public class ClientModule extends AbstractPresenterModule {
 				SearchResultPagePresenter.MyView.class,
 				SearchResultPageView.class,
 				SearchResultPagePresenter.MyProxy.class);
+
+		bindPresenter(LoginControlsPresenter.class,
+				LoginControlsPresenter.MyView.class, LoginControlsView.class,
+				LoginControlsPresenter.MyProxy.class);
+
+		bindPresenterWidget(NewUserPresenter.class,
+				NewUserPresenter.MyView.class, NewUserView.class);
 	}
 }

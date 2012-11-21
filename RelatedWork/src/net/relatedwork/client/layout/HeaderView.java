@@ -1,22 +1,9 @@
 package net.relatedwork.client.layout;
 
-import java.util.ArrayList;
-
-import net.relatedwork.shared.ItemSuggestion;
-import net.relatedwork.shared.dto.RequestGlobalSearchSuggestion;
-import net.relatedwork.shared.dto.RequestGlobalSearchSuggestionResult;
-
-import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SuggestBox;
-import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -26,21 +13,18 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 
 	@UiField HTMLPanel rwBreadcrumbs;
 	@UiField HTMLPanel rwHeaderSearch;
-	@UiField Anchor rwLoginLink;
-	@UiField Label rwLoginStatus;
-	
-	public Label getLoginStatus(){
-		return rwLoginStatus;
-	}
-		
+	@UiField HTMLPanel rwLoginControls;
+
 	// Geters and Setters
-	public Anchor getRwLoginLink() {
-		return rwLoginLink;
+	
+	public HTMLPanel getRwLoginControls() {
+		return rwLoginControls;
 	}
 
-	public void setRwLoginLink(Anchor rwLoginLink) {
-		this.rwLoginLink = rwLoginLink;
+	public void setRwLoginControls(HTMLPanel rwLoginControls) {
+		this.rwLoginControls = rwLoginControls;
 	}
+
 
 	public HTMLPanel getRwBreadcrumbs() {
 		return rwBreadcrumbs;
@@ -74,13 +58,17 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 	}
 
 
+	/**
+	 * Setup nested presenters Nested presenter 
+	 */
 	public void setInSlot(Object slot, Widget content) {
 		if (slot == HeaderPresenter.TYPE_Breadcrumbs){
 			setBreadcrumbs(content);
 		} else if (slot == HeaderPresenter.TYPE_Search){
 			setSearchBox(content);
-		}
-		else{
+		} else if (slot == HeaderPresenter.TYPE_LoginControls){
+			setLoginControls(content);
+		} else{
 			super.setInSlot(slot, content);
 		}
 	}
@@ -92,6 +80,13 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 		}
 	}
 
+	private void setLoginControls(Widget content){
+		rwLoginControls.clear();
+		if (content != null) {
+			rwLoginControls.add(content);
+		}
+	}
+	
 	private void setBreadcrumbs(Widget content) {
 		rwBreadcrumbs.clear();
 		if (content != null) {
