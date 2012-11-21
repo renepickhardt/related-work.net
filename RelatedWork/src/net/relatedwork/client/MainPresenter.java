@@ -22,8 +22,8 @@ import net.relatedwork.client.layout.FooterPresenter;
 import net.relatedwork.client.layout.HeaderPresenter;
 import net.relatedwork.client.navigation.HistoryTokenChangeEvent;
 import net.relatedwork.client.place.NameTokens;
-import net.relatedwork.client.tools.login.LoginEvent.LoginHandler;
 import net.relatedwork.client.tools.login.LoginEvent;
+import net.relatedwork.client.tools.login.LoginEvent.LoginHandler;
 import net.relatedwork.client.tools.session.SessionInformation;
 
 
@@ -81,6 +81,13 @@ public class MainPresenter extends
 	@Override
 	protected void onBind() {
 		super.onBind();
+		
+		registerHandler(getEventBus().addHandler(LoginEvent.getType(), new LoginHandler() {
+			@Override
+			public void onLogin(LoginEvent event) {
+				setSessionInformation(event.getSession());
+			}
+		}));
 	}
 	
 

@@ -19,7 +19,7 @@ public class LoginActionActionHandler implements
 	@Override
 	public LoginActionResult execute(LoginAction action, ExecutionContext context)
 			throws ActionException {
-		//TODO: Implement serverside user handling
+		//TODO: Implement Serverside user handling
 		// Check login
 		String username = action.getUsername();
 		String password = action.getPassword();

@@ -48,7 +48,7 @@ public class NewUserPresenter extends PresenterWidget<NewUserPresenter.MyView> {
 				dispatcher.execute(
 						new NewUserAction(
 								getView().getRwNewUsername().getText(),
-								getView().getRwNewPassword().getText(), 
+								Integer.toString(getView().getRwNewPassword().getText().hashCode()),
 								getView().getRwNewEmail().getText(), 
 								MainPresenter.getSessionInformation()
 								), 
@@ -62,10 +62,10 @@ public class NewUserPresenter extends PresenterWidget<NewUserPresenter.MyView> {
 							@Override
 							public void onSuccess(NewUserActionResult result) {
 								// Window.alert("New User Returned: "+result.getSession().username );
-								MainPresenter.setSessionInformation(result.getSession());
+								//MainPresenter.setSessionInformation(result.getSession());
 								
-								// Login user
-								getEventBus().fireEvent(new LoginEvent());
+								// Login user !!
+								getEventBus().fireEvent(new LoginEvent(result.getSession()));
 								
 								// Close all 
 								getView().hide();

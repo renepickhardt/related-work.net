@@ -56,8 +56,6 @@ public class LoginControlsPresenter
 	@Override
 	protected void onReveal() {
 		super.onReveal();
-				
-		// Printout Session Id:
 		updateLabel();
 		
 	}
@@ -89,13 +87,15 @@ public class LoginControlsPresenter
 
 		
 		// On LoginEvents update Label
-		registerHandler(getEventBus().addHandler(LoginEvent.getType(), new LoginHandler(){
+		registerHandler(getEventBus().addHandler(LoginEvent.getType(), new LoginHandler() {
+			
 			@Override
 			public void onLogin(LoginEvent event) {
 				// Hide Login button and updatet Label
 				getView().hideLoginLink();
 				updateLabel();
-			}}));
+			}
+		}));
 		
 		// On LoginEvents update Label
 		registerHandler(getEventBus().addHandler(LogoutEvent.getType(), new LogoutHandler(){

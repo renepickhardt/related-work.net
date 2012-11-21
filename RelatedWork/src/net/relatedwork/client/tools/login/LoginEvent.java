@@ -2,14 +2,24 @@ package net.relatedwork.client.tools.login;
 
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.EventHandler;
+import net.relatedwork.client.tools.session.SessionInformation;
 import com.google.gwt.event.shared.HasHandlers;
 
 public class LoginEvent extends GwtEvent<LoginEvent.LoginHandler> {
 
 	public static Type<LoginHandler> TYPE = new Type<LoginHandler>();
+	private SessionInformation session;
 
 	public interface LoginHandler extends EventHandler {
 		void onLogin(LoginEvent event);
+	}
+
+	public LoginEvent(SessionInformation session) {
+		this.session = session;
+	}
+
+	public SessionInformation getSession() {
+		return session;
 	}
 
 	@Override
@@ -26,7 +36,10 @@ public class LoginEvent extends GwtEvent<LoginEvent.LoginHandler> {
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source) {
-		source.fireEvent(new LoginEvent());
+	public static void fire(HasHandlers source, SessionInformation session) {
+		source.fireEvent(new LoginEvent(session));
 	}
+
+
+
 }

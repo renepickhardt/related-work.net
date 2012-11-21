@@ -45,22 +45,39 @@ public class LoginPopupPresenter extends
 	protected void onBind() {
 		super.onBind();
 
-		// Click on Login Button
-		registerHandler(getView().getRwLoginButton().addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				LoginAction action = new LoginAction(
-						//username
-						getView().getRwLoginUsername().getText(), 
-						// hash password for security reasons
-						Integer.toString(getView().getRwLoginPassword().getText().hashCode()),
-						// session info
-						MainPresenter.getSessionInformation()
-						);
-				
-				dispatchAsync.execute(action, getLoginCallback);
-			}
-		}));
+		// Click on LoginButton:
+		registerHandler(getView().getRwLoginButton().addClickHandler(
+				new ClickHandler() {
+					@Override
+					public void onClick(ClickEvent event) {
+						dispatchAsync.execute(
+								new LoginAction(
+								// username
+										getView().getRwLoginUsername().getText(),
+										// hash password for security reasons
+										Integer.toString(getView().getRwLoginPassword().getText().hashCode()),
+										// session info
+										MainPresenter.getSessionInformation()
+										),
+								new AsyncCallback<LoginActionResult>() {
+									@Override
+									public void onFailure(Throwable caught) {
+										// TODO Auto-generated method stub
+
+									}
+
+									@Override
+									public void onSuccess(
+											LoginActionResult result) {
+										// LoginScucessfull
+										// fire LoginEvent
+										LoginPopupPresenter.this.eventBus.fireEvent(new LoginEvent(result.getSession()));
+										// hide Popup window.
+										getView().hide();
+									}});
+					}
+				}));
+
 		
 		// Click on NewUser Button
 		registerHandler(getView().getRwNewUserButton().addClickHandler(new ClickHandler() {			
@@ -81,25 +98,5 @@ public class LoginPopupPresenter extends
 		));
 
 	}
-
-	private AsyncCallback<LoginActionResult> getLoginCallback = new AsyncCallback<LoginActionResult>() {
-		@Override
-		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void onSuccess(LoginActionResult result) {
-			// LoginScucessfull:
-			// Update sessionInformation
-			MainPresenter.setSessionInformation(result.getSession());
-			// fire LoginEvent
-			LoginPopupPresenter.this.eventBus.fireEvent(new LoginEvent());
-			// hide Popup window.
-			getView().hide();
-		}
-
-	};
 
 }
