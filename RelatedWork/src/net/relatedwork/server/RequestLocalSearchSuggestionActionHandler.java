@@ -64,7 +64,7 @@ public class RequestLocalSearchSuggestionActionHandler
 								updateMap((String)tmp.getProperty(DBNodeProperties.AUTHOR_NAME), pr);
 								for (Relationship rel1:tmp.getRelationships(Direction.BOTH)){
 									try{
-										Node tmp1 = rel1.getOtherNode(n);
+										Node tmp1 = rel1.getOtherNode(tmp);
 										Integer pr1 = (int)(10000.*(Double)tmp1.getProperty(DBNodeProperties.PAGE_RANK_VALUE));
 										if (NodeType.isAuthorNode(tmp1)){
 											updateMap((String)tmp1.getProperty(DBNodeProperties.AUTHOR_NAME), pr1);
@@ -73,6 +73,7 @@ public class RequestLocalSearchSuggestionActionHandler
 											updateMap((String)tmp1.getProperty(DBNodeProperties.PAPER_TITLE), pr1);
 										}
 									}catch (Exception e) {
+										e.printStackTrace();
 										IOHelper.log(map.size() + " elements in personalized search index for " + (String)n.getProperty(DBNodeProperties.AUTHOR_NAME));
 										continue;
 									}
@@ -83,6 +84,7 @@ public class RequestLocalSearchSuggestionActionHandler
 								updateMap((String)tmp.getProperty(DBNodeProperties.PAPER_TITLE), pr);
 							}
 						}catch (Exception e) {
+							e.printStackTrace();
 							IOHelper.log(map.size() + " elements in personalized search index for " + (String)n.getProperty(DBNodeProperties.AUTHOR_NAME));
 							continue;
 						}	
