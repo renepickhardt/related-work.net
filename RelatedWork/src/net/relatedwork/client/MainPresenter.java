@@ -24,6 +24,8 @@ import net.relatedwork.client.navigation.HistoryTokenChangeEvent;
 import net.relatedwork.client.place.NameTokens;
 import net.relatedwork.client.tools.login.LoginEvent;
 import net.relatedwork.client.tools.login.LoginEvent.LoginHandler;
+import net.relatedwork.client.tools.login.LogoutEvent;
+import net.relatedwork.client.tools.login.LogoutEvent.LogoutHandler;
 import net.relatedwork.client.tools.session.SessionInformation;
 
 
@@ -82,12 +84,8 @@ public class MainPresenter extends
 	protected void onBind() {
 		super.onBind();
 		
-		registerHandler(getEventBus().addHandler(LoginEvent.getType(), new LoginHandler() {
-			@Override
-			public void onLogin(LoginEvent event) {
-				setSessionInformation(event.getSession());
-			}
-		}));
+		registerHandler(getEventBus().addHandler(LoginEvent.getType(), loginHandler));
+		registerHandler(getEventBus().addHandler(LogoutEvent.getType(), logoutHandler));
 	}
 	
 
@@ -99,7 +97,12 @@ public class MainPresenter extends
 		setInSlot(TYPE_Header, headerPresenter);
 		
 		// Register Session
-		sessionInformation.StartSession();
+		sessionInformation.continueSession();
+		
+		// fire Login/Logout depending on wether we continue a user session
+		if (sessionInformation.isLoggedIn()) {
+			getEventBus().fireEvent(new LoginEvent(sessionInformation));
+		} 
 		
 		// Remark: RPC calls have to be in onReveal! 
 		// Does not work at onBind, onReset! -> null object exception
@@ -126,5 +129,22 @@ public class MainPresenter extends
 	public static void setSessionInformation(SessionInformation sessionInformation) {
 		MainPresenter.sessionInformation = sessionInformation;
 	}
+	
+	LoginHandler loginHandler = new LoginHandler() {
+			@Override
+			public void onLogin(LoginEvent event) {
+				setSessionInformation(event.getSession());
+			}
+		};
+		
+	LogoutHandler logoutHandler = new LogoutHandler() {
+		@Override
+		public void onLogout(LogoutEvent event) {
+			sessionInformation.stopSession(); // deletes cookies
+			sessionInformation = new SessionInformation(); // reset internal variables
+			sessionInformation.continueSession(); // register cookie, set userid
+		}
+	};
 
 }
+

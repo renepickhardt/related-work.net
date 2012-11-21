@@ -31,21 +31,25 @@ public class SessionInformation implements IsSerializable {
 	public boolean isLoggedIn(){
 		return emailAddress != null;
 	}
-
-	public void StartSession(){
+	
+	public void continueSession(){
 		String sessionCookie = Cookies.getCookie(NameTokens.SESSION_ID);
 		if (sessionCookie == null) {
 			// new user
 			this.sessionId = Integer.toString(Random.nextInt());
-			Cookies.setCookie(NameTokens.SESSION_ID, sessionId);
-//			Window.alert("Set new Cookie!");
+			Cookies.setCookie(NameTokens.SESSION_ID, sessionId);		
 		} else {
 			// old user
 			this.sessionId = sessionCookie;
 //			Window.alert("Found old Cookie");
 		}
 	}
+		
+	public void stopSession(){
+		Cookies.removeCookie(NameTokens.SESSION_ID);
+	}
 
+	
 	public void RegisterLogIn(LoginActionResult login){
 		this.username = login.getUsername();
 		this.emailAddress = login.getEmailAddress();		

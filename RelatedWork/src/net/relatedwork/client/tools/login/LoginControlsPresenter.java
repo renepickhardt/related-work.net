@@ -57,6 +57,8 @@ public class LoginControlsPresenter
 	protected void onReveal() {
 		super.onReveal();
 		updateLabel();
+		// Logged out per default
+		getView().hideLogoutLink();
 		
 	}
 	

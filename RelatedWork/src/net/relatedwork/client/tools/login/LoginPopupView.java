@@ -33,6 +33,11 @@ public class LoginPopupView extends PopupViewImpl implements
 	public Widget asWidget() {
 		return widget;
 	}
+	
+	public void clearFields() {
+		rwLoginUsername.setText("");
+		rwLoginPassword.setText("");
+	}
 
 	public Button getRwNewUserButton() {
 		return rwLoginNewUserButton;

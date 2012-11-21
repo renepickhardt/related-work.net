@@ -28,6 +28,7 @@ public class LoginPopupPresenter extends
 		public void setRwLoginButton(Button rwLoginButton);
 		public Button getRwNewUserButton();
 		public void setRwNewUserButton(Button rwLoginButton);
+		public void clearFields();
 	}
 
 	private EventBus eventBus;
@@ -63,7 +64,6 @@ public class LoginPopupPresenter extends
 									@Override
 									public void onFailure(Throwable caught) {
 										// TODO Auto-generated method stub
-
 									}
 
 									@Override
@@ -72,7 +72,11 @@ public class LoginPopupPresenter extends
 										// LoginScucessfull
 										// fire LoginEvent
 										LoginPopupPresenter.this.eventBus.fireEvent(new LoginEvent(result.getSession()));
-										// hide Popup window.
+
+										// Clear username/pw from login popup
+										getView().clearFields();
+										
+										// hide Popups
 										getView().hide();
 									}});
 					}

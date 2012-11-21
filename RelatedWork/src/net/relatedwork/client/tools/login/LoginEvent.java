@@ -4,6 +4,7 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.EventHandler;
 import net.relatedwork.client.tools.session.SessionInformation;
 import com.google.gwt.event.shared.HasHandlers;
+import com.google.gwt.user.client.Window;
 
 public class LoginEvent extends GwtEvent<LoginEvent.LoginHandler> {
 
