@@ -31,14 +31,12 @@ public class RequestGlobalSearchSuggestionActionHandler
 	public RequestGlobalSearchSuggestionResult execute(
 			RequestGlobalSearchSuggestion action, ExecutionContext context)
 			throws ActionException {
-		String q = action.getRequest().getQuery().toLowerCase(); //we always search in lower case!
 		SuggestTree<Integer> tree = ContextHelper.getSuggestTree(servletContext);
-		SuggestionList list = tree.getBestSuggestions(q);
+		SuggestionList list = tree.getBestSuggestions(action.getRequest().getQuery());
 		ArrayList<ItemSuggestion> suggestions = new ArrayList<ItemSuggestion>();
 		for (int i=0;i<list.length();i++){
 			suggestions.add(new ItemSuggestion(list.get(i)));			
 		}
-		suggestions.add(new ItemSuggestion(q+"as"));
 		Response resp = new Response();
 		resp.setSuggestions(suggestions);
 		return new RequestGlobalSearchSuggestionResult(resp);

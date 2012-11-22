@@ -25,7 +25,7 @@ body {
   margin: 0px;
   border: 0px;
   padding: 0px;
-  background: #ddd;
+  background: #fff;
   direction: ltr;
 }
 a, a:visited, a:hover {
@@ -45,14 +45,14 @@ a, a:visited, a:hover {
 }
 
 .gwt-Button {
-  background: url("images/hborder.png") repeat-x scroll 0 -27px transparent;
-    border: 1px outset #CCCCCC;
-    border-radius: 7px 7px 7px 7px;
-    cursor: pointer;
-    font-size: small;
-    margin: 9px 0 3px;
-    padding: 4px 5px;
-    text-decoration: none;
+  margin: 0;
+  padding: 3px 5px;
+  text-decoration: none;
+  font-size: small;
+  cursor: pointer;
+  cursor: hand;
+  background: url("images/hborder.png") repeat-x 0px -27px;
+  border: 1px outset #ccc;
 }
 .gwt-Button:active {
   border: 1px inset #ccc;
@@ -555,12 +555,6 @@ a, a:visited, a:hover {
 }
 
 .gwt-RichTextArea {
-background: none repeat scroll 0 0 rgba(255, 255, 255, 0.4);
-    border-radius: 7px 7px 7px 7px;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.7) inset;
-    height: 100px;
-    width: 681px;
-    border:0;
 }
 .hasRichTextToolbar {
   border: 0px;

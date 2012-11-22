@@ -32,7 +32,7 @@ public class RequestLocalSearchSuggestionActionHandler
 
 	@Inject ServletContext servletContext;
 
-	private HashMap<String,Integer> map;
+//	private HashMap<String,Integer> map;
 
 	@Inject
 	public RequestLocalSearchSuggestionActionHandler() {
@@ -43,8 +43,12 @@ public class RequestLocalSearchSuggestionActionHandler
 			RequestLocalSearchSuggestion action, ExecutionContext context)
 			throws ActionException {
 		
-		map = new HashMap<String, Integer>();
-		if (map==null)return null;
+		HashMap<String, Integer> authorMap = new HashMap<String, Integer>();
+		HashMap<String, Integer> paperMap = new HashMap<String, Integer>();
+
+		
+//		map = new HashMap<String, Integer>();
+//		if (map==null)return null;
 		Sort s = new Sort();
 		s.setSort(new SortField("pr", SortField.DOUBLE, true));
 
@@ -57,43 +61,30 @@ public class RequestLocalSearchSuggestionActionHandler
 		for (Node n : res) {
 			if (NodeType.isAuthorNode(n)){
 					for (Relationship rel:n.getRelationships(Direction.BOTH)){
-						try {
-							Node tmp = rel.getOtherNode(n);
-							Integer pr = (int)(10000.*(Double)tmp.getProperty(DBNodeProperties.PAGE_RANK_VALUE));
-							if (NodeType.isAuthorNode(tmp)){
-								updateMap((String)tmp.getProperty(DBNodeProperties.AUTHOR_NAME), pr);
-								for (Relationship rel1:tmp.getRelationships(Direction.BOTH)){
-									try{
-										Node tmp1 = rel1.getOtherNode(tmp);
-										Integer pr1 = (int)(10000.*(Double)tmp1.getProperty(DBNodeProperties.PAGE_RANK_VALUE));
-										if (NodeType.isAuthorNode(tmp1)){
-											updateMap((String)tmp1.getProperty(DBNodeProperties.AUTHOR_NAME), pr1);
-										}
-										if (NodeType.isPaperNode(tmp1)){
-											updateMap((String)tmp1.getProperty(DBNodeProperties.PAPER_TITLE), pr1);
-										}
-									}catch (Exception e) {
-										e.printStackTrace();
-										IOHelper.log(map.size() + " elements in personalized search index for " + (String)n.getProperty(DBNodeProperties.AUTHOR_NAME));
-										continue;
-									}
-	
+						Node tmp = rel.getOtherNode(n);
+						Integer pr = (int)(10000.*(Double)tmp.getProperty(DBNodeProperties.PAGE_RANK_VALUE));
+						if (NodeType.isAuthorNode(tmp)){
+							updateMap((String)tmp.getProperty(DBNodeProperties.AUTHOR_NAME), pr, authorMap);
+							for (Relationship rel1:tmp.getRelationships(Direction.BOTH)){
+								Node tmp1 = rel1.getOtherNode(tmp);
+								Integer pr1 = (int)(10000.*(Double)tmp1.getProperty(DBNodeProperties.PAGE_RANK_VALUE));
+								if (NodeType.isAuthorNode(tmp1)){
+									updateMap((String)tmp1.getProperty(DBNodeProperties.AUTHOR_NAME), pr1, authorMap);
+								}
+								if (NodeType.isPaperNode(tmp1)){
+									updateMap((String)tmp1.getProperty(DBNodeProperties.PAPER_TITLE), pr1, paperMap);
 								}
 							}
-							if (NodeType.isPaperNode(tmp)){
-								updateMap((String)tmp.getProperty(DBNodeProperties.PAPER_TITLE), pr);
-							}
-						}catch (Exception e) {
-							e.printStackTrace();
-							IOHelper.log(map.size() + " elements in personalized search index for " + (String)n.getProperty(DBNodeProperties.AUTHOR_NAME));
-							continue;
-						}	
+						}
+						if (NodeType.isPaperNode(tmp)){
+							updateMap((String)tmp.getProperty(DBNodeProperties.PAPER_TITLE), pr, paperMap);
+						}
 					}
-				IOHelper.log(map.size() + " elements in personalized search index for " + (String)n.getProperty(DBNodeProperties.AUTHOR_NAME));
+				IOHelper.log(authorMap.size() + " author elements and "+paperMap.size()+" paper elements in personalized search index for " + (String)n.getProperty(DBNodeProperties.AUTHOR_NAME));
 				break;
 			}
 		}
-		RequestLocalSearchSuggestionResult result = new RequestLocalSearchSuggestionResult(map);
+		RequestLocalSearchSuggestionResult result = new RequestLocalSearchSuggestionResult(authorMap, paperMap);
 		return result;
 	}
 
@@ -109,7 +100,7 @@ public class RequestLocalSearchSuggestionActionHandler
 	}
 	
 	//Something like this should be included to global helper class i need this all the time
-	private void updateMap(String key, Integer value){
+	private void updateMap(String key, Integer value, HashMap<String, Integer> map){
 		if (map.containsKey(key)){
 			Integer tmp = map.get(key);
 			map.put(key, tmp + value);
