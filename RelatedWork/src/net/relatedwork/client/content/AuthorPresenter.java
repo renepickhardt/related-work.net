@@ -92,19 +92,19 @@ public class AuthorPresenter extends
 			@Override
 			public void onSuccess(DisplayAuthorResult result) {
 				similarAuthorsListPresenter.setTitle(result.getName() + " has similar authors");
-				similarAuthorsListPresenter.setList(result.getSimilarAuthors(5));
+				similarAuthorsListPresenter.setList(result.getSimilarAuthors(25),5);
 				
 				citedAuthorsListPresenter.setTitle(result.getName() + " cites:");
-				citedAuthorsListPresenter.setList(result.getCitedAuthors(5));
+				citedAuthorsListPresenter.setList(result.getCitedAuthors(25),5);
 				
 				citedByAuthorsListPresenter.setTitle(result.getName() + " is cited by:");
-				citedByAuthorsListPresenter.setList(result.getCitedByAuthors(5));
+				citedByAuthorsListPresenter.setList(result.getCitedByAuthors(25),5);
 				
 				coAuthorsListPresenter.setTitle("important coauthors of " + result.getName());
-				coAuthorsListPresenter.setList(result.getCoAuthors(5));
+				coAuthorsListPresenter.setList(result.getCoAuthors(25),5);
 				
 				paperListPresenter.setTitle("Bridgeland composed papers");
-				paperListPresenter.setList(result.getSimilarAuthors(5));
+				paperListPresenter.setList(result.getSimilarAuthors(5),5);
 			}
 		});
 		

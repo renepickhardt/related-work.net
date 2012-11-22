@@ -101,9 +101,6 @@ public class SearchResultPagePresenter
 				panel.add(a.getLink());
 				getView().addResultElement(panel);
 			}
-
-		}
-		
+		}	
 	}
-	
 }

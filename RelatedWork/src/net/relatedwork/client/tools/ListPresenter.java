@@ -1,5 +1,6 @@
 package net.relatedwork.client.tools;
 
+import java.awt.Button;
 import java.util.ArrayList;
 
 import net.relatedwork.shared.IsRenderable;
@@ -9,17 +10,23 @@ import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.gargoylesoftware.htmlunit.javascript.host.Window;
 import com.google.inject.Inject;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ListPresenter<T extends IsRenderable> extends PresenterWidget<ListPresenter.MyView> {
 
+	
+	
 	public interface MyView extends View {
 		public HTMLPanel getListTitle();
 		public void setListTitle(HTMLPanel listTitle);
@@ -27,7 +34,13 @@ public class ListPresenter<T extends IsRenderable> extends PresenterWidget<ListP
 		public void setListContent(HTMLPanel listContent);
 		public void activateWidget();
 		public void deActivateWidget();
+		public Anchor getRwListMoreLink();
+		public void setRwListMoreLink(Anchor rwListMoreLink);
+
 	}
+
+	private int numElements;
+	private ArrayList<T> myList;
 
 	@Inject
 	public ListPresenter(final EventBus eventBus, final MyView view) {
@@ -52,11 +65,24 @@ public class ListPresenter<T extends IsRenderable> extends PresenterWidget<ListP
 		});
 	}
 
-	public void setList(ArrayList<T> list) {
+	public void setList(ArrayList<T> list, int k) {
+		myList = list;
+		numElements = k;
 		getView().getListContent().clear();
+		int cnt = 0;
 		for (T element: list){
-			getView().getListContent().add(element.getLink());	
+			getView().getListContent().add(element.getLink());
+			if (++cnt > k)break;
 		}
+		Anchor link = getView().getRwListMoreLink();
+		link.addClickHandler(new ClickHandler() {			
+			@Override
+			public void onClick(ClickEvent event) {
+				setList(myList, 2*numElements);
+			}
+		});
+//		getView().getListContent().add(link);
+
 	}
 	
 	public void setTitle(String title){

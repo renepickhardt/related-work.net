@@ -10,6 +10,8 @@
 		<g:VerticalPanel>
 			<g:HTMLPanel ui:field="listTitle"></g:HTMLPanel>
 			<g:HTMLPanel ui:field="listContent"></g:HTMLPanel>
+			<g:HTMLPanel><hr/></g:HTMLPanel>
+			<g:Anchor href="javascript:;" ui:field="rwListMoreLink">> More</g:Anchor>
 		</g:VerticalPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>
