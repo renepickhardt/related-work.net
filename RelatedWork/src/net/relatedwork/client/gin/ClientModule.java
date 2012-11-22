@@ -41,6 +41,8 @@ import net.relatedwork.client.tools.login.LoginControlsPresenter;
 import net.relatedwork.client.tools.login.LoginControlsView;
 import net.relatedwork.client.tools.login.NewUserPresenter;
 import net.relatedwork.client.tools.login.NewUserView;
+import net.relatedwork.client.tools.ListElementPresenter;
+import net.relatedwork.client.tools.ListElementView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -107,5 +109,9 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(NewUserPresenter.class,
 				NewUserPresenter.MyView.class, NewUserView.class);
+
+		bindPresenter(ListElementPresenter.class,
+				ListElementPresenter.MyView.class, ListElementView.class,
+				ListElementPresenter.MyProxy.class);
 	}
 }
