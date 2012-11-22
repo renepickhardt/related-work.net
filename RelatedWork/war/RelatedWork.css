@@ -9,67 +9,71 @@ div.float{
 }
 
 div.rwList{
-	width:300px;
-	margin-left: 20px;
-	margin-right: 20px;
-	margin-top:10 px;
-	margin-bottom:10 px;
-
-	padding: 8px;
-	border-style: none none dotted none;
-	border-width: 1px;
-	background-color: #FFFFFF;	
+	background-color: #FFFFFF;
+    border-radius: 10px 10px 10px 10px;
+    border-style: solid;
+    border-width: 0;
+    box-shadow: 1px 1px 5px;
+    margin: 10px 30px 20px 0;
+    padding: 0 8px 26px 18px;
+    width: 300px;	
 }
 
 div.rwHeader{
-	width:1024px;
-	margin-left: auto ;
-	margin-right: auto ;
-	
-	padding: 8px;
-	border-style: none none dotted none;
-	border-width: 1px;
-	background-color: #EEEEEE;	
+	background-color: #EEEEEE;
+    border-style: none none dotted;
+    border-width: 1px;
+    margin: 20px auto;
+    padding: 10px;
+    width: 1004px
 }
 
 div.rwBody{
-	width:1024px;
-	margin-left: auto ;
-	margin-right: auto ;
+	background: none repeat scroll 0 0 #a1c465;
+    border-radius: 17px 17px 17px 17px;
+    box-shadow: 0 0 9px #000000 inset;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    width: 1004px;
 }
 
 div.rwSidebar {
-	background-color: #DDDDFF;
-	width: 224px;
-	float: left;
-	min-height: 100px;
+	background-color: rgba(255,255,255,0.3);
+    border-radius: 10px 10px 10px 10px;
+    box-shadow: 1px 1px 6px #000000;
+    float: left;
+    min-height: 104px;
+    padding: 10px;
+    width: 233px;
 }
 
 div.rwContent {
-	background-color: #FFFFDD;	
-	width: 800px;
 	float: left;
-	min-height: 100px;
+    margin-left: 10px;
+    min-height: 100px;
+    width: 740px;
 }
 
 div.rwDiscussions{
 	background-color: #DDFFDD;	
-	width: 800px;
+	width: 400px;
 	float: left;
 	min-height: 100px;
 	clear: both;
+	padding: 10px;
 }
 
 div.rwFooter {
-	padding: 8px;
-	border-style: none none dotted none;
-	border-width: 1px;
-	background-color: #CCCCCC;
-	
-	clear: both;
-	width:1024px;
-	margin-left: auto ;
-	margin-right: auto ;
+	background-color: #EEEEEE;
+    border-style: none none dotted;
+    border-width: 1px;
+    clear: both;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    padding: 0 0 10px;
+    width: 1024px;
 }
 
 div.rwLogin {

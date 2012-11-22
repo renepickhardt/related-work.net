@@ -93,11 +93,6 @@ public class RequestLocalSearchSuggestionActionHandler
 				break;
 			}
 		}
-//		map.put("helmut", 2);
-//		map.put("heinrich", 3);
-//		map.put("hendrik", 4);
-//		map.put("herbert", 5);
-//		map.put("heino", 1);
 		RequestLocalSearchSuggestionResult result = new RequestLocalSearchSuggestionResult(map);
 		return result;
 	}
