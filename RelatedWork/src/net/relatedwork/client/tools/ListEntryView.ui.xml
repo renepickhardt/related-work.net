@@ -6,7 +6,10 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel>
-	<g:FocusPanel ui:field="rwListElement"></g:FocusPanel>
-	</g:HTMLPanel>
+	<g:FocusPanel ui:field="rwListEntry" styleName="rwListEntry">
+		<g:HTMLPanel>
+			<g:HTMLPanel ui:field="rwVisibleListEntry" styleName="rwVisibleListEntry">visible</g:HTMLPanel>
+			<g:HTMLPanel ui:field="rwHoverableListEntry" styleName="rwHoverableListEntry">hidden</g:HTMLPanel>
+		</g:HTMLPanel>
+	</g:FocusPanel>>
 </ui:UiBinder>

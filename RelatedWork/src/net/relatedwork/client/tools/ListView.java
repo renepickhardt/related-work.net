@@ -1,5 +1,7 @@
 package net.relatedwork.client.tools;
 
+import net.relatedwork.client.content.AuthorPresenter;
+
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -57,6 +59,22 @@ public class ListView extends ViewImpl implements ListPresenter.MyView {
 	}
 	public void deActivateWidget(){
 		widget.setStyleName("");
+	}
+	
+	@Override
+	public void setInSlot(Object slot, Widget content) {
+		if (slot == ListPresenter.TYPE_ListEntry) {
+			addEntry(content);			
+		} 
+		else {
+			super.setInSlot(slot, content);
+		}
+	}
+	
+	private void addEntry(Widget content) {
+		if(content!=null){
+			listContent.add(content);
+		}
 	}
 	
 }
