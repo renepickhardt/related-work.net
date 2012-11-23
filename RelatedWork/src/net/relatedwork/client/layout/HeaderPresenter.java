@@ -28,10 +28,14 @@ import net.relatedwork.client.tools.login.LoginEvent.LoginHandler;
 import net.relatedwork.client.tools.login.LoginEvent;
 import net.relatedwork.client.tools.login.LoginPopupPresenter;
 import net.relatedwork.client.tools.login.LoginActionResult;
+import net.relatedwork.client.tools.star.StarPresenter;
 import net.relatedwork.client.tools.SearchPresenter;
 
 public class HeaderPresenter extends
 		Presenter<HeaderPresenter.MyView, HeaderPresenter.MyProxy> {
+
+	@ContentSlot
+	public static final Type<RevealContentHandler<?>> TYPE_Logo = new Type<RevealContentHandler<?>>();
 
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> TYPE_Breadcrumbs = new Type<RevealContentHandler<?>>();
@@ -41,6 +45,7 @@ public class HeaderPresenter extends
 
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> TYPE_LoginControls = new Type<RevealContentHandler<?>>();
+
 	
 	public interface MyView extends View {
 		public HTMLPanel getRwBreadcrumbs();
@@ -68,6 +73,8 @@ public class HeaderPresenter extends
 	@Inject LoginPopupPresenter loginPopupPresenter;
 	@Inject SearchPresenter searchPresenter;
 	@Inject LoginControlsPresenter loginControlsPresenter;
+	@Inject StarPresenter starPresenter;
+	
 	@Inject DispatchAsync dispatcher; 
 
 	protected void onReveal() {
@@ -75,6 +82,7 @@ public class HeaderPresenter extends
 		setInSlot(TYPE_Breadcrumbs, breadcrumbsPresenter);
 		setInSlot(TYPE_Search, searchPresenter);
 		setInSlot(TYPE_LoginControls,loginControlsPresenter);
+		setInSlot(TYPE_Logo,starPresenter);
 	}
 	
 	

@@ -10,7 +10,8 @@ import com.google.inject.Inject;
 public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 
 	private final Widget widget;
-
+	
+	@UiField HTMLPanel rwLogo;
 	@UiField HTMLPanel rwBreadcrumbs;
 	@UiField HTMLPanel rwHeaderSearch;
 	@UiField HTMLPanel rwLoginControls;
@@ -68,8 +69,17 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 			setSearchBox(content);
 		} else if (slot == HeaderPresenter.TYPE_LoginControls){
 			setLoginControls(content);
+		} else if (slot == HeaderPresenter.TYPE_Logo){
+			setLogo(content);
 		} else{
 			super.setInSlot(slot, content);
+		}
+	}
+	
+	private void setLogo(Widget content){
+		rwLogo.clear();
+		if (content != null){
+			rwLogo.add(content);
 		}
 	}
 

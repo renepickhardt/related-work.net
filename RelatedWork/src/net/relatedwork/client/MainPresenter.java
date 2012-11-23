@@ -77,7 +77,6 @@ public class MainPresenter extends
 	@Inject CommentPresenter commentPresenter;
 	@Inject HeaderPresenter headerPresenter;
 	@Inject BreadcrumbsPresenter breadcrumbsPresenter;
-
 	@Inject DispatchAsync dispatchAsync;
 	
 	@Override

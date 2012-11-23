@@ -43,6 +43,8 @@ import net.relatedwork.client.tools.login.NewUserPresenter;
 import net.relatedwork.client.tools.login.NewUserView;
 import net.relatedwork.client.tools.ListElementPresenter;
 import net.relatedwork.client.tools.ListElementView;
+import net.relatedwork.client.tools.star.StarPresenter;
+import net.relatedwork.client.tools.star.StarView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -113,5 +115,8 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(ListElementPresenter.class,
 				ListElementPresenter.MyView.class, ListElementView.class,
 				ListElementPresenter.MyProxy.class);
+
+		bindPresenterWidget(StarPresenter.class, StarPresenter.MyView.class,
+				StarView.class);
 	}
 }
