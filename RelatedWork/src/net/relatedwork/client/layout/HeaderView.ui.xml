@@ -9,7 +9,7 @@
 	<g:HTMLPanel>
 		<g:VerticalPanel>
 			<g:HorizontalPanel>
-				<g:HTMLPanel ui:field="rwLogo">LOGO</g:HTMLPanel>
+				<g:HTMLPanel ui:field="rwLogo"><g:Label>LOGO</g:Label></g:HTMLPanel>
 				<g:HTMLPanel ui:field="rwHeaderSearch" />
 				<g:HTMLPanel ui:field="rwLoginControls" styleName="rwLogin"/>
 			</g:HorizontalPanel>

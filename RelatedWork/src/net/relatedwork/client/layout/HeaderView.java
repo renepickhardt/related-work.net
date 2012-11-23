@@ -43,6 +43,16 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 		this.rwHeaderSearch = rwHeaderSearch;
 	}
 
+	public HTMLPanel getRwLogo() {
+		return rwLogo;
+	}
+
+	public void setRwLogo(HTMLPanel rwLogo) {
+		this.rwLogo = rwLogo;
+	}
+
+
+
 	public interface Binder extends UiBinder<Widget, HeaderView> {
 	}
 	

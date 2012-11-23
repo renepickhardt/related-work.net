@@ -80,6 +80,18 @@ div.rwLogin {
 	
 }
 
+div.rwStarShining{
+	background-image:  url('images/starShining.png');
+	width: 32px;
+	height: 32px;
+}
+
+div.rwStarDead{
+	background-image: url('images/starDead.png');
+	width: 32px;
+	height: 32px;
+}
+
 table.rwFooterLinkPanel {
 	width:100%;
 }

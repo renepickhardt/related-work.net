@@ -52,6 +52,8 @@ public class HeaderPresenter extends
 		public void setRwBreadcrumbs(HTMLPanel rwBreadcrumbs);
 		public HTMLPanel getRwHeaderSearch();
 		public void setRwHeaderSearch(HTMLPanel rwHeaderSearch);
+		public HTMLPanel getRwLogo();
+		public void setRwLogo(HTMLPanel rwLogo);
 	}
 
 	@ProxyCodeSplit

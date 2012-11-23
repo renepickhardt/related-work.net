@@ -6,7 +6,6 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel ui:field="rwStarPanel" styleName="rwStarDead">
-	STAR
-	</g:HTMLPanel>
+	<g:FocusPanel ui:field="rwStarPanel" styleName="rwStarDead">
+	</g:FocusPanel>
 </ui:UiBinder>
