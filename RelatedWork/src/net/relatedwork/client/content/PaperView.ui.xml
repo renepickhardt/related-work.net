@@ -1,0 +1,37 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:HTMLPanel>
+		<g:HTMLPanel ui:field="rwTitle">
+			<h1>Paper title</h1>
+		</g:HTMLPanel>
+		<g:HTMLPanel ui:field="rwAuthors">
+			<h2>Author names</h2>
+		</g:HTMLPanel>
+		<g:HTMLPanel ui:field="rwAbstract">
+			<h3>Abstract</h3>
+			<p>here comes the abstract</p>
+		</g:HTMLPanel>
+		<g:HTMLPanel ui:field="rwCitations">
+			<h3>Citations</h3>
+			<ul>
+			<li>Citation 1</li>
+			<li>Citation 2</li>
+			<li>Citation 3</li>
+			</ul>
+		</g:HTMLPanel>
+		<g:HTMLPanel ui:field="rwReferences">
+			<h3>References</h3>
+			<ul>
+			<li>Reference 1</li>
+			<li>Reference 2</li>
+			<li>Reference 3</li>
+			</ul>
+		</g:HTMLPanel>
+	</g:HTMLPanel>
+</ui:UiBinder>
