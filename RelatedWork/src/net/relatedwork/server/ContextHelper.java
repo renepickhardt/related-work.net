@@ -22,6 +22,7 @@ public class ContextHelper {
 	private static final String SUGGEST_TREE = "sugges-ttree";
 	private static final String READ_ONLY_NEO4J = "read-only-neo4j";
 	private static final String SEARCH_IDX = "search-idx";
+	private static final String PAPER_IDX = "paper-idx";
 	
 	
 	public static SuggestTree<Integer> getSuggestTree(
@@ -77,4 +78,16 @@ public class ContextHelper {
 		}
 		return index;
 	}
+
+	public static Index<Node> getPaperIndex(ServletContext servletContext){
+		EmbeddedReadOnlyGraphDatabase graphDB = getReadOnlyGraphDatabase(servletContext);
+		Index<Node> index = (Index<Node>)servletContext.getAttribute(PAPER_IDX);
+		if (index == null){
+			index = graphDB.index().forNodes("source_idx");
+			((LuceneIndex<Node>) index).setCacheCapacity("title", 300000);
+			servletContext.setAttribute(PAPER_IDX,index);
+		}
+		return index;
+	}
+
 }
