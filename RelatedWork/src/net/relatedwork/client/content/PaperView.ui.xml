@@ -1,0 +1,42 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<!-- 
+	The GWT Layout was inpired by:
+	http://www.canoo.com/blog/2010/04/26/gwt-uibinder-better-web-app-separation-of-concerns/
+	-->
+
+	<g:HTMLPanel>
+		<g:HTMLPanel>
+			<h1 ui:field="rwTitle">Paper title</h1>
+		</g:HTMLPanel>
+		<g:HTMLPanel>
+			<h2 ui:field="rwAuthors">Author names</h2>
+		</g:HTMLPanel>
+		<g:HTMLPanel>
+			<h3>Abstract</h3>
+			<p ui:field="rwAbstract">here comes the abstract</p>
+		</g:HTMLPanel>
+		<g:HTMLPanel ui:field="rwCitationPanel">
+			<h3>Citations</h3>
+			<ul ui:field="rwCitationsList">
+			<li>Citation 1</li>
+			<li>Citation 2</li>
+			<li>Citation 3</li>
+			</ul>
+		</g:HTMLPanel>
+		<g:HTMLPanel ui:field="rwReferencePanel">
+			<h3>References</h3>
+			<ul ui:field="rwReferenceList">
+			<li>Reference 1</li>
+			<li>Reference 2</li>
+			<li>Reference 3</li>
+			</ul>
+		</g:HTMLPanel>
+	</g:HTMLPanel>
+</ui:UiBinder>

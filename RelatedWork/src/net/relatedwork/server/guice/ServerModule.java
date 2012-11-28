@@ -13,6 +13,8 @@ import net.relatedwork.shared.dto.RequestLocalSearchSuggestion;
 import net.relatedwork.server.RequestLocalSearchSuggestionActionHandler;
 import net.relatedwork.client.tools.login.NewUserAction;
 import net.relatedwork.server.action.NewUserActionActionHandler;
+import net.relatedwork.shared.dto.DisplayPaper;
+import net.relatedwork.server.action.DisplayPaperActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -34,5 +36,7 @@ public class ServerModule extends HandlerModule {
 
 
 		bindHandler(NewUserAction.class, NewUserActionActionHandler.class);
+
+		bindHandler(DisplayPaper.class, DisplayPaperActionHandler.class);
 	}
 }
