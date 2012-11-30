@@ -3,7 +3,6 @@ package net.relatedwork.client.tools;
 import java.awt.Button;
 import java.util.ArrayList;
 
-import net.relatedwork.client.Test;
 import net.relatedwork.shared.IsRenderable;
 import net.relatedwork.shared.dto.Author;
 
@@ -89,6 +88,10 @@ public class ListPresenter<T extends IsRenderable> extends
 	}
 
 	
+	// from
+	// http://stackoverflow.com/questions/592046/inject-an-array-of-objects-in-guice
+	@Inject
+	Provider<ListEntryPresenter<IsRenderable>> provider;
 	
 	public void setList(ArrayList<T> list, int k) {
 		myList = list;
@@ -96,54 +99,12 @@ public class ListPresenter<T extends IsRenderable> extends
 		getView().getListContent().clear();
 		int cnt = 0;
 
-		// final ArrayList<ListEntryPresenter> injectedObjects;
-		// injectedObjects = new ArrayList<ListEntryPresenter>();
-		
-//		getTestlist(8);
-		ListEntryPresenter[] listEntryPresenter = getListEntryPresenters(k);
-
 		for (T element : list) {
-			/**
-			 * focus panel as a container inside horzontal panel HTMLPanel
-			 * visible (float Left) HTMLPanel hoverElement (float right)
-			 * 
-			 * API: setHoverableContent (HTMLPanels?) set visibleContent
-			 * (HTMLPanel)
-			 */
-
-			// ListEntryPresenter lep = listEntryPresenter[k];
-			// setInSlot(TYPE_ListEntry, lep);
-
-			final FocusPanel fp = new FocusPanel();
-			fp.setStyleName("rwListEntry");
-			HTMLPanel visible = new HTMLPanel("");
-			visible.setStyleName("rwVisibleListEntry");
-			visible.add(element.getLink());
-			final HTMLPanel hover = new HTMLPanel("see me on mouse over");
-			hover.setVisible(false);
-			hover.setStyleName("rwHoverableListEntry");
-			fp.addMouseOverHandler(new MouseOverHandler() {
-				@Override
-				public void onMouseOver(MouseOverEvent event) {
-					hover.setVisible(true);
-					fp.setStyleName("rwListEntry-hover");
-				}
-			});
-			fp.addMouseOutHandler(new MouseOutHandler() {
-				@Override
-				public void onMouseOut(MouseOutEvent event) {
-					hover.setVisible(false);
-					fp.setStyleName("rwListEntry");
-				}
-			});
-			HTMLPanel hp = new HTMLPanel("");
-			hp.add(visible);
-			hp.add(hover);
-			fp.add(hp);
-			getView().getListContent().add(fp);
+			ListEntryPresenter<T> entryPresenter = (ListEntryPresenter<T>) provider.get();
+			entryPresenter.setContent(element);
+			setInSlot(TYPE_ListEntry, entryPresenter);	
 			if (++cnt > k)
 				break;
-
 		}
 		Anchor link = getView().getRwListMoreLink();
 		link.addClickHandler(new ClickHandler() {
@@ -152,33 +113,10 @@ public class ListPresenter<T extends IsRenderable> extends
 				setList(myList, 2 * numElements);
 			}
 		});
-		// getView().getListContent().add(link);
-
 	}
 
 	public void setTitle(String title) {
 		getView().getListTitle().clear();
 		getView().getListTitle().add(new HTML("<h2>" + title + "</h2>"));
 	}
-
-	// from
-	// http://stackoverflow.com/questions/592046/inject-an-array-of-objects-in-guice
-	@Inject
-	Provider<ListEntryPresenter> provider;
-
-	ListEntryPresenter[] getListEntryPresenters(int k) {
-		ListEntryPresenter[] objects = new ListEntryPresenter[k];
-		for (int i = 0; i < k; i++) {
-			objects[i] = provider.get();
-		}
-		return objects;
-	}
-	
-//	@Inject Provider<TestPresenter> provider;
-//	
-//	Test[] getTestlist(int k){
-//		provider.get();
-//		return null;
-//	}
-	
 }

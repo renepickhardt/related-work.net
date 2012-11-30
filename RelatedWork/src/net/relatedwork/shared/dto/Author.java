@@ -4,7 +4,9 @@ import net.relatedwork.client.place.NameTokens;
 import net.relatedwork.shared.IsRenderable;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Label;
 import com.gwtplatform.dispatch.shared.Result;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 
@@ -38,6 +40,13 @@ public class Author implements Result, IsSerializable, IsRenderable{
 		link.setTargetHistoryToken(NameTokens.author+";q="+uri);
 		link.setText(displayName);
 		return link;
+	}
+	
+	public HTMLPanel getHoverable(){
+		HTMLPanel panel = new HTMLPanel("");
+		Label l = new Label(score+"");
+		panel.add(l);
+		return panel;
 	}
 	
 	public String getDisplayName() {
