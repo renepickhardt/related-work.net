@@ -3,9 +3,11 @@ package net.relatedwork.client.tools;
 import java.awt.Button;
 import java.util.ArrayList;
 
+import net.relatedwork.client.Test;
 import net.relatedwork.shared.IsRenderable;
 import net.relatedwork.shared.dto.Author;
 
+import com.gwtplatform.dispatch.annotation.In;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
@@ -22,6 +24,7 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.inject.client.AsyncProvider;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -62,6 +65,8 @@ public class ListPresenter<T extends IsRenderable> extends
 	public ListPresenter(final EventBus eventBus, final MyView view) {
 		super(eventBus, view);
 	}
+	
+	
 
 	@Override
 	protected void onBind() {
@@ -83,6 +88,8 @@ public class ListPresenter<T extends IsRenderable> extends
 				});
 	}
 
+	
+	
 	public void setList(ArrayList<T> list, int k) {
 		myList = list;
 		numElements = k;
@@ -91,11 +98,11 @@ public class ListPresenter<T extends IsRenderable> extends
 
 		// final ArrayList<ListEntryPresenter> injectedObjects;
 		// injectedObjects = new ArrayList<ListEntryPresenter>();
-
-		// ListEntryPresenter[] listEntryPresenter = getListEntryPresenters(k);
+		
+//		getTestlist(8);
+		ListEntryPresenter[] listEntryPresenter = getListEntryPresenters(k);
 
 		for (T element : list) {
-
 			/**
 			 * focus panel as a container inside horzontal panel HTMLPanel
 			 * visible (float Left) HTMLPanel hoverElement (float right)
@@ -166,4 +173,12 @@ public class ListPresenter<T extends IsRenderable> extends
 		}
 		return objects;
 	}
+	
+//	@Inject Provider<TestPresenter> provider;
+//	
+//	Test[] getTestlist(int k){
+//		provider.get();
+//		return null;
+//	}
+	
 }

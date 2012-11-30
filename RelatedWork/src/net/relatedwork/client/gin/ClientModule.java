@@ -46,6 +46,8 @@ import net.relatedwork.client.content.PaperView;
 
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
+import net.relatedwork.client.tools.TestPresenter;
+import net.relatedwork.client.tools.TestView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -117,5 +119,8 @@ public class ClientModule extends AbstractPresenterModule {
 				PaperView.class, PaperPresenter.MyProxy.class);
 		bindPresenterWidget(ListEntryPresenter.class,
 				ListEntryPresenter.MyView.class, ListEntryView.class);
+
+		bindPresenterWidget(TestPresenter.class, TestPresenter.MyView.class,
+				TestView.class);
 	}
 }
