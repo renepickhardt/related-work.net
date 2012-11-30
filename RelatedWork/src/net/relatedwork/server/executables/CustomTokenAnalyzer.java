@@ -9,12 +9,12 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.util.Version;
 
-public final class MyStandardAnalyzer extends Analyzer {
+public final class CustomTokenAnalyzer extends Analyzer {
 	    private final Analyzer actual;
 //	    private final HashSet<String> STOP_WORDS_SET = new HashSet<String>( Arrays.asList("stopword") );
 	    private final HashSet<String> STOP_WORDS_SET = new HashSet<String>( );
 	    
-	    public MyStandardAnalyzer()
+	    public CustomTokenAnalyzer()
 	    {
 	        actual = new StandardAnalyzer( 
 	        		Version.LUCENE_31,

@@ -1,6 +1,7 @@
 package net.relatedwork.shared.dto;
 
 import net.relatedwork.client.place.NameTokens;
+import net.relatedwork.server.neo4jHelper.DBNodeProperties;
 import net.relatedwork.shared.IsRenderable;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -26,6 +27,7 @@ public class Author implements Result, IsSerializable, IsRenderable{
 	String displayName;
 	String uri;
 	private Integer score;	
+
 
 	public Author(String displayName, String uri, Integer score){
 		this.displayName = displayName;

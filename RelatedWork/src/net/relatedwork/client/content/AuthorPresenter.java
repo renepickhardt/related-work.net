@@ -23,6 +23,7 @@ import net.relatedwork.client.MainPresenter;
 import net.relatedwork.shared.dto.Author;
 import net.relatedwork.shared.dto.DisplayAuthor;
 import net.relatedwork.shared.dto.DisplayAuthorResult;
+import net.relatedwork.shared.dto.Paper;
 
 public class AuthorPresenter extends
 		Presenter<AuthorPresenter.MyView, AuthorPresenter.MyProxy> {
@@ -34,7 +35,7 @@ public class AuthorPresenter extends
 	@ContentSlot public static final Type<RevealContentHandler<?>> TYPE_Papers = new Type<RevealContentHandler<?>>();
 	
 	public interface MyView extends View {
-		public HTMLPanel getSimilarAuthors();
+		public void setAuthorName(String name);
 	}
 
 	@ProxyCodeSplit
@@ -64,8 +65,7 @@ public class AuthorPresenter extends
 	@Inject ListPresenter<Author> coAuthorsListPresenter;
 	@Inject ListPresenter<Author> citedAuthorsListPresenter;
 	@Inject ListPresenter<Author> citedByAuthorsListPresenter;
-	//TODO: change to Paper template (need to create Paper implements IsRenderable first)
-	@Inject ListPresenter<Author> paperListPresenter;
+	@Inject ListPresenter<Paper> paperListPresenter;
 	
 	@Override
 	protected void onReveal() {
@@ -91,20 +91,22 @@ public class AuthorPresenter extends
 			}
 			@Override
 			public void onSuccess(DisplayAuthorResult result) {
-				similarAuthorsListPresenter.setTitle(result.getName() + " has similar authors");
+				getView().setAuthorName(result.getName());
+				
+				similarAuthorsListPresenter.setTitle("Similar authors");
 				similarAuthorsListPresenter.setList(result.getSimilarAuthors(25),5);
 				
-				citedAuthorsListPresenter.setTitle(result.getName() + " cites:");
+				citedAuthorsListPresenter.setTitle("cites:");
 				citedAuthorsListPresenter.setList(result.getCitedAuthors(25),5);
 				
-				citedByAuthorsListPresenter.setTitle(result.getName() + " is cited by:");
+				citedByAuthorsListPresenter.setTitle("cited by:");
 				citedByAuthorsListPresenter.setList(result.getCitedByAuthors(25),5);
 				
-				coAuthorsListPresenter.setTitle("important coauthors of " + result.getName());
+				coAuthorsListPresenter.setTitle("Coauthors");
 				coAuthorsListPresenter.setList(result.getCoAuthors(25),5);
 				
-				paperListPresenter.setTitle("Bridgeland composed papers");
-				paperListPresenter.setList(result.getSimilarAuthors(5),5);
+				paperListPresenter.setTitle("Articles");
+				paperListPresenter.setList(result.getWrittenPapers(30),10);
 			}
 		});
 		

@@ -3,6 +3,7 @@ package net.relatedwork.client.content;
 import net.relatedwork.client.MainPresenter;
 
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.google.gwt.dom.client.HeadingElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -18,6 +19,7 @@ public class AuthorView extends ViewImpl implements AuthorPresenter.MyView {
 	@UiField HTMLPanel citedAuthors;
 	@UiField HTMLPanel citedByAuthors;	
 	@UiField HTMLPanel paperByAuthor;
+	@UiField HeadingElement authorName;
 	
 	
 	public interface Binder extends UiBinder<Widget, AuthorView> {
@@ -54,6 +56,10 @@ public class AuthorView extends ViewImpl implements AuthorPresenter.MyView {
 		else {
 			super.setInSlot(slot, content);
 		}
+	}
+	
+	public void setAuthorName(String name){
+		authorName.setInnerHTML(name);
 	}
 	
 	private void setPapers(Widget content) {

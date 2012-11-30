@@ -1,7 +1,9 @@
 package net.relatedwork.shared.dto;
 
 import net.relatedwork.client.place.NameTokens;
+import net.relatedwork.server.neo4jHelper.DBNodeProperties;
 import net.relatedwork.shared.IsRenderable;
+
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.Hyperlink;
@@ -21,7 +23,10 @@ public class Paper implements IsRenderable, IsSerializable {
 	private String source;
 	private Integer citationCount;
 	
+	// for serialization
 	Paper(){}
+	
+
 	
 	public Paper(String title, String uri, String source, Integer citeCnt) {
 		this.title = title;
@@ -33,8 +38,8 @@ public class Paper implements IsRenderable, IsSerializable {
 	@Override
 	public Hyperlink getLink() {
 		Hyperlink link = new Hyperlink();
-		link.setTargetHistoryToken(NameTokens.author+";q="+uri);
-		link.setText(title + "Don't click me yet");
+		link.setTargetHistoryToken(NameTokens.paper+";q="+uri);
+		link.setText(title);
 		return link;
 	}
 
@@ -68,5 +73,9 @@ public class Paper implements IsRenderable, IsSerializable {
 
 	public void setCitationCount(Integer citationCount) {
 		this.citationCount = citationCount;
+	}
+	
+	public Integer getScore(){
+		return citationCount;
 	}
 }

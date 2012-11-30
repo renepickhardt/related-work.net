@@ -1,8 +1,10 @@
 package net.relatedwork.server.neo4jHelper;
 
 public class DBNodeProperties {
+	
 	// All nodes
 	public static String LABEL = "label";
+	public static String URI = "uri";
 	public static String PAGE_RANK_VALUE = "pageRankValue";
 	
 	// Paper nodes
@@ -18,4 +20,10 @@ public class DBNodeProperties {
 	// Propery values for TYPE master nodes
 	public static String PAPER_LABEL_VALUE = "PAPER";
 	public static String AUTHOR_LABEL_VALUE = "AUTHOR";	
+
+	// Node index names 
+	public static String SEARCH_INDEX_NAME = "fulltextSearchIdx";
+	public static String URI_INDEX_NAME = "uriIdx";
+
+
 }

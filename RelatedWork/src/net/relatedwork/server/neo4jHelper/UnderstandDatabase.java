@@ -17,6 +17,7 @@ import org.neo4j.kernel.EmbeddedGraphDatabase;
 
 public class UnderstandDatabase {
 	private EmbeddedGraphDatabase graphDB;
+	
 	public UnderstandDatabase(String path){
 		graphDB = new EmbeddedGraphDatabase(path);
 	}

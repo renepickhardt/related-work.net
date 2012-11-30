@@ -89,7 +89,6 @@ public class SearchResultPagePresenter
 			HorizontalPanel panel = new HorizontalPanel();
 			Label authorLabel = new Label("Author: ");
 			Label paperLabel = new Label("Paper: ");
-
 			if (r instanceof Paper){
 				Paper p = (Paper)r;
 				panel.add(paperLabel);

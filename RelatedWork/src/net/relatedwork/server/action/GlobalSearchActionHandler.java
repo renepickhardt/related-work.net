@@ -46,52 +46,49 @@ public class GlobalSearchActionHandler implements
 	public static String prepareQuery(String queryString){
 		queryString = queryString.replaceAll("\\W+", " ");
 		queryString = queryString.trim();
-		queryString = queryString.replace(',',' ');
 		queryString = queryString.toLowerCase();
-		// replace intermediate whitespaces
-		queryString = queryString.replaceAll("\\s+", "* AND ");
+		// replace whitespaces
+		queryString = queryString.replaceAll("\\s+", "* ");
 		queryString = queryString + "*";
-		
-		return queryString;
+		return "key:("+queryString+")";
 	}
 	
 	@Override
 	public GlobalSearchResult execute(GlobalSearch action, ExecutionContext context)
 			throws ActionException {
-		
-		GlobalSearchResult result = new GlobalSearchResult();
-		String query = action.getQuery();
-
-		System.out.println("Send Query:" + query);
 		//TODO: log user ID / session and search query / time stamp - later log what the user clicks in search results
-		// query = query.replace(' ', '?');
-				
-		query = prepareQuery(query);
-		System.out.println("Send Query:" + "title:"+query);
-
-		Sort s = new Sort();
-		s.setSort(new SortField("pr", SortField.DOUBLE, true));
 
 		Index<Node> index = ContextHelper.getSearchIndex(servletContext);
-		IndexHits<Node> res = index.query(new QueryContext("title:"+query).defaultOperator(Operator.AND).sort(s).top(20));
-		//IndexHits<Node> res = index.query(new QueryContext("title:"+query).defaultOperator(Operator.AND).sort(s).top(20));
-		//IndexHits<Node> res = index.query("title",query);
+		GlobalSearchResult result = new GlobalSearchResult();
+		
+		String queryRaw = action.getQuery();
+		String query = prepareQuery(queryRaw);
+		
+		IOHelper.log("Send query:" + queryRaw);
+		IOHelper.log("Processed query:" + query);
 
-		System.out.println("Query returned "+res.size()+" results");
+		// setup sort field
+		Sort s = new Sort();
+		s.setSort(new SortField("score", SortField.DOUBLE, true));
 
-		for (Node n : res) {
-			if (!n.hasProperty(DBNodeProperties.PAGE_RANK_VALUE))continue;
-			Double pr = (Double)n.getProperty(DBNodeProperties.PAGE_RANK_VALUE);
+		// run query
+		IndexHits<Node> queryReults = index.query(new QueryContext(query).
+				defaultOperator(Operator.AND).
+				sort(s).
+				top(20));
+
+		IOHelper.log("Query returned " + queryReults.size() + " results.");
+
+		for (Node n : queryReults) {
+			if (!n.hasProperty(DBNodeProperties.PAGE_RANK_VALUE)) continue;
+			
+			// Add query Results to result object
 			if (NodeType.isAuthorNode(n)) {
-//				IOHelper.log("add author node: ");
-				String name = (String)n.getProperty(DBNodeProperties.AUTHOR_NAME);
-				Author a = new Author(name, name, (int)(pr*1000.));
-				result.addAuthor(a);
+				result.addAuthor(Neo4jToDTOHelper.authorFromNode(n));
 			}
+
 			if (NodeType.isPaperNode(n)){
-//				IOHelper.log("add paper node:");
-				Paper p = Neo4jToDTOHelper.generatePaperFromNode(n);
-				result.addPaper(p);
+				result.addPaper(Neo4jToDTOHelper.paperFromNode(n));
 			}
 		}
 

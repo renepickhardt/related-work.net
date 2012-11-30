@@ -50,10 +50,10 @@ public class RequestLocalSearchSuggestionActionHandler
 //		map = new HashMap<String, Integer>();
 //		if (map==null)return null;
 		Sort s = new Sort();
-		s.setSort(new SortField("pr", SortField.DOUBLE, true));
+		s.setSort(new SortField("score", SortField.DOUBLE, true));
 
 		Index<Node> index = ContextHelper.getSearchIndex(servletContext);
-		IndexHits<Node> res = index.query(new QueryContext("title:Hartmann,?Hei*").sort(s).top(2));
+		IndexHits<Node> res = index.query(new QueryContext("key:Hartmann,?Hei*").sort(s).top(2));
 		
 		if (res == null)
 			return null;

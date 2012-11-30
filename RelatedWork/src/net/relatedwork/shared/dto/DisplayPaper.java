@@ -7,21 +7,21 @@ import net.relatedwork.shared.dto.DisplayPaperResult;
 
 public class DisplayPaper extends UnsecuredActionImpl<DisplayPaperResult> {
 
-	private String id;
+	private String uri;
 	
 	public DisplayPaper() {
 	}
 
-	public DisplayPaper(String id) {
-		this.id = id;
+	public DisplayPaper(String uri) {
+		this.uri = uri;
 	}
 
-	public String getPaperId() {
-		return id;
+	public String getPaperUri() {
+		return uri;
 	}
 
-	public void setPaperId(String id) {
-		this.id = id;
+	public void setPaperUri(String uri) {
+		this.uri = uri;
 	}
 	
 }

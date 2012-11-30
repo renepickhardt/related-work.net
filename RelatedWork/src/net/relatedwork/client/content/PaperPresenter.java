@@ -67,7 +67,7 @@ public class PaperPresenter extends
 	public void prepareFromRequest(PlaceRequest request) {
 		
 		// Get paper_id form query string
-		String paper_id = request.getParameter(NameTokens.PAPER_ID, "None");
+		String paper_id = request.getParameter("q", "None");
 
 		// Get paper data from server	
 		dispatcher.execute(new DisplayPaper(paper_id), new AsyncCallback<DisplayPaperResult>() {

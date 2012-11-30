@@ -7,9 +7,9 @@
 	ui:generateLocales='default'>
 
 	<g:FocusPanel ui:field="rwListEntry" styleName="rwListEntry">
-		<g:HTMLPanel>
+<!-- 		<g:HTMLPanel> -->
 			<g:HTMLPanel ui:field="rwVisibleListEntry" styleName="rwVisibleListEntry">visible</g:HTMLPanel>
 			<g:HTMLPanel ui:field="rwHoverableListEntry" styleName="rwHoverableListEntry">hidden</g:HTMLPanel>
-		</g:HTMLPanel>
-	</g:FocusPanel>>
+<!-- 		</g:HTMLPanel> -->
+	</g:FocusPanel>
 </ui:UiBinder>

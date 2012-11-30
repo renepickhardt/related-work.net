@@ -96,8 +96,8 @@ public class SearchTestst {
 	
 	public static void main(String[] args) {
 		graphDB = new EmbeddedGraphDatabase("myTestDb");
-		index = graphDB.index().forNodes("custom4Index", 
-				MapUtil.stringMap( "analyzer", MyStandardAnalyzer.class.getName() ) 
+		index = graphDB.index().forNodes("custom5Index", 
+				MapUtil.stringMap( "analyzer", CustomTokenAnalyzer.class.getName() ) 
 				);
 		
 		
@@ -110,7 +110,7 @@ public class SearchTestst {
 	}
 	
 	public static void doSearches() {
-		String queryString = "label:(*)";
+		String queryString = "label:(Tert*)";
 		
 		System.out.println("Querry index: "+ queryString);
 		

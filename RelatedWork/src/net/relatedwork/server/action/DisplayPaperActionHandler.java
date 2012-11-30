@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import javax.servlet.ServletContext;
 
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.NotFoundException;
 import org.neo4j.graphdb.index.Index;
 import org.neo4j.graphdb.index.IndexHits;
 import org.neo4j.index.lucene.QueryContext;
@@ -13,6 +14,10 @@ import org.neo4j.index.lucene.QueryContext;
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
 
 import net.relatedwork.server.ContextHelper;
+import net.relatedwork.server.neo4jHelper.DBNodeProperties;
+import net.relatedwork.server.neo4jHelper.NodeType;
+import net.relatedwork.server.utils.IOHelper;
+import net.relatedwork.shared.dto.DisplayAuthorResult;
 import net.relatedwork.shared.dto.DisplayPaper;
 import net.relatedwork.shared.dto.DisplayPaperResult;
 import com.google.inject.Inject;
@@ -32,26 +37,33 @@ public class DisplayPaperActionHandler implements
 	public DisplayPaperResult execute(DisplayPaper action, ExecutionContext context)
 			throws ActionException {
 		
-		Index<Node> index = ContextHelper.getPaperIndex(servletContext);
-
 		DisplayPaperResult result = new DisplayPaperResult();
-		Node paperNode = null;
-		try {
-			paperNode = index.get("id", action.getPaperId()).next();
-		} catch (NoSuchElementException e) {
-			result.setTitle("Paper not found");
-			return result;
-		} 
+		Index<Node> uriIndex = ContextHelper.getUriIndex(servletContext);
 		
-		// System.out.println(paperNode.getPropertyKeys().toString());
+		String uri = action.getPaperUri();
+		IOHelper.log("Rendering paper page with uri '"+ uri +"'");
+		
+		Node paperNode = null;
+		try{
+			paperNode = uriIndex.get(DBNodeProperties.URI, uri).getSingle();
+		} catch (Exception e) {
+			System.out.println("URI INDEX ERROR. uri " + uri + " has more than one associated node.");
+		}
+		
+		if (paperNode == null ||  !NodeType.isPaperNode(paperNode) || !paperNode.hasProperty(DBNodeProperties.PAGE_RANK_VALUE) ){
+			System.out.println("Cannot render Paper page for node: "+paperNode.toString() +", uri: " + uri);
+			result.setTitle("Paper Not Found!");
+			return result;
+		}
 
 		try {
 			result.setTitle((String) paperNode.getProperty("title"));
 			result.setAbstract((String) paperNode.getProperty("abstract"));
 			result.setAuthors((String) paperNode.getProperty("c_authors"));
-		} catch (NullPointerException e) {
+		} catch (NotFoundException e) {
 			result.setTitle("Paper properties not found");
 		}
+
 		return result;
 	}
 
