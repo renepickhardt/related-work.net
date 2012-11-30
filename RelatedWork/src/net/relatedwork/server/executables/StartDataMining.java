@@ -39,9 +39,9 @@ public class StartDataMining {
 //		CalculatePageRank cpr = new CalculatePageRank(graphDB);
 //		cpr.dcalculatePageRank(0.85, 3);
 		
-//		BuildIndices bi = new BuildIndices();
-//		bi.setGraphDB(graphDB);
-//		bi.buildSearchIndex("prsearch_idx");
+		BuildIndices bi = new BuildIndices();
+		bi.setGraphDB(graphDB);
+		bi.buildSearchIndex("qrsearch_idx");
 		
 		graphDB.shutdown();
 	}

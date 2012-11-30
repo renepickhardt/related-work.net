@@ -72,7 +72,7 @@ public class ContextHelper {
 		EmbeddedReadOnlyGraphDatabase graphDB = getReadOnlyGraphDatabase(servletContext);
 		Index<Node> index = (Index<Node>)servletContext.getAttribute(SEARCH_IDX);
 		if (index == null){
-			index = graphDB.index().forNodes("prsearch_idx");
+			index = graphDB.index().forNodes("qrsearch_idx");
 			((LuceneIndex<Node>) index).setCacheCapacity("title", 300000);
 			servletContext.setAttribute(SEARCH_IDX,index);
 		}
