@@ -14,7 +14,7 @@ public class Renderable implements IsRenderable, IsSerializable{
 	}
 
 	@Override
-	public Hyperlink getLink(){
+	public Hyperlink getAuthorLink(){
 		return new Hyperlink(displayName, NameTokens.author);
 	}
 }

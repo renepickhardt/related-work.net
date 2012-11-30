@@ -83,7 +83,10 @@ public class AuthorPresenter extends
 	public void prepareFromRequest(PlaceRequest request) {
 		// TODO Auto-generated method stub
 		super.prepareFromRequest(request);
-		dispatcher.execute(new DisplayAuthor(request.getParameter("q", "Bridgeland")), new AsyncCallback<DisplayAuthorResult>() {
+		dispatcher.execute(new DisplayAuthor(request.getParameter(
+				"q", 
+				"Bridgeland" // default author
+				)), new AsyncCallback<DisplayAuthorResult>() {
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub

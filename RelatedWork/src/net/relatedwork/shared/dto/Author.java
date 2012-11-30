@@ -35,7 +35,7 @@ public class Author implements Result, IsSerializable, IsRenderable{
 		this.score = score;
 	}
 	
-	public Hyperlink getLink(){
+	public Hyperlink getAuthorLink(){
 		Hyperlink link = new Hyperlink();
 		link.setTargetHistoryToken(NameTokens.author+";q="+uri);
 		link.setText(displayName);

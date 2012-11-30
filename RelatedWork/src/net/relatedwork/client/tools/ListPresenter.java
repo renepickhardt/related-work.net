@@ -40,19 +40,12 @@ public class ListPresenter<T extends IsRenderable> extends
 
 	public interface MyView extends View {
 		public HTMLPanel getListTitle();
-
 		public void setListTitle(HTMLPanel listTitle);
-
 		public HTMLPanel getListContent();
-
 		public void setListContent(HTMLPanel listContent);
-
 		public void activateWidget();
-
 		public void deActivateWidget();
-
 		public Anchor getRwListMoreLink();
-
 		public void setRwListMoreLink(Anchor rwListMoreLink);
 
 	}
@@ -70,21 +63,23 @@ public class ListPresenter<T extends IsRenderable> extends
 	@Override
 	protected void onBind() {
 		super.onBind();
-		getEventBus().addHandler(MouseOverEvent.getType(),
-				new MouseOverHandler() {
-					@Override
-					public void onMouseOver(MouseOverEvent event) {
-						com.google.gwt.user.client.Window.alert("test");
-						getView().activateWidget();
-					}
-				});
-		getEventBus().addHandler(MouseOutEvent.getType(),
-				new MouseOutHandler() {
-					@Override
-					public void onMouseOut(MouseOutEvent event) {
-						getView().deActivateWidget();
-					}
-				});
+
+		// mouse over event does???S
+//		getEventBus().addHandler(MouseOverEvent.getType(),
+//				new MouseOverHandler() {
+//					@Override
+//					public void onMouseOver(MouseOverEvent event) {
+//						com.google.gwt.user.client.Window.alert("test");
+//						getView().activateWidget();
+//					}
+//				});
+//		getEventBus().addHandler(MouseOutEvent.getType(),
+//				new MouseOutHandler() {
+//					@Override
+//					public void onMouseOut(MouseOutEvent event) {
+//						getView().deActivateWidget();
+//					}
+//				});
 	}
 
 	
@@ -100,12 +95,15 @@ public class ListPresenter<T extends IsRenderable> extends
 		int cnt = 0;
 
 		for (T element : list) {
+			// set entry presenters into list presenter
 			ListEntryPresenter<T> entryPresenter = (ListEntryPresenter<T>) provider.get();
 			entryPresenter.setContent(element);
-			setInSlot(TYPE_ListEntry, entryPresenter);	
+			setInSlot(TYPE_ListEntry, entryPresenter);
 			if (++cnt > k)
 				break;
 		}
+
+		// set more link action
 		Anchor link = getView().getRwListMoreLink();
 		link.addClickHandler(new ClickHandler() {
 			@Override
@@ -113,6 +111,7 @@ public class ListPresenter<T extends IsRenderable> extends
 				setList(myList, 2 * numElements);
 			}
 		});
+
 	}
 
 	public void setTitle(String title) {

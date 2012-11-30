@@ -93,12 +93,12 @@ public class SearchResultPagePresenter
 			if (r instanceof Paper){
 				Paper p = (Paper)r;
 				panel.add(paperLabel);
-				panel.add(p.getLink());
+				panel.add(p.getAuthorLink());
 				getView().addResultElement(panel);
 			}else if (r instanceof Author){
 				Author a = (Author)r;
 				panel.add(authorLabel);
-				panel.add(a.getLink());
+				panel.add(a.getAuthorLink());
 				getView().addResultElement(panel);
 			}
 		}	

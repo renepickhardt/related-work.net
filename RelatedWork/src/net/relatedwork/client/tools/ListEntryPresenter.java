@@ -38,6 +38,7 @@ public class ListEntryPresenter<T extends IsRenderable> extends
 		
 		final FocusPanel fp = getView().getRwListEntry();
 		
+		// change CSS style on mouse over
 		fp.addMouseOverHandler(new MouseOverHandler() {
 			@Override
 			public void onMouseOver(MouseOverEvent event) {
@@ -55,23 +56,30 @@ public class ListEntryPresenter<T extends IsRenderable> extends
 	}
 	
 	public void setContent(T element){
-		HTMLPanel visible = getView().getRwVisibleListEntry();
-		visible.add(element.getLink());
-		final HTMLPanel hover = getView().getRwHoverableListEntry();
-		hover.setVisible(false);
-		hover.add(((Author)element).getHoverable());
+		
+		HTMLPanel visiblePanel = getView().getRwVisibleListEntry();
+		visiblePanel.add(element.getAuthorLink());
+		
+		final HTMLPanel hoverPanel = getView().getRwHoverableListEntry();
+		hoverPanel.setVisible(false);
+		hoverPanel.add(((Author)element).getHoverable());
+		
+		
 		final FocusPanel fp = getView().getRwListEntry();
+
+		// Switch hover panel on mouse over
 		fp.addMouseOverHandler(new MouseOverHandler() {
 			@Override
 			public void onMouseOver(MouseOverEvent event) {
-				hover.setVisible(true);
+				hoverPanel.setVisible(true);
 				fp.setStyleName("rwListEntry-hover");
 			}
 		});
+		
 		fp.addMouseOutHandler(new MouseOutHandler() {
 			@Override
 			public void onMouseOut(MouseOutEvent event) {
-				hover.setVisible(false);
+				hoverPanel.setVisible(false);
 				fp.setStyleName("rwListEntry");
 			}
 		});

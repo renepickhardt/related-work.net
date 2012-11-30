@@ -31,7 +31,7 @@ public class Paper implements IsRenderable, IsSerializable {
 	}
 
 	@Override
-	public Hyperlink getLink() {
+	public Hyperlink getAuthorLink() {
 		Hyperlink link = new Hyperlink();
 		link.setTargetHistoryToken(NameTokens.author+";q="+uri);
 		link.setText(title + "Don't click me yet");
