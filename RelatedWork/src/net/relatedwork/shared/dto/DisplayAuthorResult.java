@@ -66,5 +66,4 @@ public class DisplayAuthorResult implements Result {
 	public void setName(String name) {
 		this.name = name;
 	}
-
 }

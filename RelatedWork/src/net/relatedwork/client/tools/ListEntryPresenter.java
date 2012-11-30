@@ -1,5 +1,8 @@
 package net.relatedwork.client.tools;
 
+import net.relatedwork.shared.IsRenderable;
+import net.relatedwork.shared.dto.Author;
+
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.google.inject.Inject;
@@ -11,7 +14,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 
-public class ListEntryPresenter extends
+public class ListEntryPresenter<T extends IsRenderable> extends
 		PresenterWidget<ListEntryPresenter.MyView> {
 
 	public interface MyView extends View {
@@ -49,8 +52,29 @@ public class ListEntryPresenter extends
 				fp.setStyleName("rwListEntry");
 			}
 		});
-
-		
-		
 	}
+	
+	public void setContent(T element){
+		HTMLPanel visible = getView().getRwVisibleListEntry();
+		visible.add(element.getLink());
+		final HTMLPanel hover = getView().getRwHoverableListEntry();
+		hover.setVisible(false);
+		hover.add(((Author)element).getHoverable());
+		final FocusPanel fp = getView().getRwListEntry();
+		fp.addMouseOverHandler(new MouseOverHandler() {
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				hover.setVisible(true);
+				fp.setStyleName("rwListEntry-hover");
+			}
+		});
+		fp.addMouseOutHandler(new MouseOutHandler() {
+			@Override
+			public void onMouseOut(MouseOutEvent event) {
+				hover.setVisible(false);
+				fp.setStyleName("rwListEntry");
+			}
+		});
+	}
+	
 }
