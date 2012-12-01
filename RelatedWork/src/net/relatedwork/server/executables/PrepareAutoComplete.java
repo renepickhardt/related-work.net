@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import net.relatedwork.server.neo4jHelper.DBNodeProperties;
-import net.relatedwork.server.neo4jHelper.RelationshipTypes;
+import net.relatedwork.server.neo4jHelper.DBRelationshipTypes;
 import net.relatedwork.server.utils.Config;
 import net.relatedwork.server.utils.IOHelper;
 import net.relatedwork.shared.dto.Author;
@@ -125,7 +125,7 @@ public class PrepareAutoComplete {
 	}
 
 	private static String getType(Node node){
-		for (Relationship type_rel: node.getRelationships(Direction.OUTGOING,RelationshipTypes.TYPE)) {
+		for (Relationship type_rel: node.getRelationships(Direction.OUTGOING,DBRelationshipTypes.TYPE)) {
 			return (String)type_rel.getEndNode().getProperty(DBNodeProperties.LABEL);
 		}
 		return "None";

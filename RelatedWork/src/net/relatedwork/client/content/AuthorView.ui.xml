@@ -8,21 +8,17 @@
 
 	<g:HTMLPanel>
 		<g:VerticalPanel>
-			<g:HTMLPanel>
-				<g:VerticalPanel>
-					<g:HorizontalPanel>
-						<g:HTMLPanel ui:field="similarAuthors"></g:HTMLPanel>
-						<g:HTMLPanel ui:field="coAuthors"></g:HTMLPanel>
-					</g:HorizontalPanel>
-					<g:HorizontalPanel>
-						<g:HTMLPanel ui:field="citedAuthors"></g:HTMLPanel>
-						<g:HTMLPanel ui:field="citedByAuthors"></g:HTMLPanel>
-					</g:HorizontalPanel>
-				</g:VerticalPanel>
-			</g:HTMLPanel>
-			<g:HTMLPanel ui:field="paperByAuthor">
-			</g:HTMLPanel>			
-		</g:VerticalPanel>	
+			<g:HTMLPanel><h2 ui:field="authorName">Author Name</h2></g:HTMLPanel>			
+			<g:HorizontalPanel>
+				<g:HTMLPanel ui:field="similarAuthors"/>
+				<g:HTMLPanel ui:field="coAuthors"/>
+			</g:HorizontalPanel>
+			<g:HorizontalPanel>
+				<g:HTMLPanel ui:field="citedAuthors"/>
+				<g:HTMLPanel ui:field="citedByAuthors"/>
+			</g:HorizontalPanel>
+			<g:HTMLPanel ui:field="paperByAuthor"/>		
+		</g:VerticalPanel>
 	</g:HTMLPanel>
 	
 </ui:UiBinder>

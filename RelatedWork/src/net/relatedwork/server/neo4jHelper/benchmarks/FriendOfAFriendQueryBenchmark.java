@@ -22,7 +22,7 @@ import org.neo4j.kernel.Traversal;
 import org.neo4j.kernel.Uniqueness;
 
 import net.relatedwork.server.neo4jHelper.DBRelationshipProperties;
-import net.relatedwork.server.neo4jHelper.RelationshipTypes;
+import net.relatedwork.server.neo4jHelper.DBRelationshipTypes;
 import net.relatedwork.server.utils.IOHelper;
 
 /**
@@ -124,9 +124,9 @@ public class FriendOfAFriendQueryBenchmark {
 		for (Node author:graphDB.getAllNodes()){
 			if (!author.hasProperty("name"))continue;
 			if (++qCnt>numQueries)break;
-			for (Relationship rel: author.getRelationships(RelationshipTypes.AUTHOROF)){
+			for (Relationship rel: author.getRelationships(DBRelationshipTypes.WRITTEN_BY)){
 				Node paper = rel.getOtherNode(author);
-				for (Relationship coAuthorRel: paper.getRelationships(RelationshipTypes.AUTHOROF)){
+				for (Relationship coAuthorRel: paper.getRelationships(DBRelationshipTypes.WRITTEN_BY)){
 					Node coAuthor = coAuthorRel.getOtherNode(paper);
 					if (coAuthor.getId()==author.getId())continue;
 					resCnt++;
@@ -143,7 +143,7 @@ public class FriendOfAFriendQueryBenchmark {
 			if (!author.hasProperty("name"))continue;
 			if (++qCnt>numQueries)break;
 			Traversal t = new Traversal();
-			for (Path p:t.description().breadthFirst().relationships(RelationshipTypes.AUTHOROF).evaluator(Evaluators.atDepth(2)).uniqueness(Uniqueness.NONE).traverse(author)){
+			for (Path p:t.description().breadthFirst().relationships(DBRelationshipTypes.WRITTEN_BY).evaluator(Evaluators.atDepth(2)).uniqueness(Uniqueness.NONE).traverse(author)){
 				Node coAuthor = p.endNode();
 				resCnt++;
 			}			
@@ -163,7 +163,7 @@ public class FriendOfAFriendQueryBenchmark {
 			params.put( "node", author );
 			//ExecutionResult result = engine.execute( "start n=node({node}) return n.name", params );
 			
-			String query = "START author=node({node}) MATCH author-[:"+RelationshipTypes.AUTHOROF.name()+"]-()-[:"+RelationshipTypes.AUTHOROF.name()+"]- coAuthor RETURN coAuthor";
+			String query = "START author=node({node}) MATCH author-[:"+DBRelationshipTypes.WRITTEN_BY.name()+"]-()-[:"+DBRelationshipTypes.WRITTEN_BY.name()+"]- coAuthor RETURN coAuthor";
 			ExecutionResult result = engine.execute( query, params);
 			scala.collection.Iterator<Node> it = result.columnAs("coAuthor");
 			while (it.hasNext()){

@@ -1,10 +1,14 @@
 package net.relatedwork.shared.dto;
 
 import net.relatedwork.client.place.NameTokens;
+import net.relatedwork.server.neo4jHelper.DBNodeProperties;
 import net.relatedwork.shared.IsRenderable;
 
+
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Label;
 
 /**
  * transferes a paper node to the client 
@@ -18,10 +22,18 @@ public class Paper implements IsRenderable, IsSerializable {
 
 	private String title;
 	private String uri;
-	private String source;
+	private String source; // Source ID, e.g. arxiv id
 	private Integer citationCount;
 	
+	// for serialization
 	Paper(){}
+	
+	public Paper(String title) {
+		this.title = title;
+		this.uri = "";
+		this.source = "";
+		this.citationCount = 0;
+	}
 	
 	public Paper(String title, String uri, String source, Integer citeCnt) {
 		this.title = title;
@@ -33,10 +45,18 @@ public class Paper implements IsRenderable, IsSerializable {
 	@Override
 	public Hyperlink getAuthorLink() {
 		Hyperlink link = new Hyperlink();
-		link.setTargetHistoryToken(NameTokens.author+";q="+uri);
-		link.setText(title + "Don't click me yet");
+		link.setTargetHistoryToken(NameTokens.paper+";q="+uri);
+		link.setText(title);
 		return link;
 	}
+	
+	public HTMLPanel getHoverable(){
+		HTMLPanel panel = new HTMLPanel("");
+		Label l = new Label(citationCount+"");
+		panel.add(l);
+		return panel;
+	}
+	
 
 	public String getTitle() {
 		return title;
@@ -68,5 +88,9 @@ public class Paper implements IsRenderable, IsSerializable {
 
 	public void setCitationCount(Integer citationCount) {
 		this.citationCount = citationCount;
+	}
+	
+	public Integer getScore(){
+		return citationCount;
 	}
 }

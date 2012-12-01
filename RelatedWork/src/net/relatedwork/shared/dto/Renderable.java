@@ -1,6 +1,7 @@
 package net.relatedwork.shared.dto;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 
 import net.relatedwork.client.place.NameTokens;
@@ -16,5 +17,11 @@ public class Renderable implements IsRenderable, IsSerializable{
 	@Override
 	public Hyperlink getAuthorLink(){
 		return new Hyperlink(displayName, NameTokens.author);
+	}
+	
+	@Override
+	public HTMLPanel getHoverable() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

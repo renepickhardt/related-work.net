@@ -6,6 +6,7 @@ import net.relatedwork.server.datamining.BuildIndices;
 import net.relatedwork.server.datamining.CalculatePageRank;
 import net.relatedwork.server.datamining.CoAuthorCalculator;
 import net.relatedwork.server.datamining.SimilarPaperCalculator;
+import net.relatedwork.server.neo4jHelper.DBNodeProperties;
 import net.relatedwork.server.utils.Config;
 
 /**
@@ -39,9 +40,10 @@ public class StartDataMining {
 //		CalculatePageRank cpr = new CalculatePageRank(graphDB);
 //		cpr.dcalculatePageRank(0.85, 3);
 		
-//		BuildIndices bi = new BuildIndices();
-//		bi.setGraphDB(graphDB);
-//		bi.buildSearchIndex("prsearch_idx");
+		
+		BuildIndices bi = new BuildIndices();
+		bi.setGraphDB(graphDB);
+		bi.buildSearchIndex();
 		
 		graphDB.shutdown();
 	}

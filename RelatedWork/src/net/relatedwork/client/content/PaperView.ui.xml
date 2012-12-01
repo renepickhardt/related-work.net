@@ -13,30 +13,18 @@
 
 	<g:HTMLPanel>
 		<g:HTMLPanel>
-			<h1 ui:field="rwTitle">Paper title</h1>
+			<h1 ui:field="rwTitle">Title</h1>
 		</g:HTMLPanel>
-		<g:HTMLPanel>
+		<g:HTMLPanel ui:field="rwAuthorPanel">
 			<h2 ui:field="rwAuthors">Author names</h2>
 		</g:HTMLPanel>
 		<g:HTMLPanel>
 			<h3>Abstract</h3>
-			<p ui:field="rwAbstract">here comes the abstract</p>
+			<p ui:field="rwAbstract">Abstract</p>
 		</g:HTMLPanel>
-		<g:HTMLPanel ui:field="rwCitationPanel">
-			<h3>Citations</h3>
-			<ul ui:field="rwCitationsList">
-			<li>Citation 1</li>
-			<li>Citation 2</li>
-			<li>Citation 3</li>
-			</ul>
-		</g:HTMLPanel>
-		<g:HTMLPanel ui:field="rwReferencePanel">
-			<h3>References</h3>
-			<ul ui:field="rwReferenceList">
-			<li>Reference 1</li>
-			<li>Reference 2</li>
-			<li>Reference 3</li>
-			</ul>
-		</g:HTMLPanel>
+		<g:HorizontalPanel>
+			<g:HTMLPanel ui:field="rwCitations"/>
+			<g:HTMLPanel ui:field="rwCitedBy"/>
+		</g:HorizontalPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

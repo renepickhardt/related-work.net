@@ -13,7 +13,7 @@ import org.neo4j.kernel.EmbeddedGraphDatabase;
 
 import net.relatedwork.server.neo4jHelper.DBNodeProperties;
 import net.relatedwork.server.neo4jHelper.DBRelationshipProperties;
-import net.relatedwork.server.neo4jHelper.RelationshipTypes;
+import net.relatedwork.server.neo4jHelper.DBRelationshipTypes;
 import net.relatedwork.server.utils.Algo;
 import net.relatedwork.server.utils.Config;
 import net.relatedwork.server.utils.IOHelper;
@@ -60,9 +60,9 @@ public class SimilarPaperCalculator extends Calculator {
 				if (paper.hasProperty(DBNodeProperties.PAPER_TITLE)){
 					HashMap<Node, Integer> coCitationCount = new HashMap<Node, Integer>();
 					Integer citationCount = (Integer)paper.getProperty(DBNodeProperties.PAPER_CITATION_COUNT);
-					for (Relationship rel:paper.getRelationships(RelationshipTypes.CITES,Direction.INCOMING)){//get backlinks
+					for (Relationship rel:paper.getRelationships(DBRelationshipTypes.CITES,Direction.INCOMING)){//get backlinks
 						Node parentPaper = rel.getOtherNode(paper);
-						for (Relationship coCiteRel:parentPaper.getRelationships(RelationshipTypes.CITES,Direction.OUTGOING)){
+						for (Relationship coCiteRel:parentPaper.getRelationships(DBRelationshipTypes.CITES,Direction.OUTGOING)){
 							Node coCitedPaper = coCiteRel.getOtherNode(parentPaper);
 							if (coCitedPaper.getId()==paper.getId())continue;
 							if (coCitationCount.containsKey(coCitedPaper)){
@@ -76,7 +76,7 @@ public class SimilarPaperCalculator extends Calculator {
 					}
 						
 					for (Node coCitation:coCitationCount.keySet()){
-						Relationship coRel = paper.createRelationshipTo(coCitation, RelationshipTypes.CO_CITATION_SCORE);
+						Relationship coRel = paper.createRelationshipTo(coCitation, DBRelationshipTypes.CO_CITATION_SCORE);
 						Integer citationCount1 = (Integer)coCitation.getProperty(DBNodeProperties.PAPER_CITATION_COUNT);
 						Integer cut = coCitationCount.get(coCitation);
 						Double tanimotoScore = (cut*1.0) / (citationCount + citationCount1 - cut);
@@ -109,9 +109,9 @@ public class SimilarPaperCalculator extends Calculator {
 				if (paper.hasProperty(DBNodeProperties.PAPER_TITLE)){
 					HashMap<Node, Integer> coCitationCount = new HashMap<Node, Integer>();
 					Integer citationCount = (Integer)paper.getProperty(DBNodeProperties.PAPER_CITATION_COUNT);
-					for (Relationship rel:paper.getRelationships(RelationshipTypes.CITES,Direction.INCOMING)){//get backlinks
+					for (Relationship rel:paper.getRelationships(DBRelationshipTypes.CITES,Direction.INCOMING)){//get backlinks
 						Node parentPaper = rel.getOtherNode(paper);
-						for (Relationship coCiteRel:parentPaper.getRelationships(RelationshipTypes.CITES,Direction.OUTGOING)){
+						for (Relationship coCiteRel:parentPaper.getRelationships(DBRelationshipTypes.CITES,Direction.OUTGOING)){
 							Node coCitedPaper = coCiteRel.getOtherNode(parentPaper);
 							if (coCitedPaper.getId()==paper.getId())continue;
 							if (coCitationCount.containsKey(coCitedPaper)){
@@ -133,7 +133,7 @@ public class SimilarPaperCalculator extends Calculator {
 
 					for (Integer cut: topkCoCitation.descendingKeySet()){
 						for (Node coCitation: topkCoCitation.get(cut)){
-							Relationship coRel = paper.createRelationshipTo(coCitation, RelationshipTypes.CO_CITATION_SCORE);
+							Relationship coRel = paper.createRelationshipTo(coCitation, DBRelationshipTypes.CO_CITATION_SCORE);
 							Integer citationCount1 = (Integer)coCitation.getProperty(DBNodeProperties.PAPER_CITATION_COUNT);
 							Double tanimotoScore = (cut*1.0) / (citationCount + citationCount1 - cut);
 							coRel.setProperty(DBRelationshipProperties.CO_CITATION_SCORE, tanimotoScore);
@@ -163,7 +163,7 @@ public class SimilarPaperCalculator extends Calculator {
 				if (n.hasProperty(DBNodeProperties.PAPER_TITLE)){
 					transactionCount++;
 					int citationCount = 0;
-					for (Relationship rel:n.getRelationships(RelationshipTypes.CITES,Direction.INCOMING)){
+					for (Relationship rel:n.getRelationships(DBRelationshipTypes.CITES,Direction.INCOMING)){
 						citationCount++;
 					}
 					n.setProperty(DBNodeProperties.PAPER_CITATION_COUNT, citationCount);
@@ -192,14 +192,14 @@ public class SimilarPaperCalculator extends Calculator {
 				if (!author.hasProperty("name"))continue;
 				HashMap<Node, Double> simAuthors = new HashMap<Node, Double>();
 
-				for (Relationship rel:author.getRelationships(RelationshipTypes.AUTHOROF)){
+				for (Relationship rel:author.getRelationships(DBRelationshipTypes.WRITTEN_BY)){
 					Node paper = rel.getOtherNode(author);
 					if (paper.hasProperty("title")){// i found a paper
-						for (Relationship simPaperRel:paper.getRelationships(RelationshipTypes.CO_CITATION_SCORE, Direction.OUTGOING)){
+						for (Relationship simPaperRel:paper.getRelationships(DBRelationshipTypes.CO_CITATION_SCORE, Direction.OUTGOING)){
 							Node simPaper = simPaperRel.getEndNode();
 							if (simPaperRel.hasProperty(DBRelationshipProperties.CO_CITATION_SCORE)){
 								Double score = (Double)simPaperRel.getProperty(DBRelationshipProperties.CO_CITATION_SCORE);
-								for (Relationship authorRel:simPaper.getRelationships(RelationshipTypes.AUTHOROF)){
+								for (Relationship authorRel:simPaper.getRelationships(DBRelationshipTypes.WRITTEN_BY)){
 									Node simAuthor = authorRel.getOtherNode(simPaper);
 									if (simAuthor.getId()==author.getId())continue;
 									if (simAuthors.containsKey(simAuthor))
@@ -218,7 +218,7 @@ public class SimilarPaperCalculator extends Calculator {
 				int topkCnt=0;
 				for (Double score: topkSimAuthors.descendingKeySet()){
 					for (Node simAuthor: topkSimAuthors.get(score)){
-						Relationship simAuthorRel = author.createRelationshipTo(simAuthor, RelationshipTypes.SIM_AUTHOR);
+						Relationship simAuthorRel = author.createRelationshipTo(simAuthor, DBRelationshipTypes.SIM_AUTHOR);
 						simAuthorRel.setProperty(DBRelationshipProperties.SIM_AUTHOR_SCORE, score);
 					}
 				}

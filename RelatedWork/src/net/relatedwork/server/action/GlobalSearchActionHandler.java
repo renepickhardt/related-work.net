@@ -2,6 +2,7 @@ package net.relatedwork.server.action;
 
 import javax.servlet.ServletContext;
 
+import org.apache.lucene.queryParser.QueryParser.Operator;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.neo4j.graphdb.Direction;
@@ -20,7 +21,7 @@ import net.relatedwork.server.neo4jHelper.DBNodeProperties;
 import net.relatedwork.server.neo4jHelper.DBRelationshipProperties;
 import net.relatedwork.server.neo4jHelper.Neo4jToDTOHelper;
 import net.relatedwork.server.neo4jHelper.NodeType;
-import net.relatedwork.server.neo4jHelper.RelationshipTypes;
+import net.relatedwork.server.neo4jHelper.DBRelationshipTypes;
 import net.relatedwork.server.utils.IOHelper;
 import net.relatedwork.shared.dto.Author;
 import net.relatedwork.shared.dto.DisplayAuthorResult;
@@ -42,38 +43,55 @@ public class GlobalSearchActionHandler implements
 	public GlobalSearchActionHandler() {
 	}
 
+	public static String prepareQuery(String queryString){
+		queryString = queryString.replaceAll("\\W+", " ");
+		queryString = queryString.trim();
+		queryString = queryString.toLowerCase();
+		// replace whitespaces
+		queryString = queryString.replaceAll("\\s+", "* ");
+		queryString = queryString + "*";
+		return "key:("+queryString+")";
+	}
+	
 	@Override
 	public GlobalSearchResult execute(GlobalSearch action, ExecutionContext context)
 			throws ActionException {
-		GlobalSearchResult result = new GlobalSearchResult();
-		String query = action.getQuery();
 		//TODO: log user ID / session and search query / time stamp - later log what the user clicks in search results
-		query = query.replace(' ', '?');
-				
-		Sort s = new Sort();
-		s.setSort(new SortField("pr", SortField.DOUBLE, true));
 
 		Index<Node> index = ContextHelper.getSearchIndex(servletContext);
-		IndexHits<Node> res = index.query(new QueryContext("title:"+query+"*").sort(s).top(20));
+		GlobalSearchResult result = new GlobalSearchResult();
 		
-		if (res == null)
-			return null;
+		String queryRaw = action.getQuery();
+		String query = prepareQuery(queryRaw);
 		
-		for (Node n : res) {
-			if (!n.hasProperty(DBNodeProperties.PAGE_RANK_VALUE))continue;
-			Double pr = (Double)n.getProperty(DBNodeProperties.PAGE_RANK_VALUE);
+		IOHelper.log("Send query:" + queryRaw);
+		IOHelper.log("Processed query:" + query);
+
+		// setup sort field
+		Sort s = new Sort();
+		s.setSort(new SortField("score", SortField.DOUBLE, true));
+
+		// run query
+		IndexHits<Node> queryReults = index.query(new QueryContext(query).
+				defaultOperator(Operator.AND).
+				sort(s).
+				top(20));
+
+		IOHelper.log("Query returned " + queryReults.size() + " results.");
+
+		for (Node n : queryReults) {
+			if (!n.hasProperty(DBNodeProperties.PAGE_RANK_VALUE)) continue;
+			
+			// Add query Results to result object
 			if (NodeType.isAuthorNode(n)) {
-				IOHelper.log("add author node: ");
-				String name = (String)n.getProperty(DBNodeProperties.AUTHOR_NAME);
-				Author a = new Author(name, name, (int)(pr*1000.));
-				result.addAuthor(a);
+				result.addAuthor(Neo4jToDTOHelper.authorFromNode(n));
 			}
+
 			if (NodeType.isPaperNode(n)){
-				IOHelper.log("add paper node:");
-				Paper p = Neo4jToDTOHelper.generatePaperFromNode(n);
-				result.addPaper(p);
+				result.addPaper(Neo4jToDTOHelper.paperFromNode(n));
 			}
 		}
+
 		return result;
 	}
 

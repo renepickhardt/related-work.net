@@ -99,8 +99,10 @@ public class SuggestProtocol {
 		String result = "";
 		for (String k:map.keySet()){
 			result = result.concat(k+"#$#"+map.get(k)+"#$#");
+		} 
+		if (result != ""){
+			result = result.substring(0,result.length() -3);
 		}
-		result = result.substring(0,result.length() -3);
 		return result;
 	}
 	

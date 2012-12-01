@@ -10,9 +10,12 @@ import javax.servlet.ServletContext;
 
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.index.Index;
+import org.neo4j.helpers.collection.MapUtil;
 import org.neo4j.index.impl.lucene.LuceneIndex;
 import org.neo4j.kernel.EmbeddedReadOnlyGraphDatabase;
 
+import net.relatedwork.server.executables.CustomTokenAnalyzer;
+import net.relatedwork.server.neo4jHelper.DBNodeProperties;
 import net.relatedwork.server.utils.Config;
 import net.relatedwork.server.utils.IOHelper;
 import net.relatedwork.shared.SuggestTree;
@@ -21,10 +24,27 @@ public class ContextHelper {
 
 	private static final String SUGGEST_TREE = "sugges-ttree";
 	private static final String READ_ONLY_NEO4J = "read-only-neo4j";
-	private static final String SEARCH_IDX = "search-idx";
-	private static final String PAPER_IDX = "paper-idx";
 	
+	private static final String SEARCH_IDX_NEO4J = DBNodeProperties.SEARCH_INDEX_NAME;
+	private static final String SEARCH_IDX_GWT = "searchIdx";
 	
+	private static final String PAPER_IDX_NEO4J = "source_idx";
+	private static final String PAPER_IDX_GWT = "paper-idx";
+	
+	private static final String URI_IDX = DBNodeProperties.URI_INDEX_NAME;
+
+	// Get NEO4J DB
+	public static EmbeddedReadOnlyGraphDatabase getReadOnlyGraphDatabase(ServletContext servletContext){
+		EmbeddedReadOnlyGraphDatabase graphDB = (EmbeddedReadOnlyGraphDatabase)servletContext.getAttribute(READ_ONLY_NEO4J);
+		if (graphDB == null){
+			graphDB = new EmbeddedReadOnlyGraphDatabase(Config.get().neo4jDbPath);
+			servletContext.setAttribute(READ_ONLY_NEO4J, graphDB);
+		}
+		return graphDB;
+	}
+
+	
+	// Auto Completion
 	public static SuggestTree<Integer> getSuggestTree(
 			ServletContext servletContext) {
 		SuggestTree<Integer> tree = (SuggestTree<Integer>) servletContext.getAttribute(SUGGEST_TREE);
@@ -37,7 +57,6 @@ public class ContextHelper {
 				}});
 			
 			HashMap<String, Integer> map = new HashMap<String, Integer>();
-			//TODO: don't hardcode path use Config() class!
 			BufferedReader reader = IOHelper.openReadFile(Config.get().autoCompleteFile);
 			String line = "";
 			try {
@@ -58,34 +77,44 @@ public class ContextHelper {
 		}
 		return tree;
 	}
-	
-	public static EmbeddedReadOnlyGraphDatabase getReadOnlyGraphDatabase(ServletContext servletContext){
-		EmbeddedReadOnlyGraphDatabase graphDB = (EmbeddedReadOnlyGraphDatabase)servletContext.getAttribute(READ_ONLY_NEO4J);
-		if (graphDB == null){
-			graphDB = new EmbeddedReadOnlyGraphDatabase(Config.get().neo4jDbPath);
-			servletContext.setAttribute(READ_ONLY_NEO4J, graphDB);
-		}
-		return graphDB;
-	}
-	
+
+	// Search index
 	public static Index<Node> getSearchIndex(ServletContext servletContext){
 		EmbeddedReadOnlyGraphDatabase graphDB = getReadOnlyGraphDatabase(servletContext);
-		Index<Node> index = (Index<Node>)servletContext.getAttribute(SEARCH_IDX);
+		Index<Node> index = (Index<Node>)servletContext.getAttribute(SEARCH_IDX_GWT);
 		if (index == null){
-			index = graphDB.index().forNodes("prsearch_idx");
-			((LuceneIndex<Node>) index).setCacheCapacity("title", 300000);
-			servletContext.setAttribute(SEARCH_IDX,index);
+			System.out.println("Adding search index - " + SEARCH_IDX_GWT + "- to servletContext.");
+			index = graphDB.index().forNodes(SEARCH_IDX_NEO4J,
+					MapUtil.stringMap("analyzer", CustomTokenAnalyzer.class.getName())
+					);
+			((LuceneIndex<Node>) index).setCacheCapacity("key", 300000);
+			servletContext.setAttribute(SEARCH_IDX_GWT,index);
 		}
 		return index;
 	}
 
+	// URI index
+	public static Index<Node> getUriIndex(ServletContext servletContext){
+		EmbeddedReadOnlyGraphDatabase graphDB = getReadOnlyGraphDatabase(servletContext);
+		Index<Node> index = (Index<Node>)servletContext.getAttribute(URI_IDX);
+		if (index == null){
+			System.out.println("Adding uri index - " + URI_IDX + " - to servletContext");
+			index = graphDB.index().forNodes(URI_IDX);
+			((LuceneIndex<Node>) index).setCacheCapacity("key", 300000);
+			servletContext.setAttribute(URI_IDX,index);
+		}
+		return index;
+	}
+	
+	// arxiv-id index
 	public static Index<Node> getPaperIndex(ServletContext servletContext){
 		EmbeddedReadOnlyGraphDatabase graphDB = getReadOnlyGraphDatabase(servletContext);
-		Index<Node> index = (Index<Node>)servletContext.getAttribute(PAPER_IDX);
+		Index<Node> index = (Index<Node>)servletContext.getAttribute(PAPER_IDX_GWT);
 		if (index == null){
-			index = graphDB.index().forNodes("source_idx");
+			System.out.println("Initializing paper index - " + PAPER_IDX_GWT);
+			index = graphDB.index().forNodes(PAPER_IDX_NEO4J);
 			((LuceneIndex<Node>) index).setCacheCapacity("title", 300000);
-			servletContext.setAttribute(PAPER_IDX,index);
+			servletContext.setAttribute(PAPER_IDX_GWT,index);
 		}
 		return index;
 	}

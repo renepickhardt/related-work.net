@@ -62,7 +62,7 @@ public class ListEntryPresenter<T extends IsRenderable> extends
 		
 		final HTMLPanel hoverPanel = getView().getRwHoverableListEntry();
 		hoverPanel.setVisible(false);
-		hoverPanel.add(((Author)element).getHoverable());
+		hoverPanel.add(element.getHoverable());
 		
 		
 		final FocusPanel fp = getView().getRwListEntry();
