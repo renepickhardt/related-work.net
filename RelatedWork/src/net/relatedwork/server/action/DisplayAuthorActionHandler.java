@@ -69,51 +69,34 @@ public class DisplayAuthorActionHandler implements
 			return result;
 		}
 		
+		// Add data to result. Requires URIs to be set.
 		result.setName((String)n.getProperty(DBNodeProperties.AUTHOR_NAME));
 		
-		// TODO: Set in proper URIs once new DataMining is done
 		for (Relationship rel:n.getRelationships(RelationshipTypes.CO_AUTHOR_COUNT)){
 			Node coAuthor = rel.getEndNode();
 			Integer count = (Integer)rel.getProperty(DBRelationshipProperties.CO_AUTHOR_COUNT);
-			String name =(String)coAuthor.getProperty("name");
-//			String uri2 =(String)coAuthor.getProperty(DBNodeProperties.URI);
-//			result.addCoAuthor(new Author(name, uri2, count));
-			result.addCoAuthor(new Author(name, name, count));
+			result.addCoAuthor(Neo4jToDTOHelper.authorFromNode(coAuthor,count));
 		}
 
 		for (Relationship rel:n.getRelationships(RelationshipTypes.CITES_AUTHOR,Direction.OUTGOING)){
 			Node citedAuthor = rel.getEndNode();
-			Integer count = (Integer)rel.getProperty(DBRelationshipProperties.CITATION_COUNT);
-			String name = (String)citedAuthor.getProperty("name");
-			//String uri2 =(String)citedAuthor.getProperty(DBNodeProperties.URI);
-			result.addCitedAuthor(new Author(name, name, count));
+			result.addCitedAuthor(Neo4jToDTOHelper.authorFromNode(citedAuthor));
 		}
 		
 		for (Relationship rel:n.getRelationships(RelationshipTypes.CITES_AUTHOR,Direction.INCOMING)){
 			Node citedAuthor = rel.getStartNode();
-			Integer count = (Integer)rel.getProperty(DBRelationshipProperties.CITATION_COUNT);
-			String name = (String)citedAuthor.getProperty("name");
-			//String uri2 =(String)citedAuthor.getProperty(DBNodeProperties.URI);
-			result.addCitedByAuthor(new Author(name, name, count));
+			result.addCitedByAuthor(Neo4jToDTOHelper.authorFromNode(citedAuthor));
 		}
-				
+		
 		for (Relationship rel:n.getRelationships(RelationshipTypes.SIM_AUTHOR, Direction.OUTGOING)){
 			Node simAuthor = rel.getEndNode();
-			Double score = (Double)rel.getProperty(DBRelationshipProperties.SIM_AUTHOR_SCORE);
-			String name = (String)simAuthor.getProperty("name");
-			//String uri2 =(String)simAuthor.getProperty(DBNodeProperties.URI);
-			result.addSimilarAuthor(new Author(name, name, (int)(score*1000)));
+			Integer score = (int)((Double)rel.getProperty(DBRelationshipProperties.SIM_AUTHOR_SCORE)*1000.);
+			result.addSimilarAuthor(Neo4jToDTOHelper.authorFromNode(simAuthor, score));
 		}
 		
 		for (Relationship rel:n.getRelationships(RelationshipTypes.AUTHOROF)){
 			Node paper = rel.getStartNode(); // {paper-node} --[AUTHOROF]--> {author-node}
-			String title = (String)paper.getProperty(DBNodeProperties.PAPER_TITLE);
-			// CHANGE THIS
-			String uri2  = (String)paper.getProperty(DBNodeProperties.PAPER_TITLE); 
-			String source = (String)paper.getProperty(DBNodeProperties.PAPER_SOURCE_URI);
-			Integer citeCnt = (Integer)paper.getProperty(DBNodeProperties.PAPER_CITATION_COUNT);
-			result.addWrittenPaper(new Paper(title, uri2, source, citeCnt));
-//			result.addWittenPaper(Neo4jToDTOHelper.paperFromNode(n));
+			result.addWrittenPaper(Neo4jToDTOHelper.paperFromNode(paper));
 		}
 
 		return result;

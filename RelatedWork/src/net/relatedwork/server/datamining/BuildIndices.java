@@ -21,6 +21,7 @@ import net.relatedwork.server.utils.IOHelper;
  * build various lucene indices that are usefull for deployement.
  * 
  * @author rpickhardt
+ * @author Heinrich Hartmann
  *
  */
 
@@ -36,9 +37,9 @@ public class BuildIndices extends Calculator{
 	public Index<Node> buildSearchIndex(){
 		// reset indices
 		deleteSearchIndex();
-		setSearchIndex();
-
 		deleteUriIndex();
+
+		setSearchIndex();
 		setUriIndex();
 
 		// build up new indices
@@ -48,6 +49,9 @@ public class BuildIndices extends Calculator{
 		try {
 			int nodeCounter = 0;
 			for (Node n:graphDB.getAllNodes()) {
+				// Resume indexing
+				//if (n.hasProperty(DBNodeProperties.URI)) continue;
+				
 				if (NodeType.isPaperNode(n) && n.hasProperty(DBNodeProperties.PAGE_RANK_VALUE)){
 					// add paper node to index 
 					searchIndex.add(n, "key", (String)n.getProperty("title"));
@@ -72,7 +76,7 @@ public class BuildIndices extends Calculator{
 					transaction.finish();
 					transaction = graphDB.beginTx();
 					// REMOVE THIS
-					break;
+					// break;
 				}
 			}
 			transaction.success();
