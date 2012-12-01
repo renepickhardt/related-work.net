@@ -38,7 +38,7 @@ public class SearchPresenter extends
 		public HTMLPanel getSearchContainer();
 		public void setSearchContainer(HTMLPanel searchContainer);
 		public SuggestBox getSuggestBox();
-		public Button getReSearch();
+		public Button getSearchBox();
 	}
 
 	@ProxyCodeSplit
@@ -59,7 +59,7 @@ public class SearchPresenter extends
 	@Override
 	protected void onBind() {
 		super.onBind();
-		registerHandler(getView().getReSearch().addClickHandler(new StartSearchHandler()));
+		registerHandler(getView().getSearchBox().addClickHandler(new StartSearchHandler()));
 		registerHandler(getView().getSuggestBox().addKeyUpHandler(new StartSearchHandler()));
 	}	
 	

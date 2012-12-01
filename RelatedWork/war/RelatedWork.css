@@ -1,60 +1,15 @@
 /* Add css rules here for your application. */
 
-div.active{
-	background-color:#CC0000;
-}
-
-div.float{
-	float: left;
-}
-
-div.rwList{
-	background-color: #FFFFFF;
-    border-radius: 10px 10px 10px 10px;
-    border-style: solid;
-    border-width: 0;
-    box-shadow: 1px 1px 5px;
-    margin: 10px 30px 20px 0;
-    padding: 0 8px 26px 18px;
-    width: 300px;	
-}
-
-div.rwListEntry{
-	clear:both;
-	border-radius: 4px 4px 4px 4px;
-    border-style: solid;
-    border-width: 0;
-	padding: 4px 3px 4px 3px;
-    width: 270px;
-}
-
-div.rwListEntry-hover{
-	clear:both;
-	border-radius: 4px 4px 4px 4px;
-    border-style: solid;
-    border-width: 0;
-	background-color: #DDDDDD;
-    padding: 4px 3px 4px 3px;
-    width: 270px;
-    height: 14px;
-}
-
-div.rwVisibleListEntry{
-	float: left;
-}
-div.rwHoverableListEntry{
-	float: right;
-}
-
-
 
 div.rwHeader{
 	background-color: #EEEEEE;
     border-style: none none dotted;
     border-width: 1px;
-    margin: 20px auto;
     padding: 10px;
-    width: 1004px
+	border-width: 1px;
+	background-color: #EEEEEE;
+	margin: 0;
+	position: relative;
 }
 
 div.rwBody{
@@ -84,6 +39,25 @@ div.rwContent {
     width: 740px;
 }
 
+
+/***************** HEADER CONTENT ********************/
+
+div.rwLogo {
+	width: 50px;
+	float: left;
+}
+
+div.rwSearchBar {
+	width: 300px;
+	float: left;
+	}
+
+div.rwBreadcrumbs {
+	position: absolute;
+	bottom: 0px;
+	margin-bottom: -20px;
+}
+
 div.rwDiscussions{
 	width: 400px;
 	float: left;
@@ -92,31 +66,103 @@ div.rwDiscussions{
 	padding: 10px;
 }
 
-div.rwFooter {
-	background-color: #EEEEEE;
-    border-style: none none dotted;
-    border-width: 1px;
-    clear: both;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 20px;
-    padding: 0 0 10px;
-    width: 1024px;
-}
-
 div.rwLogin {
-	float: right;
+	float: right;	
+}
+
+/************ Footer content styling **************/
+
+div.rwFooterContainer {
+	background-color: #EEEEEE;
+	border-style: dotted none none none;
+    border-width: 1px;
+	margin-top: 10px;
+	padding: 10px 0 10px 0;
+    clear: both;
 	
+	height: 80px; /* align with sticky footer */
 }
-
-table.rwFooterLinkPanel {
-	width:100%;
-}
-
-td.rwFooterLinkPanel{
-	width:33%;
+	
+div.rwFooter {
+	width: 450px;
+	margin: 0 auto; /*center div*/
 }
 
 table.rwFooterBlock {
-	margin-left: 50px;
+	width: 150px;
+	float: left;
 }
+
+/* stick to bottom */
+
+* {
+	margin: 0;
+}
+
+/* sticky footer */
+html, body, .rwMain {
+	height: 100%;
+}
+.wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -80px; /* the bottom margin is the negative value of the footer's height */
+}
+.footer, .push {
+	height: 80px; /* .push must be the same height as .footer */
+}
+
+
+/***** List Styling ******/
+
+div.rwList{
+	background-color: #FFFFFF;
+    border-radius: 10px 10px 10px 10px;
+    border-style: solid;
+    border-width: 0;
+    box-shadow: 1px 1px 5px;
+    margin: 10px 30px 20px 0;
+    padding: 0 8px 26px 18px;
+    width: 300px;
+}
+
+div.rwListEntry{
+	clear:both;
+	border-radius: 4px 4px 4px 4px;
+    border-style: solid;
+    border-width: 0;
+	padding: 4px 3px 4px 3px;
+    width: 270px;
+}
+
+div.rwListEntry-hover{
+	clear:both;
+	border-radius: 4px 4px 4px 4px;
+    border-style: solid;
+    border-width: 0;
+	background-color: #DDDDDD;
+    padding: 4px 3px 4px 3px;
+    width: 270px;
+    height: 14px;
+}
+
+div.rwVisibleListEntry{
+	float: left;
+}
+div.rwHoverableListEntry{
+	float: right;
+}
+
+/************* HELPER CLASSES *****************/
+div.active{
+	background-color:#CC0000;
+}
+
+div.float{
+	float: left;
+}
+
+
+/***************** OBSOLETE *********************/
+

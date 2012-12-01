@@ -6,7 +6,9 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel ui:field="rwMain">
+	<g:HTMLPanel ui:field="rwMain" styleName="rwMain">
+		<!-- for sticky footer -->
+		<div class="wrapper">
 	    <g:HTMLPanel ui:field="rwHeader" styleName="rwHeader"/>
 		<g:HTMLPanel ui:field="rwBody" styleName="rwBody">
 			<g:VerticalPanel>
@@ -14,15 +16,16 @@
 					<g:VerticalPanel>
 					<g:HTMLPanel ui:field="rwContent" styleName="rwContent"></g:HTMLPanel>
 					<g:HTMLPanel ui:field="rwDiscussions" styleName="rwDiscussions"></g:HTMLPanel>
-					</g:VerticalPanel>					
+					</g:VerticalPanel>		
 					<g:HTMLPanel ui:field="rwSidebar" styleName="rwSidebar">
 					Side bar needs more HTML Fields for the elements. e.g. Search Box, Tags, Login, History, Recommendations,...
 					</g:HTMLPanel>
 				</g:HorizontalPanel>
-			</g:VerticalPanel>
-			
+			</g:VerticalPanel>			
 		</g:HTMLPanel>
-		<g:HTMLPanel ui:field="rwFooter" styleName="rwFooter">
-		</g:HTMLPanel>
+		<!-- for sticky footer -->
+		<div class="push"></div>
+		</div>
+		<g:HTMLPanel ui:field="rwFooter" styleName="rwFooterContainer"/>
 	</g:HTMLPanel>
 </ui:UiBinder>

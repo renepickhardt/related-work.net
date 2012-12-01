@@ -48,8 +48,8 @@ public class SearchView extends ViewImpl implements SearchPresenter.MyView {
 	@Inject DispatchAsync dispatcher;
 	
 	// Search button and and box
-	private final Button reSearch;
-	private final SuggestBox suggestBox;
+	private final Button rwSearchButton;
+	private final SuggestBox rwSuggestBox;
 	
 	public interface Binder extends UiBinder<Widget, SearchView> {
 	}
@@ -59,12 +59,11 @@ public class SearchView extends ViewImpl implements SearchPresenter.MyView {
 		widget = binder.createAndBindUi(this);
 		
 		SuggestOracle oracle = getSuggestOracle();
-		suggestBox = new SuggestBox(oracle);
-		reSearch = new Button();
-		reSearch.setText("(re)search");	
-		searchContainer.add(suggestBox);
-		searchContainer.add(reSearch);		
-
+		rwSuggestBox = new SuggestBox(oracle);
+		rwSearchButton = new Button();
+		rwSearchButton.setText("search");
+		searchContainer.add(rwSuggestBox);
+		searchContainer.add(rwSearchButton);
 	}
 
 	@Override
@@ -198,10 +197,10 @@ public class SearchView extends ViewImpl implements SearchPresenter.MyView {
 	}
 	
 	public SuggestBox getSuggestBox() {
-		return suggestBox;
+		return rwSuggestBox;
 	}
 
-	public Button getReSearch() {
-		return reSearch;
+	public Button getSearchBox() {
+		return rwSearchButton;
 	}
 }
