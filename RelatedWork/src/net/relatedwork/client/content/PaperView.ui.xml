@@ -15,9 +15,7 @@
 		<g:HTMLPanel>
 			<h1 ui:field="rwTitle">Title</h1>
 		</g:HTMLPanel>
-		<g:HTMLPanel ui:field="rwAuthorPanel">
-			<h2 ui:field="rwAuthors">Author names</h2>
-		</g:HTMLPanel>
+		<g:HTMLPanel ui:field="rwAuthorPanel"/>
 		<g:HTMLPanel>
 			<h3>Abstract</h3>
 			<p ui:field="rwAbstract">Abstract</p>

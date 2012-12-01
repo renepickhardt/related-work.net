@@ -42,10 +42,7 @@ public class PaperPresenter extends
 	public interface MyView extends View {
 		public HeadingElement getRwTitle();
 		public void setRwTitle(HeadingElement rwTitle);
-		
-		public HeadingElement getRwAuthors();
-		public void setRwAuthors(HeadingElement rwAuthors);
-		
+				
 		public ParagraphElement getRwAbstract();
 		public void setRwAbstract(ParagraphElement rwAbstract);
 		
@@ -110,6 +107,7 @@ public class PaperPresenter extends
 				getView().getRwAbstract().setInnerHTML(result.getAbstract());
 
 				// Set authors
+				getView().getRwAuthorPanel().clear();
 				for (Author author: result.getAuthorList()){
 					getView().getRwAuthorPanel().add(author.getAuthorLink());
 				}

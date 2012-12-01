@@ -16,9 +16,8 @@ public class PaperView extends ViewImpl implements PaperPresenter.MyView {
 	private final Widget widget;
 	
 	@UiField HeadingElement rwTitle;
-	@UiField HeadingElement rwAuthors;
-	@UiField ParagraphElement rwAbstract;
 	@UiField HTMLPanel rwAuthorPanel;
+	@UiField ParagraphElement rwAbstract;
 	@UiField HTMLPanel rwCitations;
 	@UiField HTMLPanel rwCitedBy;
 	
@@ -71,13 +70,6 @@ public class PaperView extends ViewImpl implements PaperPresenter.MyView {
 		this.rwTitle = rwTitle;
 	}
 
-	public HeadingElement getRwAuthors() {
-		return rwAuthors;
-	}
-
-	public void setRwAuthors(HeadingElement rwAuthors) {
-		this.rwAuthors = rwAuthors;
-	}
 
 	public ParagraphElement getRwAbstract() {
 		return rwAbstract;
