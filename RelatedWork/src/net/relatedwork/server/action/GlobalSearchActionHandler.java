@@ -21,7 +21,7 @@ import net.relatedwork.server.neo4jHelper.DBNodeProperties;
 import net.relatedwork.server.neo4jHelper.DBRelationshipProperties;
 import net.relatedwork.server.neo4jHelper.Neo4jToDTOHelper;
 import net.relatedwork.server.neo4jHelper.NodeType;
-import net.relatedwork.server.neo4jHelper.RelationshipTypes;
+import net.relatedwork.server.neo4jHelper.DBRelationshipTypes;
 import net.relatedwork.server.utils.IOHelper;
 import net.relatedwork.shared.dto.Author;
 import net.relatedwork.shared.dto.DisplayAuthorResult;

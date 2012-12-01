@@ -20,13 +20,18 @@ public class Paper implements IsRenderable, IsSerializable {
 
 	private String title;
 	private String uri;
-	private String source;
+	private String source; // Source ID, e.g. arxiv id
 	private Integer citationCount;
 	
 	// for serialization
 	Paper(){}
 	
-
+	public Paper(String title) {
+		this.title = title;
+		this.uri = "";
+		this.source = "";
+		this.citationCount = 0;
+	}
 	
 	public Paper(String title, String uri, String source, Integer citeCnt) {
 		this.title = title;

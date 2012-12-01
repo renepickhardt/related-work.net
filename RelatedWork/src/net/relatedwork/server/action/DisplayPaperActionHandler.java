@@ -5,8 +5,11 @@ import java.util.NoSuchElementException;
 
 import javax.servlet.ServletContext;
 
+import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.NotFoundException;
+import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.index.Index;
 import org.neo4j.graphdb.index.IndexHits;
 import org.neo4j.index.lucene.QueryContext;
@@ -15,11 +18,16 @@ import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
 
 import net.relatedwork.server.ContextHelper;
 import net.relatedwork.server.neo4jHelper.DBNodeProperties;
+import net.relatedwork.server.neo4jHelper.DBRelationshipProperties;
+import net.relatedwork.server.neo4jHelper.Neo4jToDTOHelper;
 import net.relatedwork.server.neo4jHelper.NodeType;
+import net.relatedwork.server.neo4jHelper.DBRelationshipTypes;
 import net.relatedwork.server.utils.IOHelper;
 import net.relatedwork.shared.dto.DisplayAuthorResult;
 import net.relatedwork.shared.dto.DisplayPaper;
 import net.relatedwork.shared.dto.DisplayPaperResult;
+import net.relatedwork.shared.dto.Paper;
+
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
@@ -57,13 +65,47 @@ public class DisplayPaperActionHandler implements
 		}
 
 		try {
-			result.setTitle((String) paperNode.getProperty("title"));
-			result.setAbstract((String) paperNode.getProperty("abstract"));
-			result.setAuthors((String) paperNode.getProperty("c_authors"));
+			result.setTitle((String) paperNode.getProperty(DBNodeProperties.PAPER_TITLE));
+			result.setAbstract((String) paperNode.getProperty(DBNodeProperties.PAPER_ABSTRACT));
+			
+			// Author list
+			for (Relationship rel: paperNode.getRelationships(DBRelationshipTypes.WRITTEN_BY)){
+				Node authorNode = rel.getEndNode();
+				result.addAuthor(Neo4jToDTOHelper.authorFromNode(authorNode));
+			};
+			
+			// Reference list
+			for (Relationship rel: paperNode.getRelationships(DBRelationshipTypes.CITES, Direction.OUTGOING)){
+				Node citationTargetNode = rel.getEndNode();
+				result.addCitedPaper(Neo4jToDTOHelper.paperFromNode(citationTargetNode));
+			};
+
+//			for (String citeStirng: (ArrayList<String>)paperNode.getProperty(DBNodeProperties.PAPER_UNMATCHED_CITATIONS)){
+//				result.addCitedPaper(new Paper(citeStirng));
+//			}
+
+			// Citation List
+			for (Relationship rel: paperNode.getRelationships(DBRelationshipTypes.CITES, Direction.INCOMING)){
+				Node citationSourceNode = rel.getStartNode();
+				result.addCitedByPaper(Neo4jToDTOHelper.paperFromNode(citationSourceNode));
+			};
+
+			// CoCitations
+			for (Relationship rel: paperNode.getRelationships(DBRelationshipTypes.CO_CITATION_SCORE, Direction.INCOMING)){
+				Node coCitationSourceNode = rel.getStartNode();
+				result.addCoCitedWithPaper(Neo4jToDTOHelper.paperFromNode(coCitationSourceNode));
+			};
+
+			for (Relationship rel: paperNode.getRelationships(DBRelationshipTypes.CO_CITATION_SCORE, Direction.OUTGOING)){
+				Node coCitationTargetNode = rel.getEndNode();
+				result.addCoCitedFromPaper(Neo4jToDTOHelper.paperFromNode(coCitationTargetNode));
+			};
+
 		} catch (NotFoundException e) {
-			result.setTitle("Paper properties not found");
+			result.setTitle("Paper properties not found: " + e.getMessage());
 		}
 
+		IOHelper.log("Return paper object");
 		return result;
 	}
 

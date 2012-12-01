@@ -7,4 +7,7 @@ public class DBRelationshipProperties {
 	
 	public static String SIM_AUTHOR_SCORE = "rw:simAuthorScore";
 	
+	public static String CITES = "ref";
+	public static String WRITTEN_BY = "author";
+	
 }

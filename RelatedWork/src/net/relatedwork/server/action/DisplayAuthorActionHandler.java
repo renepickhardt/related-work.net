@@ -23,7 +23,7 @@ import net.relatedwork.server.neo4jHelper.DBNodeProperties;
 import net.relatedwork.server.neo4jHelper.DBRelationshipProperties;
 import net.relatedwork.server.neo4jHelper.Neo4jToDTOHelper;
 import net.relatedwork.server.neo4jHelper.NodeType;
-import net.relatedwork.server.neo4jHelper.RelationshipTypes;
+import net.relatedwork.server.neo4jHelper.DBRelationshipTypes;
 import net.relatedwork.server.utils.IOHelper;
 import net.relatedwork.shared.dto.Author;
 import net.relatedwork.shared.dto.DisplayAuthor;
@@ -72,29 +72,31 @@ public class DisplayAuthorActionHandler implements
 		// Add data to result. Requires URIs to be set.
 		result.setName((String)n.getProperty(DBNodeProperties.AUTHOR_NAME));
 		
-		for (Relationship rel:n.getRelationships(RelationshipTypes.CO_AUTHOR_COUNT)){
+		for (Relationship rel:n.getRelationships(DBRelationshipTypes.CO_AUTHOR_COUNT)){
 			Node coAuthor = rel.getEndNode();
-			Integer count = (Integer)rel.getProperty(DBRelationshipProperties.CO_AUTHOR_COUNT);
-			result.addCoAuthor(Neo4jToDTOHelper.authorFromNode(coAuthor,count));
+			Integer score = (Integer)rel.getProperty(DBRelationshipProperties.CO_AUTHOR_COUNT);
+			result.addCoAuthor(Neo4jToDTOHelper.authorFromNode(coAuthor,score));
 		}
 
-		for (Relationship rel:n.getRelationships(RelationshipTypes.CITES_AUTHOR,Direction.OUTGOING)){
+		for (Relationship rel:n.getRelationships(DBRelationshipTypes.CITES_AUTHOR,Direction.OUTGOING)){
 			Node citedAuthor = rel.getEndNode();
-			result.addCitedAuthor(Neo4jToDTOHelper.authorFromNode(citedAuthor));
+			Integer score = (Integer)rel.getProperty(DBRelationshipProperties.CITATION_COUNT);
+			result.addCitedAuthor(Neo4jToDTOHelper.authorFromNode(citedAuthor, score));
 		}
 		
-		for (Relationship rel:n.getRelationships(RelationshipTypes.CITES_AUTHOR,Direction.INCOMING)){
+		for (Relationship rel:n.getRelationships(DBRelationshipTypes.CITES_AUTHOR,Direction.INCOMING)){
 			Node citedAuthor = rel.getStartNode();
-			result.addCitedByAuthor(Neo4jToDTOHelper.authorFromNode(citedAuthor));
+			Integer score = (Integer)rel.getProperty(DBRelationshipProperties.CITATION_COUNT);
+			result.addCitedByAuthor(Neo4jToDTOHelper.authorFromNode(citedAuthor, score));
 		}
 		
-		for (Relationship rel:n.getRelationships(RelationshipTypes.SIM_AUTHOR, Direction.OUTGOING)){
+		for (Relationship rel:n.getRelationships(DBRelationshipTypes.SIM_AUTHOR, Direction.OUTGOING)){
 			Node simAuthor = rel.getEndNode();
 			Integer score = (int)((Double)rel.getProperty(DBRelationshipProperties.SIM_AUTHOR_SCORE)*1000.);
 			result.addSimilarAuthor(Neo4jToDTOHelper.authorFromNode(simAuthor, score));
 		}
 		
-		for (Relationship rel:n.getRelationships(RelationshipTypes.AUTHOROF)){
+		for (Relationship rel:n.getRelationships(DBRelationshipTypes.WRITTEN_BY)){
 			Node paper = rel.getStartNode(); // {paper-node} --[AUTHOROF]--> {author-node}
 			result.addWrittenPaper(Neo4jToDTOHelper.paperFromNode(paper));
 		}

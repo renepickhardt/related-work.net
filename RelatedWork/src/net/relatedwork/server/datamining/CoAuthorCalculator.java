@@ -12,7 +12,7 @@ import org.neo4j.graphdb.Transaction;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
 
 import net.relatedwork.server.neo4jHelper.DBRelationshipProperties;
-import net.relatedwork.server.neo4jHelper.RelationshipTypes;
+import net.relatedwork.server.neo4jHelper.DBRelationshipTypes;
 import net.relatedwork.server.utils.Algo;
 import net.relatedwork.server.utils.IOHelper;
 
@@ -39,9 +39,9 @@ public class CoAuthorCalculator extends Calculator {
 			for (Node author:graphDB.getAllNodes()){
 				if (!author.hasProperty("name"))continue;
 				HashMap<Node, Integer> coAuthors = new HashMap<Node, Integer>();
-				for (Relationship rel: author.getRelationships(RelationshipTypes.AUTHOROF)){
+				for (Relationship rel: author.getRelationships(DBRelationshipTypes.WRITTEN_BY)){
 					Node paper = rel.getOtherNode(author);
-					for (Relationship coAuthorRel: paper.getRelationships(RelationshipTypes.AUTHOROF)){
+					for (Relationship coAuthorRel: paper.getRelationships(DBRelationshipTypes.WRITTEN_BY)){
 						Node coAuthor = coAuthorRel.getOtherNode(paper);
 						if (coAuthor.getId()==author.getId())continue;
 	
@@ -64,7 +64,7 @@ public class CoAuthorCalculator extends Calculator {
 //					log = log + "\n" + coAuthorCount + "\t";
 					for (Node coAuthor: topkCoAuthors.get(coAuthorCount)){
 //						log = log + (String)coAuthor.getProperty("name") + "\t";
-						Relationship coAuthorRel = author.createRelationshipTo(coAuthor, RelationshipTypes.CO_AUTHOR_COUNT);
+						Relationship coAuthorRel = author.createRelationshipTo(coAuthor, DBRelationshipTypes.CO_AUTHOR_COUNT);
 						coAuthorRel.setProperty(DBRelationshipProperties.CO_AUTHOR_COUNT,coAuthorCount);
 						if (++topkCnt>=k)break;
 					}
@@ -95,9 +95,9 @@ public class CoAuthorCalculator extends Calculator {
 			for (Node author:graphDB.getAllNodes()){
 				if (!author.hasProperty("name"))continue;
 				HashMap<Node, Integer> coAuthors = new HashMap<Node, Integer>();
-				for (Relationship rel: author.getRelationships(RelationshipTypes.AUTHOROF)){
+				for (Relationship rel: author.getRelationships(DBRelationshipTypes.WRITTEN_BY)){
 					Node paper = rel.getOtherNode(author);
-					for (Relationship coAuthorRel: paper.getRelationships(RelationshipTypes.AUTHOROF)){
+					for (Relationship coAuthorRel: paper.getRelationships(DBRelationshipTypes.WRITTEN_BY)){
 						Node coAuthor = coAuthorRel.getOtherNode(paper);
 						if (coAuthor.getId()==author.getId())continue;
 	
@@ -110,7 +110,7 @@ public class CoAuthorCalculator extends Calculator {
 				}
 
 				for (Node coAuthor: coAuthors.keySet()){
-					Relationship coAuthorRel = author.createRelationshipTo(coAuthor, RelationshipTypes.CO_AUTHOR_COUNT);
+					Relationship coAuthorRel = author.createRelationshipTo(coAuthor, DBRelationshipTypes.CO_AUTHOR_COUNT);
 					coAuthorRel.setProperty(DBRelationshipProperties.CO_AUTHOR_COUNT,coAuthors.get(coAuthor));
 					
 					if (++transactionCount % transactionThreshhold == 0){
@@ -136,14 +136,14 @@ public class CoAuthorCalculator extends Calculator {
 			for (Node author:graphDB.getAllNodes()){
 				if (!author.hasProperty("name"))continue; // only want to work on authors
 				HashMap<Node, Integer> citedAuthors = new HashMap<Node, Integer>();
-				for (Relationship rel:author.getRelationships(RelationshipTypes.AUTHOROF)){
+				for (Relationship rel:author.getRelationships(DBRelationshipTypes.WRITTEN_BY)){
 					Node paper = rel.getOtherNode(author);
 					if (paper.hasProperty("title")){// i found a paper
 						//find cited authors
-						for (Relationship citedPaperRel: paper.getRelationships(RelationshipTypes.CITES,Direction.OUTGOING)){
+						for (Relationship citedPaperRel: paper.getRelationships(DBRelationshipTypes.CITES,Direction.OUTGOING)){
 							Node citedPaper = citedPaperRel.getOtherNode(paper);
 							if (citedPaper.hasProperty("title")){
-								for (Relationship citedAuthorRel: citedPaper.getRelationships(RelationshipTypes.AUTHOROF)){
+								for (Relationship citedAuthorRel: citedPaper.getRelationships(DBRelationshipTypes.WRITTEN_BY)){
 									Node citedAuthor = citedAuthorRel.getOtherNode(citedPaper);
 									if (citedAuthor.getId()==author.getId())continue;
 									if (citedAuthor.hasProperty("name")){
@@ -159,7 +159,7 @@ public class CoAuthorCalculator extends Calculator {
 				}
 				for (Node citedAuthor: citedAuthors.keySet()){
 					//TODO: exchange relationship types and properties
-					Relationship coAuthorRel = author.createRelationshipTo(citedAuthor, RelationshipTypes.CITES_AUTHOR);
+					Relationship coAuthorRel = author.createRelationshipTo(citedAuthor, DBRelationshipTypes.CITES_AUTHOR);
 					coAuthorRel.setProperty(DBRelationshipProperties.CITATION_COUNT,citedAuthors.get(citedAuthor));
 					
 					if (++transactionCount % transactionThreshhold == 0){
@@ -185,14 +185,14 @@ public class CoAuthorCalculator extends Calculator {
 			for (Node author:graphDB.getAllNodes()){
 				if (!author.hasProperty("name"))continue; // only want to work on authors
 				HashMap<Node, Integer> citedAuthors = new HashMap<Node, Integer>();
-				for (Relationship rel:author.getRelationships(RelationshipTypes.AUTHOROF)){
+				for (Relationship rel:author.getRelationships(DBRelationshipTypes.WRITTEN_BY)){
 					Node paper = rel.getOtherNode(author);
 					if (paper.hasProperty("title")){// i found a paper
 						//find cited authors
-						for (Relationship citedPaperRel: paper.getRelationships(RelationshipTypes.CITES,Direction.OUTGOING)){
+						for (Relationship citedPaperRel: paper.getRelationships(DBRelationshipTypes.CITES,Direction.OUTGOING)){
 							Node citedPaper = citedPaperRel.getOtherNode(paper);
 							if (citedPaper.hasProperty("title")){
-								for (Relationship citedAuthorRel: citedPaper.getRelationships(RelationshipTypes.AUTHOROF)){
+								for (Relationship citedAuthorRel: citedPaper.getRelationships(DBRelationshipTypes.WRITTEN_BY)){
 									Node citedAuthor = citedAuthorRel.getOtherNode(citedPaper);
 									if (citedAuthor.getId()==author.getId())continue;
 									if (citedAuthor.hasProperty("name")){
@@ -213,7 +213,7 @@ public class CoAuthorCalculator extends Calculator {
 				
 				for (Integer citedAuthorCount: topkCitedAuthors.descendingKeySet()){
 					for (Node citedAuthor: topkCitedAuthors.get(citedAuthorCount)){
-						Relationship citedAuthorRel = author.createRelationshipTo(citedAuthor, RelationshipTypes.CITES_AUTHOR);
+						Relationship citedAuthorRel = author.createRelationshipTo(citedAuthor, DBRelationshipTypes.CITES_AUTHOR);
 						citedAuthorRel.setProperty(DBRelationshipProperties.CITATION_COUNT,citedAuthorCount);
 						if (++topkCnt>=k)break;
 					}
