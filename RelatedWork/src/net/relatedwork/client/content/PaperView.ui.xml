@@ -15,11 +15,12 @@
 		<g:HTMLPanel>
 			<h1 ui:field="rwTitle">Title</h1>
 		</g:HTMLPanel>
-		<g:HTMLPanel ui:field="rwAuthorPanel"/>
+		<h2><g:HTMLPanel ui:field="rwAuthorPanel" styleName="rwAuthorPanel"/></h2>
+		
 		<g:HTMLPanel>
-			<h3>Abstract</h3>
-			<p ui:field="rwAbstract">Abstract</p>
+			<p ui:field="rwAbstract" class="rwAbstract">Abstract</p>
 		</g:HTMLPanel>
+		
 		<g:HorizontalPanel>
 			<g:HTMLPanel ui:field="rwCitations"/>
 			<g:HTMLPanel ui:field="rwCitedBy"/>

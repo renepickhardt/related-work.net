@@ -1,12 +1,130 @@
 /* Add css rules here for your application. */
 
-div.active{
-	background-color:#CC0000;
+/**************************** LAYOUT ******************************/
+
+div.rwMain{
+	height: 100%;
+	position: relative;
 }
 
-div.float{
+div.rwHeader{
+	z-index: 1000; /* lies over the body for breadcrumbs! */
+	background-color: #EEEEEE;
+    border-style: none none dotted;
+    border-width: 1px;
+    padding: 10px;
+	border-width: 1px;
+	background-color: #EEEEEE;
+	margin: 0;
+	position: relative;
+}
+
+div.rwBody{
+	z-index: 500;
+}
+
+#bodyTable {
+	width:	100%;
+	height:	100%;
+	/* borders do not work properly */
+	border-collapse:collapse;
+	border: 0px;
+}
+
+#bodyLeftCell{
+	
+}
+#bodyRightCell{
+	width: 200px;
+}
+
+div.rwSidebar {
+	width:	100%;
+	height: 100%;
+	
+	padding: 10px;
+}
+
+div.rwContent {	
+	padding: 20px;
+}
+
+
+/***************** HEADER CONTENT ********************/
+
+div.rwLogo {
+	width: 50px;
 	float: left;
 }
+
+div.rwSearchBar {
+	width: 300px;
+	float: left;
+	}
+
+div.rwBreadcrumbs {
+	position: absolute;
+	bottom: 0px;
+	margin-bottom: -20px;
+}
+
+div.rwDiscussions{
+	width: 400px;
+	float: left;
+	min-height: 100px;
+	clear: both;
+	padding: 10px;
+}
+
+div.rwLogin {
+	float: right;	
+}
+
+/************ Footer content styling **************/
+
+div.rwFooterContainer {
+	background-color: #EEEEEE;
+	border-style: dotted none none none;
+    border-width: 1px;
+	padding: 10px 0 10px 0;
+	clear: both;
+	height: 110px; /* align with sticky footer */
+}
+
+div.rwFooter {
+	width: 450px;
+	margin: 0 auto; /*center div*/
+}
+
+table.rwFooterBlock {
+	width: 150px;
+	float: left;
+}
+
+/* sticky footer */
+/* {
+	margin: 0;
+} */
+
+html, body {
+	height: 100%;
+}
+
+.wrapper {
+	position: relative;
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -110px; /* the bottom margin is the negative value of the footer's height */
+}
+
+.footer, .push {
+	clear: both;
+	height: 110px; /* .push must be the same height as .footer */
+}
+
+
+/***** List Styling ******/
 
 div.rwList{
 	background-color: #FFFFFF;
@@ -16,7 +134,7 @@ div.rwList{
     box-shadow: 1px 1px 5px;
     margin: 10px 30px 20px 0;
     padding: 0 8px 26px 18px;
-    width: 300px;	
+    width: 300px; 
 }
 
 div.rwListEntry{
@@ -46,77 +164,45 @@ div.rwHoverableListEntry{
 	float: right;
 }
 
-
-
-div.rwHeader{
-	background-color: #EEEEEE;
-    border-style: none none dotted;
-    border-width: 1px;
-    margin: 20px auto;
-    padding: 10px;
-    width: 1004px
+/************* HELPER CLASSES *****************/
+div.active{
+	background-color:#CC0000;
 }
 
-div.rwBody{
-	background: none repeat scroll 0 0 #a1c465;
-    border-radius: 17px 17px 17px 17px;
-    box-shadow: 0 0 9px #000000 inset;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 10px;
-    width: 1004px;
-}
-
-div.rwSidebar {
-	background-color: rgba(255,255,255,0.3);
-    border-radius: 10px 10px 10px 10px;
-    box-shadow: 1px 1px 6px #000000;
-    float: left;
-    min-height: 104px;
-    padding: 10px;
-    width: 233px;
-}
-
-div.rwContent {
+div.float{
 	float: left;
-    margin-left: 10px;
-    min-height: 100px;
-    width: 740px;
 }
 
-div.rwDiscussions{
-	width: 400px;
-	float: left;
-	min-height: 100px;
-	clear: both;
-	padding: 10px;
+/**************** TEXT STYLING ********************/
+
+body {
+	font-family: 'Lucida Grande', helvetica, arial, verdana, sans-serif;
 }
 
-div.rwFooter {
-	background-color: #EEEEEE;
-    border-style: none none dotted;
-    border-width: 1px;
-    clear: both;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 20px;
-    padding: 0 0 10px;
-    width: 1024px;
+a:link { color:#000070; text-decoration:none; }
+a:hover { text-decoration:underline; }
+a:visited { color:#551A8B; text-decoration:none; }
+
+
+h1 {
+	font-size: x-large;
+	font-weight: bold;
 }
 
-div.rwLogin {
-	float: right;
-	
+h2 {
+	font-size: medium;
 }
 
-table.rwFooterLinkPanel {
-	width:100%;
+.rwAbstract {
+	text-align:justify;
+	font-family: 'Lucida Grande', helvetica, arial, verdana, sans-serif;
+	line-height:140%;
+	padding-left: 20px;
 }
 
-td.rwFooterLinkPanel{
-	width:33%;
-}
 
-table.rwFooterBlock {
-	margin-left: 50px;
+/*************** HACKS *********************/
+
+.gwt-SuggestBoxPopup{
+	z-index: 2000;
 }

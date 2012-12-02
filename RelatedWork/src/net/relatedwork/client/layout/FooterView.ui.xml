@@ -8,9 +8,7 @@
 	<ui:with type="net.relatedwork.client.place.NameTokens"
 		field="nameTokens"></ui:with>
 
-	<g:HTMLPanel>
-		<hr/>
-		<g:HorizontalPanel styleName="rwFooterLinkPanel">
+	<g:HTMLPanel styleName="rwFooter">
 			<g:VerticalPanel styleName="rwFooterBlock">
 				<g:Hyperlink targetHistoryToken="{nameTokens.getImprint}">Imprint</g:Hyperlink>
 				<g:Hyperlink targetHistoryToken="{nameTokens.getAbout}">About</g:Hyperlink>
@@ -27,6 +25,5 @@
 				<g:Anchor href="https://github.com/renepickhardt/related-work.net/Roadmap">Road Map</g:Anchor>
 				<g:Anchor href="https://github.com/renepickhardt/related-work.net/issues">Bug Tracker</g:Anchor>
 			</g:VerticalPanel>
-		</g:HorizontalPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>
