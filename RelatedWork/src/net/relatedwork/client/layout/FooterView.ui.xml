@@ -25,5 +25,6 @@
 				<g:Anchor href="https://github.com/renepickhardt/related-work.net/Roadmap">Road Map</g:Anchor>
 				<g:Anchor href="https://github.com/renepickhardt/related-work.net/issues">Bug Tracker</g:Anchor>
 			</g:VerticalPanel>
+			<div style="clear: both;"/>
 	</g:HTMLPanel>
 </ui:UiBinder>

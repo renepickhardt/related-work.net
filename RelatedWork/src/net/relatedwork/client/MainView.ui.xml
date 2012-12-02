@@ -5,14 +5,16 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel ui:field="rwMain" styleName="rwMain">
-		<div class="wrapper">
-		
+	<!-- for sticky footer -->
+	<div class="wrapper">
+
 		<g:HTMLPanel ui:field="rwHeader" styleName="rwHeader" />
+
 		<g:HTMLPanel ui:field="rwBody" styleName="rwBody">
 			<table id="bodyTable">
 				<tr>
 					<td id="bodyLeftCell">
-						<g:HTMLPanel ui:field="rwContent" styleName="rwContent"/>			
+						<g:HTMLPanel ui:field="rwContent" styleName="rwContent" />
 					</td>
 					<td id="bodyRightCell">
 						<g:HTMLPanel ui:field="rwSidebar" styleName="rwSidebar">
@@ -22,12 +24,13 @@
 				</tr>
 			</table>
 		</g:HTMLPanel>
-		
+
 		<!-- for sticky footer -->
-		<div class="push"/>
-		</div>
-		
-		<g:HTMLPanel ui:field="rwFooter" styleName="rwFooterContainer" />
+		<div class="push" />
+	</div>		
+	
+	<g:HTMLPanel ui:field="rwFooter" styleName="rwFooterContainer"/>
+	
 	</g:HTMLPanel>
 
 </ui:UiBinder>
