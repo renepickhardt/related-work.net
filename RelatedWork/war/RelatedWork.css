@@ -1,16 +1,6 @@
 /* Add css rules here for your application. */
 
-body {
-	font-family: 'Lucida Grande', helvetica, arial, verdana, sans-serif;
-	font-size: 90%;
-	line-height:140%;
-}
-
-a:link { color:#000070; text-decoration:none; }
-a:hover { text-decoration:underline; }
-a:visited { color:#551A8B; text-decoration:none; }
-
-
+/**************************** LAYOUT ******************************/
 
 div.rwMain{
 	height: 100%;
@@ -184,6 +174,29 @@ div.float{
 	float: left;
 }
 
+/**************** TEXT STYLING ********************/
 
-/***************** OBSOLETE *********************/
+body {
+	font-family: 'Lucida Grande', helvetica, arial, verdana, sans-serif;
+}
 
+a:link { color:#000070; text-decoration:none; }
+a:hover { text-decoration:underline; }
+a:visited { color:#551A8B; text-decoration:none; }
+
+
+h1 {
+	font-size: x-large;
+	font-weight: bold;
+}
+
+h2 {
+	font-size: medium;
+}
+
+.rwAbstract {
+	text-align:justify;
+	font-family: 'Lucida Grande', helvetica, arial, verdana, sans-serif;
+	line-height:140%;
+	padding-left: 20px;
+}
