@@ -35,8 +35,8 @@ public class MainPresenter extends
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> TYPE_SetMainContent = new Type<RevealContentHandler<?>>();
 
-//	@ContentSlot
-//	public static final Type<RevealContentHandler<?>> TYPE_Discussion = new Type<RevealContentHandler<?>>();
+	@ContentSlot
+	public static final Type<RevealContentHandler<?>> TYPE_Discussion = new Type<RevealContentHandler<?>>();
 
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> TYPE_Footer = new Type<RevealContentHandler<?>>();
@@ -92,7 +92,7 @@ public class MainPresenter extends
 	protected void onReveal() {
 		super.onReveal();
 		setInSlot(TYPE_Footer, footerPresenter);
-//		setInSlot(TYPE_Discussion, commentPresenter);
+		setInSlot(TYPE_Discussion, commentPresenter);
 		setInSlot(TYPE_Header, headerPresenter);
 		
 		// Register Session

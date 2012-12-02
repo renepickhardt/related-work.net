@@ -7,9 +7,12 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel>
-		<g:RichTextArea ui:field="commentRichTextArea">
-		Leave a comment!
-		</g:RichTextArea>
-		<g:Button ui:field="sendButton">Send Comment</g:Button>
+		<g:VerticalPanel>
+			<g:RichTextArea ui:field="commentRichTextArea">
+			Leave a comment!
+			</g:RichTextArea>
+			<g:Button ui:field="sendButton">Send Comment</g:Button>
+			<g:HTMLPanel ui:field="commentContainer"></g:HTMLPanel>
+		</g:VerticalPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

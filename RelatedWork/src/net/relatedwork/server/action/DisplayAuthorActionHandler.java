@@ -26,6 +26,7 @@ import net.relatedwork.server.neo4jHelper.NodeType;
 import net.relatedwork.server.neo4jHelper.DBRelationshipTypes;
 import net.relatedwork.server.utils.IOHelper;
 import net.relatedwork.shared.dto.Author;
+import net.relatedwork.shared.dto.Comments;
 import net.relatedwork.shared.dto.DisplayAuthor;
 import net.relatedwork.shared.dto.DisplayAuthorResult;
 import net.relatedwork.shared.dto.Paper;
@@ -101,6 +102,11 @@ public class DisplayAuthorActionHandler implements
 			result.addWrittenPaper(Neo4jToDTOHelper.paperFromNode(paper));
 		}
 
+		//TODO: those should be taken from the data base!
+		result.addComment(new Comments(new Author(),"this is some comment"));
+		result.addComment(new Comments(new Author(),"another comment"));
+		result.addComment(new Comments(new Author(),"and more comments"));
+		
 		return result;
 	}
 

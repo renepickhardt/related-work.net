@@ -15,6 +15,7 @@ import com.gargoylesoftware.htmlunit.javascript.host.Window;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.dev.util.Pair;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
@@ -39,6 +40,7 @@ public class ListPresenter<T extends IsRenderable> extends
 	public static final Type<RevealContentHandler<?>> TYPE_ListEntry = new Type<RevealContentHandler<?>>();
 
 	public interface MyView extends View {
+		public FocusPanel getListContainer();
 		public HTMLPanel getListTitle();
 		public void setListTitle(HTMLPanel listTitle);
 		public HTMLPanel getListContent();
@@ -47,7 +49,9 @@ public class ListPresenter<T extends IsRenderable> extends
 		public void deActivateWidget();
 		public Anchor getRwListMoreLink();
 		public void setRwListMoreLink(Anchor rwListMoreLink);
-
+		public HTMLPanel getListOptions();		
+		public void setListOptions(HTMLPanel listOptions);
+		public void showOptions(boolean b);
 	}
 
 	private int numElements;
@@ -57,29 +61,24 @@ public class ListPresenter<T extends IsRenderable> extends
 	public ListPresenter(final EventBus eventBus, final MyView view) {
 		super(eventBus, view);
 	}
-	
-	
 
 	@Override
 	protected void onBind() {
 		super.onBind();
-
-		// mouse over event does???S
-//		getEventBus().addHandler(MouseOverEvent.getType(),
-//				new MouseOverHandler() {
-//					@Override
-//					public void onMouseOver(MouseOverEvent event) {
-//						com.google.gwt.user.client.Window.alert("test");
-//						getView().activateWidget();
-//					}
-//				});
-//		getEventBus().addHandler(MouseOutEvent.getType(),
-//				new MouseOutHandler() {
-//					@Override
-//					public void onMouseOut(MouseOutEvent event) {
-//						getView().deActivateWidget();
-//					}
-//				});
+		getView().showOptions(false);
+		final FocusPanel fp = getView().getListContainer();
+		fp.addMouseOverHandler(new MouseOverHandler() {
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				getView().showOptions(true);
+			}
+		});
+		fp.addMouseOutHandler(new MouseOutHandler() {
+			@Override
+			public void onMouseOut(MouseOutEvent event) {
+				getView().showOptions(false);
+			}
+		});
 	}
 
 	
@@ -93,7 +92,6 @@ public class ListPresenter<T extends IsRenderable> extends
 		numElements = k;
 		getView().getListContent().clear();
 		int cnt = 0;
-
 		for (T element : list) {
 			// set entry presenters into list presenter
 			ListEntryPresenter<T> entryPresenter = (ListEntryPresenter<T>) provider.get();
@@ -111,9 +109,19 @@ public class ListPresenter<T extends IsRenderable> extends
 				setList(myList, 2 * numElements);
 			}
 		});
-
 	}
-
+	
+	public void addMoreItems(int k){
+		if (k<numElements)return;
+		int min = Math.min(k, myList.size());
+		for (int i=numElements;i<min;i++){
+			ListEntryPresenter<T> entryPresenter = (ListEntryPresenter<T>) provider.get();
+			entryPresenter.setContent(myList.get(i));
+			setInSlot(TYPE_ListEntry, entryPresenter);
+		}
+		numElements = min;				
+	}
+	
 	public void setTitle(String title) {
 		getView().getListTitle().clear();
 		getView().getListTitle().add(new HTML("<h2>" + title + "</h2>"));
