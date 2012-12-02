@@ -1,7 +1,24 @@
 /* Add css rules here for your application. */
 
+body {
+	font-family: 'Lucida Grande', helvetica, arial, verdana, sans-serif;
+	font-size: 90%;
+	line-height:140%;
+}
+
+a:link { color:#000070; text-decoration:none; }
+a:hover { text-decoration:underline; }
+a:visited { color:#551A8B; text-decoration:none; }
+
+
+
+div.rwMain{
+	height: 100%;
+	position: relative;
+}
 
 div.rwHeader{
+	z-index: 1000; /* lies over the body for breadcrumbs! */
 	background-color: #EEEEEE;
     border-style: none none dotted;
     border-width: 1px;
@@ -13,30 +30,33 @@ div.rwHeader{
 }
 
 div.rwBody{
-	background: none repeat scroll 0 0 #a1c465;
-    border-radius: 17px 17px 17px 17px;
-    box-shadow: 0 0 9px #000000 inset;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 10px;
-    width: 1004px;
+	z-index: 500;
+}
+
+#bodyTable {
+	width:	100%;
+	height:	100%;
+	/* borders do not work properly */
+	border-collapse:collapse;
+	border: 0px;
+}
+
+#bodyLeftCell{
+	
+}
+#bodyRightCell{
+	width: 200px;
 }
 
 div.rwSidebar {
-	background-color: rgba(255,255,255,0.3);
-    border-radius: 10px 10px 10px 10px;
-    box-shadow: 1px 1px 6px #000000;
-    float: left;
-    min-height: 104px;
-    padding: 10px;
-    width: 233px;
+	width:	100%;
+	height: 100%;
+	
+	padding: 10px;
 }
 
-div.rwContent {
-	float: left;
-    margin-left: 10px;
-    min-height: 100px;
-    width: 740px;
+div.rwContent {	
+	padding: 20px;
 }
 
 
@@ -76,10 +96,8 @@ div.rwFooterContainer {
 	background-color: #EEEEEE;
 	border-style: dotted none none none;
     border-width: 1px;
-	margin-top: 10px;
 	padding: 10px 0 10px 0;
     clear: both;
-	
 	height: 80px; /* align with sticky footer */
 }
 	
@@ -95,22 +113,25 @@ table.rwFooterBlock {
 
 /* stick to bottom */
 
-* {
+/* {
 	margin: 0;
-}
+} */
 
 /* sticky footer */
-html, body, .rwMain {
+html, body {
 	height: 100%;
 }
-.wrapper {
+.wrapper, .rwBody{
+	position: relative;
 	min-height: 100%;
 	height: auto !important;
 	height: 100%;
 	margin: 0 auto -80px; /* the bottom margin is the negative value of the footer's height */
 }
+
 .footer, .push {
 	height: 80px; /* .push must be the same height as .footer */
+	clear: both;
 }
 
 

@@ -13,12 +13,14 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.SuggestOracle.Callback;
 import com.google.gwt.user.client.ui.SuggestOracle.Request;
 import com.google.gwt.user.client.ui.SuggestOracle.Response;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
@@ -32,8 +34,26 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 	@UiField HTMLPanel rwContent;
 	@UiField HTMLPanel rwSidebar;
 	@UiField HTMLPanel rwFooter;
-	@UiField HTMLPanel rwDiscussions;
+//	@UiField HTMLPanel rwDiscussions;
+//	@UiField HorizontalPanel rwBodyTable;
 		
+	public interface Binder extends UiBinder<Widget, MainView> {
+	}
+	
+	@Inject
+	public MainView(final Binder binder) {
+		widget = binder.createAndBindUi(this);
+		
+//		rwBodyTable.setCellHeight(rwBodyTable.getWidget(1), "100%");
+//		rwBodyTable.setCellWidth(rwBodyTable.getWidget(1),  "200px");
+	}
+	
+	@Override
+	public Widget asWidget() {
+		return widget;
+	}
+
+	
 	public HTMLPanel getRwHeader() {
 		return rwHeader;
 	}
@@ -66,18 +86,7 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 		this.rwFooter = rwFooter;
 	}
 
-	public interface Binder extends UiBinder<Widget, MainView> {
-	}
 	
-	@Inject
-	public MainView(final Binder binder) {		
-		widget = binder.createAndBindUi(this);
-	}
-	
-	@Override
-	public Widget asWidget() {
-		return widget;
-	}
 	
 	// Nested presenter setters
 
@@ -89,9 +98,9 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 		else if (slot == MainPresenter.TYPE_SetMainContent) {
 			setMainContent(content);
 		} 
-		else if (slot == MainPresenter.TYPE_Discussion) {
-			setDiscussions(content);
-		} 
+//		else if (slot == MainPresenter.TYPE_Discussion) {
+//			setDiscussions(content);
+//		} 
 		else if (slot == MainPresenter.TYPE_Header) {
 			setHeader(content);
 		} else {
@@ -107,12 +116,12 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 		}
 	}
 
-	private void setDiscussions(Widget content) {
-		rwDiscussions.clear();
-		if (content != null) {
-			rwDiscussions.add(content);
-		}		
-	}
+//	private void setDiscussions(Widget content) {
+//		rwDiscussions.clear();
+//		if (content != null) {
+//			rwDiscussions.add(content);
+//		}		
+//	}
 
 	private void setFooter(Widget content) {
 		rwFooter.clear();

@@ -1,31 +1,28 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui'
-	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel ui:field="rwMain" styleName="rwMain">
-		<!-- for sticky footer -->
-		<div class="wrapper">
-	    <g:HTMLPanel ui:field="rwHeader" styleName="rwHeader"/>
+		<g:HTMLPanel ui:field="rwHeader" styleName="rwHeader" />
+
 		<g:HTMLPanel ui:field="rwBody" styleName="rwBody">
-			<g:VerticalPanel>
-				<g:HorizontalPanel>
-					<g:VerticalPanel>
-					<g:HTMLPanel ui:field="rwContent" styleName="rwContent"></g:HTMLPanel>
-					<g:HTMLPanel ui:field="rwDiscussions" styleName="rwDiscussions"></g:HTMLPanel>
-					</g:VerticalPanel>		
-					<g:HTMLPanel ui:field="rwSidebar" styleName="rwSidebar">
-					Side bar needs more HTML Fields for the elements. e.g. Search Box, Tags, Login, History, Recommendations,...
-					</g:HTMLPanel>
-				</g:HorizontalPanel>
-			</g:VerticalPanel>			
+			<table id="bodyTable"><tr><td id="bodyLeftCell">
+				<g:HTMLPanel ui:field="rwContent" styleName="rwContent"/>			
+			</td><td id="bodyRightCell">
+				<g:HTMLPanel ui:field="rwSidebar" styleName="rwSidebar">
+					Side bar
+				</g:HTMLPanel>
+			</td></tr></table>
+			
+			<!-- for sticky footer -->
+			<div class="push"/>
 		</g:HTMLPanel>
-		<!-- for sticky footer -->
-		<div class="push"></div>
-		</div>
-		<g:HTMLPanel ui:field="rwFooter" styleName="rwFooterContainer"/>
+	
+		
+		<g:HTMLPanel ui:field="rwFooter" styleName="rwFooterContainer" />
 	</g:HTMLPanel>
+
 </ui:UiBinder>
