@@ -64,6 +64,8 @@ public class SearchView extends ViewImpl implements SearchPresenter.MyView {
 		rwSearchButton.setText("search");
 		searchContainer.add(rwSuggestBox);
 		searchContainer.add(rwSearchButton);
+		
+		rwSuggestBox.addStyleName("rwSuggestBox");
 	}
 
 	@Override

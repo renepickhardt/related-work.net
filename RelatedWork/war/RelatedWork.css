@@ -87,10 +87,10 @@ div.rwFooterContainer {
 	border-style: dotted none none none;
     border-width: 1px;
 	padding: 10px 0 10px 0;
-    clear: both;
-	height: 80px; /* align with sticky footer */
+	clear: both;
+	height: 110px; /* align with sticky footer */
 }
-	
+
 div.rwFooter {
 	width: 450px;
 	margin: 0 auto; /*center div*/
@@ -101,27 +101,26 @@ table.rwFooterBlock {
 	float: left;
 }
 
-/* stick to bottom */
-
+/* sticky footer */
 /* {
 	margin: 0;
 } */
 
-/* sticky footer */
 html, body {
 	height: 100%;
 }
-.wrapper, .rwBody{
+
+.wrapper {
 	position: relative;
 	min-height: 100%;
 	height: auto !important;
 	height: 100%;
-	margin: 0 auto -80px; /* the bottom margin is the negative value of the footer's height */
+	margin: 0 auto -110px; /* the bottom margin is the negative value of the footer's height */
 }
 
 .footer, .push {
-	height: 80px; /* .push must be the same height as .footer */
 	clear: both;
+	height: 110px; /* .push must be the same height as .footer */
 }
 
 
@@ -135,7 +134,7 @@ div.rwList{
     box-shadow: 1px 1px 5px;
     margin: 10px 30px 20px 0;
     padding: 0 8px 26px 18px;
-    width: 300px;
+    width: 300px; 
 }
 
 div.rwListEntry{
@@ -199,4 +198,11 @@ h2 {
 	font-family: 'Lucida Grande', helvetica, arial, verdana, sans-serif;
 	line-height:140%;
 	padding-left: 20px;
+}
+
+
+/*************** HACKS *********************/
+
+.gwt-SuggestBoxPopup{
+	z-index: 2000;
 }
