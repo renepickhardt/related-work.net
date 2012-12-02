@@ -1,11 +1,15 @@
 package net.relatedwork.client.content;
 
+import java.util.ArrayList;
+
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.NameToken;
+
+import net.relatedwork.client.Discussions.events.DiscussionsReloadedEvent;
 import net.relatedwork.client.place.NameTokens;
 import net.relatedwork.client.tools.ListPresenter;
 
@@ -13,6 +17,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.google.inject.Inject;
+import com.google.gwt.dev.util.Pair;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -109,6 +114,8 @@ public class AuthorPresenter extends
 				
 				paperListPresenter.setTitle("Articles");
 				paperListPresenter.setList(result.getWrittenPapers(30),10);
+				
+				getEventBus().fireEvent(new DiscussionsReloadedEvent(result.getComments()));
 			}
 		});
 		

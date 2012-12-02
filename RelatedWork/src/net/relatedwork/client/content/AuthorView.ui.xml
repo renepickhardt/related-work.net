@@ -19,6 +19,5 @@
 			</g:HorizontalPanel>
 			<g:HTMLPanel ui:field="paperByAuthor"/>		
 		</g:VerticalPanel>
-	</g:HTMLPanel>
-	
+	</g:HTMLPanel>	
 </ui:UiBinder>

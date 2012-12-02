@@ -34,7 +34,7 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 	@UiField HTMLPanel rwContent;
 	@UiField HTMLPanel rwSidebar;
 	@UiField HTMLPanel rwFooter;
-//	@UiField HTMLPanel rwDiscussions;
+	@UiField HTMLPanel rwDiscussions;
 //	@UiField HorizontalPanel rwBodyTable;
 		
 	public interface Binder extends UiBinder<Widget, MainView> {
@@ -98,9 +98,9 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 		else if (slot == MainPresenter.TYPE_SetMainContent) {
 			setMainContent(content);
 		} 
-//		else if (slot == MainPresenter.TYPE_Discussion) {
-//			setDiscussions(content);
-//		} 
+		else if (slot == MainPresenter.TYPE_Discussion) {
+			setDiscussions(content);
+		} 
 		else if (slot == MainPresenter.TYPE_Header) {
 			setHeader(content);
 		} else {
@@ -116,12 +116,12 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 		}
 	}
 
-//	private void setDiscussions(Widget content) {
-//		rwDiscussions.clear();
-//		if (content != null) {
-//			rwDiscussions.add(content);
-//		}		
-//	}
+	private void setDiscussions(Widget content) {
+		rwDiscussions.clear();
+		if (content != null) {
+			rwDiscussions.add(content);
+		}		
+	}
 
 	private void setFooter(Widget content) {
 		rwFooter.clear();

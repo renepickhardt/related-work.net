@@ -14,6 +14,7 @@ public class DisplayAuthorResult implements Result {
 	private ArrayList<Author> citedAuthors = new ArrayList<Author>();
 	private ArrayList<Author> citedByAuthors = new ArrayList<Author>();
 	private ArrayList<Paper>  writtenPapers = new ArrayList<Paper>();
+	private ArrayList<Comments> comments = new ArrayList<Comments>();
 	private String name;
 	
 
@@ -36,7 +37,15 @@ public class DisplayAuthorResult implements Result {
 	public void addWrittenPaper(Paper paper) {
 		this.writtenPapers.add(paper);
 	}
+	
+	public void addComment(Comments c){
+		this.comments.add(c);
+	}
 
+	public ArrayList<Comments> getComments() {
+		return comments;
+	}
+	
 	public ArrayList<Author> getSimilarAuthors(int k) {
 		return getSortedTopKAuthors(similarAuthors, k);
 	}

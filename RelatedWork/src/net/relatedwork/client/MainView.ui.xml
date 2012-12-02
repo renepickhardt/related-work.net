@@ -1,5 +1,4 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
-
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
@@ -10,13 +9,26 @@
 		
 		<g:HTMLPanel ui:field="rwHeader" styleName="rwHeader" />
 		<g:HTMLPanel ui:field="rwBody" styleName="rwBody">
-			<table id="bodyTable"><tr><td id="bodyLeftCell">
-				<g:HTMLPanel ui:field="rwContent" styleName="rwContent"/>			
-			</td><td id="bodyRightCell">
-				<g:HTMLPanel ui:field="rwSidebar" styleName="rwSidebar">
-					Side bar
-				</g:HTMLPanel>
-			</td></tr></table>
+			<table id="bodyTable">
+				<tr>
+					<td id="bodyLeftCell">
+						<g:HTMLPanel ui:field="rwContent" styleName="rwContent"/>			
+					</td>
+					<td id="bodyRightCell">
+						<g:HTMLPanel ui:field="rwSidebar" styleName="rwSidebar">
+							Side bar
+						</g:HTMLPanel>
+					</td>
+				</tr>
+				<tr>
+					<td id = "discussions">
+						<g:HTMLPanel ui:field="rwDiscussions" styleName="rwDiscussions"/>
+					</td>
+					<td id = "discussionsEmpty">
+						<g:HTMLPanel />
+					</td>
+				</tr>
+			</table>
 		</g:HTMLPanel>
 		
 		<!-- for sticky footer -->
