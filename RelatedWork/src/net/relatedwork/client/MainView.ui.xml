@@ -20,14 +20,6 @@
 						</g:HTMLPanel>
 					</td>
 				</tr>
-				<tr>
-					<td id = "discussions">
-						<g:HTMLPanel ui:field="rwDiscussions" styleName="rwDiscussions"/>
-					</td>
-					<td id = "discussionsEmpty">
-						<g:HTMLPanel />
-					</td>
-				</tr>
 			</table>
 		</g:HTMLPanel>
 		
