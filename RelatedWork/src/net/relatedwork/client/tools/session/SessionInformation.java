@@ -2,6 +2,7 @@ package net.relatedwork.client.tools.session;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 import net.relatedwork.client.place.NameTokens;
 import net.relatedwork.shared.dto.LoginActionResult;
@@ -23,7 +24,7 @@ import com.google.inject.Inject;
  *
  */
 public class SessionInformation implements IsSerializable {
-	
+	/** Data fields **/
 	// Session info
 	public String sessionId;
 	
@@ -33,18 +34,25 @@ public class SessionInformation implements IsSerializable {
     // public String gravatarUrl;
 	
 	// Logging Information 
-	public ArrayList<String> visitedUrls = new ArrayList<String>();
+	public ArrayList<String> eventLogList = new ArrayList<String>();
+
 	
+	/** Constructors **/
 	public SessionInformation() {
+	}
+	
+	public SessionInformation(SessionInformation sessionInformation){
+		this.sessionId = sessionInformation.sessionId;
+		this.username = sessionInformation.username;
+		this.emailAddress = sessionInformation.emailAddress;		
+		this.eventLogList = sessionInformation.eventLogList;
 	}
 	
 	public SessionInformation(String sessionId) {
 		this.sessionId = sessionId;
 	}
 	
-	public boolean isLoggedIn(){
-		return emailAddress != null;
-	}
+	/** Status Control **/
 	
 	public void continueSession(){
 		String sessionCookie = Cookies.getCookie(NameTokens.SESSION_ID);
@@ -63,28 +71,58 @@ public class SessionInformation implements IsSerializable {
 		Cookies.removeCookie(NameTokens.SESSION_ID);
 	}
 
-	
 	public void RegisterLogIn(LoginActionResult login){
 		this.username = login.getUsername();
 		this.emailAddress = login.getEmailAddress();		
 	}
 
+	public boolean isLoggedIn(){
+		return emailAddress != null;
+	}
 	
+	//Remark: Logout destroys object
 	
+	/** Log functions **/
+
+	public void logEvent(String eventDescription){
+		this.eventLogList.add(getUnixTimeStamp() + ": " + eventDescription);
+	}
+
 	public void clearLogs(){
-		this.visitedUrls.clear();
+		this.eventLogList.clear();
 	}
 	
 	public void logUrl(String url){
-		this.visitedUrls.add(url);
-	}
-		
-	public ArrayList<String> getVisitedUrls() {
-		return visitedUrls;
+		this.logEvent("visisted: " + url);
 	}
 
-	public void setVisitedUrls(ArrayList<String> visitedUrls) {
-		this.visitedUrls = visitedUrls;
+	public void logSearch(String querryString){
+		this.logEvent("search: " + querryString);
+	}
+
+	public void logPaper(String paper_uri) {
+		this.logEvent("paper: " + paper_uri);
+	}
+
+	public void logAuthor(String author_uri) {
+		this.logEvent("author: " + author_uri);
+	}
+
+	// Date helper
+	private static int getUnixTimeStamp() {
+        Date date = new Date();
+        int iTimeStamp = (int) (date.getTime() * .001);
+        return iTimeStamp;
+	}
+		
+	/* setters and getters */
+	
+	public ArrayList<String> getEventLog() {
+		return eventLogList;
+	}
+
+	public void setEventLog(ArrayList<String> visitedUrls) {
+		this.eventLogList = visitedUrls;
 	}
 
 	public String getSessionId() {
@@ -110,5 +148,6 @@ public class SessionInformation implements IsSerializable {
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
 	}
+
 	
 }

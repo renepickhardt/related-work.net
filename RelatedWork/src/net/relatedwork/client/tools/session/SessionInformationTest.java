@@ -25,7 +25,7 @@ public class SessionInformationTest {
 	@Test
 	public void testClearLogs() {
 		SIO.clearLogs();
-		assertEquals(SIO.getVisitedUrls(), new ArrayList<String>());
+		assertEquals(SIO.getEventLog(), new ArrayList<String>());
 	}
 
 	@Test
@@ -37,8 +37,8 @@ public class SessionInformationTest {
 		SIO.logUrl(s1);
 		SIO.logUrl(s2);
 		
-		assert(SIO.getVisitedUrls().contains(s1));
-		assert(SIO.getVisitedUrls().contains(s2));
+		assert(SIO.getEventLog().contains(s1));
+		assert(SIO.getEventLog().contains(s2));
 	}
 
 }

@@ -21,11 +21,7 @@ public class ServerSIO extends SessionInformation implements Serializable {
 	 * @param clientSIO
 	 */
 	public ServerSIO(SessionInformation clientSIO) {
-		// TODO: find better solution for typecast
-		this.sessionId = clientSIO.sessionId;
-		this.username = clientSIO.username;
-		this.emailAddress = clientSIO.emailAddress;		
-		this.visitedUrls = clientSIO.visitedUrls;
+		super(clientSIO);
 	}
 
 	/**
@@ -35,7 +31,7 @@ public class ServerSIO extends SessionInformation implements Serializable {
 	 * @param newSIO
 	 */
 	public void update(SessionInformation newSIO){
-		this.visitedUrls.addAll(newSIO.getVisitedUrls());		
+		this.eventLogList.addAll(newSIO.getEventLog());		
 	}
 	
 	public String getSavePath(){
@@ -58,7 +54,7 @@ public class ServerSIO extends SessionInformation implements Serializable {
 		
 		BufferedWriter writer = IOHelper.openAppendFile(sessionFile.getPath());
 		try {
-			for (String uri: visitedUrls){
+			for (String uri: eventLogList){
 				writer.write(uri + "\n");
 			}
 			writer.close();

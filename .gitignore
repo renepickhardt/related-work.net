@@ -27,3 +27,7 @@ local.properties
 
 RelatedWorkBrowser/*
 RelatedWorkBrowserGwtp/*
+# Deployment files
+RelatedWork/war/relatedwork/*
+*/DATA/
+*.log
