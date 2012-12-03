@@ -47,4 +47,8 @@ public class NewUserAction extends ActionImpl<NewUserActionResult> {
 	public SessionInformation getSession() {
 		return session;
 	}
+
+	public String getUri() {
+		return email;
+	}
 }

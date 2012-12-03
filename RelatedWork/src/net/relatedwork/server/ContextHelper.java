@@ -13,6 +13,7 @@ import org.neo4j.graphdb.index.Index;
 import org.neo4j.helpers.collection.MapUtil;
 import org.neo4j.index.impl.lucene.LuceneIndex;
 import org.neo4j.kernel.EmbeddedReadOnlyGraphDatabase;
+import org.neo4j.kernel.impl.core.NodeImpl;
 
 import net.relatedwork.server.executables.CustomTokenAnalyzer;
 import net.relatedwork.server.neo4jHelper.DBNodeProperties;
@@ -100,7 +101,7 @@ public class ContextHelper {
 		if (index == null){
 			System.out.println("Adding uri index - " + URI_IDX + " - to servletContext");
 			index = graphDB.index().forNodes(URI_IDX);
-			((LuceneIndex<Node>) index).setCacheCapacity("key", 300000);
+			((LuceneIndex<Node>) index).setCacheCapacity("uri", 300000);
 			servletContext.setAttribute(URI_IDX,index);
 		}
 		return index;
@@ -119,4 +120,12 @@ public class ContextHelper {
 		return index;
 	}
 
+	public static Node getUserNode(String userUri, ServletContext servletContext) {
+		return getNodeByUri("user_"+userUri, servletContext);
+	}
+
+	public static Node getNodeByUri(String uri, ServletContext servletContext) {
+		return getUriIndex(servletContext).get("url", uri).getSingle();
+	}
+	
 }

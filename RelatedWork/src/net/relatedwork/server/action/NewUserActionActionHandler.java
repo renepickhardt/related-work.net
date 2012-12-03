@@ -2,6 +2,7 @@ package net.relatedwork.server.action;
 
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
 import net.relatedwork.client.tools.session.SessionInformation;
+import net.relatedwork.server.userHelper.NewUserError;
 import net.relatedwork.server.userHelper.ServerSIO;
 import net.relatedwork.server.userHelper.UserInformation;
 import net.relatedwork.shared.dto.NewUserAction;
@@ -22,20 +23,23 @@ public class NewUserActionActionHandler implements
 	public NewUserActionResult execute(NewUserAction action,
 			ExecutionContext context) throws ActionException {
 
-		//TODO: Register new user on server 
+		NewUserActionResult resultObject;
 		
 		// Update sessionInformation object for client
 		ServerSIO session = new ServerSIO(action.getSession());
 		session.save();
-
-		UserInformation UIO = new UserInformation(action);
-		UIO.save();
-
-//		session.setEmailAddress(action.getEmail());
-//		session.setUsername((action.getUsername()));
 		
+		// Register new user on server 		
+		try {
+			UserInformation.registerNewUser(action);
+			resultObject= new NewUserActionResult(true);
+			
+		} catch (NewUserError e) {
+			// something went wrong
+			resultObject = new NewUserActionResult(false);
+		}
 		
-		return new NewUserActionResult();
+		return resultObject;
 	}
 
 	@Override
