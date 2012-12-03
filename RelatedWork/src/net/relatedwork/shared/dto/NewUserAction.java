@@ -1,9 +1,9 @@
-package net.relatedwork.client.tools.login;
+package net.relatedwork.shared.dto;
 
 import com.gwtplatform.dispatch.shared.ActionImpl;
-import net.relatedwork.client.tools.login.NewUserActionResult;
 import java.lang.String;
 import net.relatedwork.client.tools.session.SessionInformation;
+import net.relatedwork.shared.dto.NewUserActionResult;
 
 public class NewUserAction extends ActionImpl<NewUserActionResult> {
 

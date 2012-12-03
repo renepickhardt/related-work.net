@@ -22,10 +22,10 @@ import net.relatedwork.client.layout.FooterPresenter;
 import net.relatedwork.client.layout.HeaderPresenter;
 import net.relatedwork.client.navigation.HistoryTokenChangeEvent;
 import net.relatedwork.client.place.NameTokens;
-import net.relatedwork.client.tools.login.LoginEvent;
-import net.relatedwork.client.tools.login.LoginEvent.LoginHandler;
-import net.relatedwork.client.tools.login.LogoutEvent;
-import net.relatedwork.client.tools.login.LogoutEvent.LogoutHandler;
+import net.relatedwork.client.tools.events.LoginEvent;
+import net.relatedwork.client.tools.events.LogoutEvent;
+import net.relatedwork.client.tools.events.LoginEvent.LoginHandler;
+import net.relatedwork.client.tools.events.LogoutEvent.LogoutHandler;
 import net.relatedwork.client.tools.session.SessionInformation;
 
 
@@ -34,9 +34,6 @@ public class MainPresenter extends
 	
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> TYPE_SetMainContent = new Type<RevealContentHandler<?>>();
-
-	@ContentSlot
-	public static final Type<RevealContentHandler<?>> TYPE_Discussion = new Type<RevealContentHandler<?>>();
 
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> TYPE_Footer = new Type<RevealContentHandler<?>>();
@@ -74,7 +71,6 @@ public class MainPresenter extends
 
 	@Inject FooterPresenter footerPresenter;
 	@Inject HomePresenter homePresenter;
-	@Inject CommentPresenter commentPresenter;
 	@Inject HeaderPresenter headerPresenter;
 	@Inject BreadcrumbsPresenter breadcrumbsPresenter;
 
@@ -92,7 +88,6 @@ public class MainPresenter extends
 	protected void onReveal() {
 		super.onReveal();
 		setInSlot(TYPE_Footer, footerPresenter);
-		setInSlot(TYPE_Discussion, commentPresenter);
 		setInSlot(TYPE_Header, headerPresenter);
 		
 		// Register Session

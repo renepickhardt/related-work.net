@@ -4,45 +4,42 @@
 
 div.rwMain{
 	height: 100%;
-	position: relative;
 }
 
 div.rwHeader{
-	z-index: 1000; /* lies over the body for breadcrumbs! */
 	background-color: #EEEEEE;
-    border-style: none none dotted;
+
+	border-style: none none dotted;
     border-width: 1px;
-    padding: 10px;
 	border-width: 1px;
-	background-color: #EEEEEE;
+	
+    padding: 10px;
 	margin: 0;
-	position: relative;
 }
 
 div.rwBody{
-	z-index: 500;
 }
 
 #bodyTable {
 	width:	100%;
 	height:	100%;
-	/* borders do not work properly */
-	border-collapse:collapse;
-	border: 0px;
+
+	/* borders do still not work properly */
+	border-width: 0px;
 }
 
-#bodyLeftCell{
-	
+#bodyLeftCell{	
 }
+
 #bodyRightCell{
 	width: 200px;
 }
 
+
 div.rwSidebar {
 	width:	100%;
 	height: 100%;
-	
-	padding: 10px;
+	/* do not put padding here: pushes layout out of screen*/
 }
 
 div.rwContent {	
@@ -63,22 +60,13 @@ div.rwSearchBar {
 	}
 
 div.rwBreadcrumbs {
-	position: absolute;
-	bottom: 0px;
-	margin-bottom: -20px;
-}
-
-div.rwDiscussions{
-	width: 400px;
-	float: left;
-	min-height: 100px;
-	clear: both;
-	padding: 10px;
+	clear:	both;
 }
 
 div.rwLogin {
 	float: right;	
 }
+
 
 /************ Footer content styling **************/
 
@@ -86,14 +74,17 @@ div.rwFooterContainer {
 	background-color: #EEEEEE;
 	border-style: dotted none none none;
     border-width: 1px;
-	padding: 10px 0 10px 0;
-	clear: both;
-	height: 110px; /* align with sticky footer */
+    
+    /* to stay ontop of wrapper */
+    position: relative; 
 }
 
 div.rwFooter {
 	width: 450px;
-	margin: 0 auto; /*center div*/
+	height: 109px; /* lseave room for border */
+	
+	margin-left: auto;
+	margin-right: auto;
 }
 
 table.rwFooterBlock {
@@ -104,11 +95,13 @@ table.rwFooterBlock {
 /* sticky footer */
 /* {
 	margin: 0;
-} */
+} 
+*/
 
-html, body {
+/* all divs enclosing wrapper set to height 100% */
+html, body, .rwMain {
 	height: 100%;
-}
+} 
 
 .wrapper {
 	position: relative;
@@ -118,10 +111,23 @@ html, body {
 	margin: 0 auto -110px; /* the bottom margin is the negative value of the footer's height */
 }
 
-.footer, .push {
+.push {
 	clear: both;
 	height: 110px; /* .push must be the same height as .footer */
 }
+
+
+
+/***************** SPECIAL PRESENTER STYLE ******************/
+
+div.rwDiscussions{
+	width: 400px;
+	float: left;
+	min-height: 100px;
+	clear: both;
+	padding: 10px;
+}
+
 
 
 /***** List Styling ******/
@@ -165,6 +171,7 @@ div.rwHoverableListEntry{
 }
 
 /************* HELPER CLASSES *****************/
+
 div.active{
 	background-color:#CC0000;
 }
@@ -204,5 +211,4 @@ h2 {
 /*************** HACKS *********************/
 
 .gwt-SuggestBoxPopup{
-	z-index: 2000;
 }

@@ -2,7 +2,10 @@ package net.relatedwork.client.tools.login;
 
 import net.relatedwork.client.MainPresenter;
 import net.relatedwork.client.tools.events.ClearPopupsEvent;
+import net.relatedwork.client.tools.events.LoginEvent;
 import net.relatedwork.client.tools.events.ClearPopupsEvent.ClearPopupsHandler;
+import net.relatedwork.shared.dto.LoginAction;
+import net.relatedwork.shared.dto.LoginActionResult;
 
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;

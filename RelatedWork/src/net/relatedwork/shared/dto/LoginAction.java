@@ -1,8 +1,8 @@
-package net.relatedwork.client.tools.login;
+package net.relatedwork.shared.dto;
 
 import com.gwtplatform.dispatch.shared.ActionImpl;
-import net.relatedwork.client.tools.login.LoginActionResult;
 import net.relatedwork.client.tools.session.SessionInformation;
+import net.relatedwork.shared.dto.LoginActionResult;
 
 import java.lang.String;
 

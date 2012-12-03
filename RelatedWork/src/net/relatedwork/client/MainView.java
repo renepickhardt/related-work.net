@@ -34,8 +34,6 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 	@UiField HTMLPanel rwContent;
 	@UiField HTMLPanel rwSidebar;
 	@UiField HTMLPanel rwFooter;
-	@UiField HTMLPanel rwDiscussions;
-//	@UiField HorizontalPanel rwBodyTable;
 		
 	public interface Binder extends UiBinder<Widget, MainView> {
 	}
@@ -43,9 +41,6 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 	@Inject
 	public MainView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-		
-//		rwBodyTable.setCellHeight(rwBodyTable.getWidget(1), "100%");
-//		rwBodyTable.setCellWidth(rwBodyTable.getWidget(1),  "200px");
 	}
 	
 	@Override
@@ -97,13 +92,11 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 		}
 		else if (slot == MainPresenter.TYPE_SetMainContent) {
 			setMainContent(content);
-		} 
-		else if (slot == MainPresenter.TYPE_Discussion) {
-			setDiscussions(content);
-		} 
+		}
 		else if (slot == MainPresenter.TYPE_Header) {
 			setHeader(content);
-		} else {
+		} 
+		else {
 			super.setInSlot(slot, content);
 		}
 	}
@@ -114,13 +107,6 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 		if (content != null) {
 			rwHeader.add(content);
 		}
-	}
-
-	private void setDiscussions(Widget content) {
-		rwDiscussions.clear();
-		if (content != null) {
-			rwDiscussions.add(content);
-		}		
 	}
 
 	private void setFooter(Widget content) {

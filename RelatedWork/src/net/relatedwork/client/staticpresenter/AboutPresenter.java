@@ -2,19 +2,27 @@ package net.relatedwork.client.staticpresenter;
 
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 
+import net.relatedwork.client.Discussions.CommentPresenter;
 import net.relatedwork.client.navigation.HistoryTokenChangeEvent;
 import net.relatedwork.client.place.NameTokens;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
+import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.google.inject.Inject;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.GwtEvent.Type;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import net.relatedwork.client.MainPresenter;
 
 public class AboutPresenter extends
 		Presenter<AboutPresenter.MyView, AboutPresenter.MyProxy> {
+
+	
+	@ContentSlot
+	public static final Type<RevealContentHandler<?>> TYPE_Discussion = new Type<RevealContentHandler<?>>();
 
 	public interface MyView extends View {
 	}
@@ -34,7 +42,17 @@ public class AboutPresenter extends
 	protected void revealInParent() {
 		RevealContentEvent.fire(this, MainPresenter.TYPE_SetMainContent, this);
 	}
+	
+	@Inject CommentPresenter commentPresenter;
+	
+	@Override
+	protected void onReveal() {
+		super.onReveal();
 
+		setInSlot(TYPE_Discussion, commentPresenter);
+		
+	}
+	
 	@Override
 	protected void onBind() {
 		super.onBind();

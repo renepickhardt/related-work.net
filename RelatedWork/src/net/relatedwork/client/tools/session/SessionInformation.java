@@ -1,7 +1,10 @@
 package net.relatedwork.client.tools.session;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 import net.relatedwork.client.place.NameTokens;
-import net.relatedwork.client.tools.login.LoginActionResult;
+import net.relatedwork.shared.dto.LoginActionResult;
 
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Random;
@@ -20,13 +23,24 @@ import com.google.inject.Inject;
  *
  */
 public class SessionInformation implements IsSerializable {
+	
 	// Session info
 	public String sessionId;
 	
 	// Login info
 	public String username;
-	public String emailAddress;
+	public String emailAddress;	
     // public String gravatarUrl;
+	
+	// Logging Information 
+	public ArrayList<String> visitedUrls = new ArrayList<String>();
+	
+	public SessionInformation() {
+	}
+	
+	public SessionInformation(String sessionId) {
+		this.sessionId = sessionId;
+	}
 	
 	public boolean isLoggedIn(){
 		return emailAddress != null;
@@ -56,6 +70,23 @@ public class SessionInformation implements IsSerializable {
 	}
 
 	
+	
+	public void clearLogs(){
+		this.visitedUrls.clear();
+	}
+	
+	public void logUrl(String url){
+		this.visitedUrls.add(url);
+	}
+		
+	public ArrayList<String> getVisitedUrls() {
+		return visitedUrls;
+	}
+
+	public void setVisitedUrls(ArrayList<String> visitedUrls) {
+		this.visitedUrls = visitedUrls;
+	}
+
 	public String getSessionId() {
 		return sessionId;
 	}
@@ -79,7 +110,5 @@ public class SessionInformation implements IsSerializable {
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
 	}
-	
-	
 	
 }

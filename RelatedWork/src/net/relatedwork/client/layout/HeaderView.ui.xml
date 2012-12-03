@@ -11,6 +11,6 @@
 		<g:HTMLPanel ui:field="rwHeaderSearch"  styleName="rwSearchBar"/>
 		<g:HTMLPanel ui:field="rwLoginControls" styleName="rwLogin"/>
 		<g:HTMLPanel ui:field="rwBreadcrumbs"   styleName="rwBreadcrumbs"/>
-		<div style="clear: both;"></div>
+		<div style="clear: both;"/>
 	</g:HTMLPanel>
 </ui:UiBinder>

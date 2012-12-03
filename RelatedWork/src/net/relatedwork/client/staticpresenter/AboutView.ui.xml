@@ -6,5 +6,7 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel>About page!</g:HTMLPanel>
+	<g:HTMLPanel>About page!
+		<g:HTMLPanel ui:field="rwDiscussions" styleName="rwDiscussions"/>
+	</g:HTMLPanel>
 </ui:UiBinder>
