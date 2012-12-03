@@ -30,6 +30,7 @@ public class UserInformation {
 	public String username = "";
 	public ArrayList<String> sessionList = new ArrayList<String>();
 	
+	private Node userNode;
 
 	// used for db interaction
 	@Inject ServletContext servletContext;
@@ -46,43 +47,33 @@ public class UserInformation {
 
 	/**
 	 * Initialize UIO from NewUser Action.
-	 * does consisency check
-	 * does _not_ check if user is new
-	 * does _not_ write to db.
+	 * check if details are consistent
+	 * check if user is new
+	 * writes to db.
 	 */
-	public UserInformation(NewUserAction newUserAction) throws Exception {
+	public void registerNewUser(NewUserAction newUserAction) throws NewUserError {
 		if (! userDetailsOk(newUserAction)) {
-			throw new Exception("Error in user details");
+			throw new NewUserError("Error in user details");
 		}
+
+		if (userRecordExists(newUserAction.getEmail())) {
+			throw new NewUserError("User exists already");
+		}
+		
 		email    = newUserAction.getEmail();
 		username = newUserAction.getUsername();
 		// TODO: Secure password hashing with salt
 		passwordHash = newUserAction.getPassword();
-		registerSessionId(newUserAction.getSession().sessionId);
-	}
-
-	/**
-	 * Register new user to db.
-	 * Checks for uniquicy
-	 * @throws NewUserError
-	 */
-	public void registerNewUser() throws NewUserError {
-		if (email == null) {
-			throw new NewUserError("No Email provided");
-		} if (userRecordExists()) {
-			throw new NewUserError("User exists already");
-		}
-		
+		registerSessionId(newUserAction.getSession().sessionId);		
+				
 		save();
 	}
 
-	public boolean userRecordExists() {
-		Node userNode = getUserNode();
+	public boolean userRecordExists(String email) {
+		Node userNode = ContextHelper.getUserNodeFromEamil(email, servletContext);
 		if (userNode == null){ 
-			// user node not in index
-			return false; 
+			return false;
 		} else if ((Boolean) userNode.getProperty(DBNodeProperties.USER_DELETED) == true) {
-			// user marked as deleted
 			return false;
 		}
 		return true;
@@ -105,46 +96,46 @@ public class UserInformation {
 	/**
 	 * Handle login Login Action
 	 */
-	public void loadLogin(LoginAction loginAction) throws LoginException {
-		Node userNode = getUserNode(email);
+	public void loginUser(LoginAction loginAction) throws LoginException {
 		
-		if (userNode == null ) {
+		Node userLoginNode = ContextHelper.getUserNodeFromEamil(loginAction.getEmail(), servletContext);
+		
+		if ( userLoginNode == null ) {
 			throw new LoginException("No such user "+ email);
 		}
 		
-		if (!checkPassword(userNode, loginAction.getPassword())){
+		if (!checkPassword(userLoginNode, loginAction.getPassword())){
 			throw new LoginException("Wrong password "+ loginAction.getPassword());
 		}
 		
-		this.loadFromNode(userNode);
+		this.loadFromNode(userLoginNode);
 		
 	}
 
-	private boolean checkPassword(Node userNode, String password) {
-		return (userNode.getProperty(DBNodeProperties.USER_PW_HASH).equals(password));
+	private boolean checkPassword(Node userLoginNode, String password) {
+		return (userLoginNode.getProperty(DBNodeProperties.USER_PW_HASH).equals(password));
 	}
 
-	public void loadFromNode(Node userNode) {
-		this.email        = (String) userNode.getProperty(DBNodeProperties.USER_EMAIL);
-		this.passwordHash = (String) userNode.getProperty(DBNodeProperties.USER_PW_HASH);
-		this.username     = (String) userNode.getProperty(DBNodeProperties.USER_NAME);
-		this.sessionList  = (ArrayList<String>) userNode.getProperty(DBNodeProperties.USER_SESSIONS);		
+	public void loadFromNode(Node userLoginNode) {
+		email        = (String) userLoginNode.getProperty(DBNodeProperties.USER_EMAIL);
+		passwordHash = (String) userLoginNode.getProperty(DBNodeProperties.USER_PW_HASH);
+		username     = (String) userLoginNode.getProperty(DBNodeProperties.USER_NAME);
+		sessionList  = (ArrayList<String>) userLoginNode.getProperty(DBNodeProperties.USER_SESSIONS);
+		userNode     = userLoginNode;
 		}
 	
 	
 	private Node getUserNode(){
-		return getUserNode(email);
-	}
-	
-	private Node getUserNode(String email){
-		if (email == null){
-			return null;
-		} else {
-			return ContextHelper.getUserNodeFromEamil(email,servletContext);
+		if (userNode == null) {
+			userNode = ContextHelper.getUserNodeFromEamil(email,servletContext);
 		}
+		return userNode;
 	}
+
 	
 	public SessionInformation updateSIO(SessionInformation SIO) {
+		((ServerSIO)SIO).save();
+		SIO.clearLogs();
 		SIO.setEmailAddress(email);
 		SIO.setUsername(username);
 		return SIO;

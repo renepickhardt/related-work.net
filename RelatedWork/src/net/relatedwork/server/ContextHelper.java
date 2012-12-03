@@ -127,6 +127,7 @@ public class ContextHelper {
 		return getUriIndex(servletContext).get("url", uri).getSingle();
 	}
 
+
 	public static Node getUserNodeFromEamil(String email, ServletContext servletContext) {
 		return getNodeByUri("rw:user:" + email, servletContext);
 	}

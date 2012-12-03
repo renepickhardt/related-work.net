@@ -20,26 +20,26 @@ public class NewUserActionActionHandler implements
 	}
 
 	@Override
-	public NewUserActionResult execute(NewUserAction action,
+	public NewUserActionResult execute(NewUserAction newUserAction,
 			ExecutionContext context) throws ActionException {
 
 		NewUserActionResult resultObject;
 		
 		// Update sessionInformation object for client
-		ServerSIO session = new ServerSIO(action.getSession());
+		ServerSIO session = new ServerSIO(newUserAction.getSession());
 		session.save();
 		
-		// Register new user on server 		
+		// Register new user on server 
 		try {
-			UserInformation.registerNewUser(action);
-			resultObject= new NewUserActionResult(true);
-			
+			UserInformation UIO = new UserInformation();
+			UIO.registerNewUser(newUserAction);
 		} catch (NewUserError e) {
 			// something went wrong
-			resultObject = new NewUserActionResult(false);
+			throw new ActionException(e.getMessage());
 		}
 		
-		return resultObject;
+		// everything ok
+		return new NewUserActionResult();
 	}
 
 	@Override
