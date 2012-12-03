@@ -28,6 +28,7 @@ public class Config extends Properties {
 
 	// by Heinrich
 	public String autoCompleteFile;
+	public String sessionDir;
 
 	static Config instance = null;
 

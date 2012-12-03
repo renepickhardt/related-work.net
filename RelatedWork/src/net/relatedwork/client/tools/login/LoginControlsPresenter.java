@@ -17,8 +17,10 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 import net.relatedwork.client.MainPresenter;
 import net.relatedwork.client.layout.HeaderPresenter;
-import net.relatedwork.client.tools.login.LoginEvent.LoginHandler;
-import net.relatedwork.client.tools.login.LogoutEvent.LogoutHandler;
+import net.relatedwork.client.tools.events.LoginEvent;
+import net.relatedwork.client.tools.events.LogoutEvent;
+import net.relatedwork.client.tools.events.LoginEvent.LoginHandler;
+import net.relatedwork.client.tools.events.LogoutEvent.LogoutHandler;
 import net.relatedwork.client.tools.session.SessionInformation;
 
 public class LoginControlsPresenter

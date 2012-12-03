@@ -1,9 +1,10 @@
 package net.relatedwork.server.action;
 
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
-import net.relatedwork.client.tools.login.NewUserAction;
-import net.relatedwork.client.tools.login.NewUserActionResult;
 import net.relatedwork.client.tools.session.SessionInformation;
+import net.relatedwork.server.userHelper.ServerSIO;
+import net.relatedwork.shared.dto.NewUserAction;
+import net.relatedwork.shared.dto.NewUserActionResult;
 
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
@@ -23,11 +24,15 @@ public class NewUserActionActionHandler implements
 		//TODO: Register new user on server 
 		
 		// Update sessionInformation object for client
-		SessionInformation session = action.getSession();
-		session.setEmailAddress(action.getEmail());
-		session.setUsername((action.getUsername()));
+		ServerSIO session = new ServerSIO(action.getSession());
+		session.save();
+
+
+//		session.setEmailAddress(action.getEmail());
+//		session.setUsername((action.getUsername()));
 		
-		return new NewUserActionResult(session);
+		
+		return new NewUserActionResult();
 	}
 
 	@Override

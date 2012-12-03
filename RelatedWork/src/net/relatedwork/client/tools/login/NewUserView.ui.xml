@@ -9,9 +9,9 @@
 	<g:PopupPanel  animationEnabled="true" glassEnabled="true" autoHideEnabled="true">
 		<g:HTMLPanel>
 			<h2>Register new User</h2>
-			<g:Label text="Username" /> <g:TextBox ui:field="rwNewUsername"/>
-			<g:Label text="Email" /> <g:TextBox ui:field="rwNewEmail"/>
-			<g:Label text="Password" /> <g:TextBox ui:field="rwNewPassword" />
+			<g:Label text="Username" />       <g:TextBox ui:field="rwNewUsername"/>
+			<g:Label text="Email" />          <g:TextBox ui:field="rwNewEmail"/>
+			<g:Label text="Password" />       <g:TextBox ui:field="rwNewPassword" />
 			<g:Label text="RepeatPassword" /> <g:TextBox ui:field="rwNewPasswordRepeat" />
 			<g:Button text="Submit" ui:field="rwNewUserSubmit"/>
 		</g:HTMLPanel>

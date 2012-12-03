@@ -1,4 +1,4 @@
-package net.relatedwork.client.tools.login;
+package net.relatedwork.shared.dto;
 
 import net.relatedwork.client.MainPresenter;
 import net.relatedwork.client.tools.session.SessionInformation;

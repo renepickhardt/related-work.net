@@ -23,12 +23,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import net.relatedwork.client.MainPresenter;
 import net.relatedwork.client.handler.StartSearchHandler;
+import net.relatedwork.client.tools.events.LoginEvent;
+import net.relatedwork.client.tools.events.LoginEvent.LoginHandler;
 import net.relatedwork.client.tools.login.LoginControlsPresenter;
-import net.relatedwork.client.tools.login.LoginEvent.LoginHandler;
-import net.relatedwork.client.tools.login.LoginEvent;
 import net.relatedwork.client.tools.login.LoginPopupPresenter;
-import net.relatedwork.client.tools.login.LoginActionResult;
 import net.relatedwork.client.tools.SearchPresenter;
+import net.relatedwork.shared.dto.LoginActionResult;
 
 public class HeaderPresenter extends
 		Presenter<HeaderPresenter.MyView, HeaderPresenter.MyProxy> {

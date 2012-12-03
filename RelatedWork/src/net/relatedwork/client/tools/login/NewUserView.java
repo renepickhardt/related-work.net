@@ -44,6 +44,12 @@ public class NewUserView extends PopupViewImpl implements
 		rwNewPasswordRepeat.setText("");
 	}
 	
+	@Override
+	public void mockPassword() {
+		rwNewPasswordRepeat.setText("Not equal to password!");		
+	}
+	
+	
 	public void setRwNewUsername(TextBox rwNewUsername) {
 		this.rwNewUsername = rwNewUsername;
 	}

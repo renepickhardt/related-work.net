@@ -3,6 +3,8 @@ package net.relatedwork.client.tools.login;
 import net.relatedwork.client.MainPresenter;
 import net.relatedwork.client.tools.events.ClearPopupsEvent;
 import net.relatedwork.client.tools.events.ClearPopupsEvent.ClearPopupsHandler;
+import net.relatedwork.shared.dto.NewUserAction;
+import net.relatedwork.shared.dto.NewUserActionResult;
 
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
@@ -30,6 +32,7 @@ public class NewUserPresenter extends PresenterWidget<NewUserPresenter.MyView> {
 		public Button getRwNewUserSubmit();
 		public void setRwNewUserSubmit(Button rwNewUserSubmit);
 		public void clearFields();
+		public void mockPassword();
 	}
 
 	@Inject
@@ -37,6 +40,15 @@ public class NewUserPresenter extends PresenterWidget<NewUserPresenter.MyView> {
 		super(eventBus, view);
 	}
 
+	private boolean fromIsCorrect(){
+		if( ! getView().getRwNewPassword().getText().equals(getView().getRwNewPasswordRepeat().getText()) ) {
+			getView().mockPassword();
+			return false;
+		} 
+		// TODO: Add email check
+		return true;
+	}
+	
 	@Inject DispatchAsync dispatcher;
 	
 	@Override
@@ -46,6 +58,7 @@ public class NewUserPresenter extends PresenterWidget<NewUserPresenter.MyView> {
 		registerHandler(getView().getRwNewUserSubmit().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
+				if ( fromIsCorrect() ) {
 				dispatcher.execute(
 						new NewUserAction(
 								getView().getRwNewUsername().getText(),
@@ -62,11 +75,13 @@ public class NewUserPresenter extends PresenterWidget<NewUserPresenter.MyView> {
 							}
 							@Override
 							public void onSuccess(NewUserActionResult result) {
-								// Window.alert("New User Returned: "+result.getSession().username );
 
-								// Login user !!
-								getEventBus().fireEvent(new LoginEvent(result.getSession()));
+								// TODO: Display new user info
+								Window.alert("New user request send. Check your mails to confirm.");
 								
+//								// Login user !!
+//								getEventBus().fireEvent(new LoginEvent(result.getSession()));
+//								
 								// ClearFields
 								getView().clearFields();
 								
@@ -76,6 +91,7 @@ public class NewUserPresenter extends PresenterWidget<NewUserPresenter.MyView> {
 							}
 							}
 						);
+				}
 			}
 		}));
 

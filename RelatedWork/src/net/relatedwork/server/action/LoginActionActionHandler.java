@@ -1,9 +1,9 @@
 package net.relatedwork.server.action;
 
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
-import net.relatedwork.client.tools.login.LoginAction;
-import net.relatedwork.client.tools.login.LoginActionResult;
 import net.relatedwork.client.tools.session.SessionInformation;
+import net.relatedwork.shared.dto.LoginAction;
+import net.relatedwork.shared.dto.LoginActionResult;
 
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;

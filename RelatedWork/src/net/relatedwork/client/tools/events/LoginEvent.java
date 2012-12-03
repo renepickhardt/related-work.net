@@ -1,4 +1,4 @@
-package net.relatedwork.client.tools.login;
+package net.relatedwork.client.tools.events;
 
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.EventHandler;

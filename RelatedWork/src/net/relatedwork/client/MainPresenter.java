@@ -22,10 +22,10 @@ import net.relatedwork.client.layout.FooterPresenter;
 import net.relatedwork.client.layout.HeaderPresenter;
 import net.relatedwork.client.navigation.HistoryTokenChangeEvent;
 import net.relatedwork.client.place.NameTokens;
-import net.relatedwork.client.tools.login.LoginEvent;
-import net.relatedwork.client.tools.login.LoginEvent.LoginHandler;
-import net.relatedwork.client.tools.login.LogoutEvent;
-import net.relatedwork.client.tools.login.LogoutEvent.LogoutHandler;
+import net.relatedwork.client.tools.events.LoginEvent;
+import net.relatedwork.client.tools.events.LogoutEvent;
+import net.relatedwork.client.tools.events.LoginEvent.LoginHandler;
+import net.relatedwork.client.tools.events.LogoutEvent.LogoutHandler;
 import net.relatedwork.client.tools.session.SessionInformation;
 
 
