@@ -12,11 +12,13 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.index.Index;
 import org.neo4j.helpers.collection.MapUtil;
 import org.neo4j.index.impl.lucene.LuceneIndex;
+import org.neo4j.kernel.EmbeddedGraphDatabase;
 import org.neo4j.kernel.EmbeddedReadOnlyGraphDatabase;
 import org.neo4j.kernel.impl.core.NodeImpl;
 
 import net.relatedwork.server.executables.CustomTokenAnalyzer;
 import net.relatedwork.server.neo4jHelper.DBNodeProperties;
+import net.relatedwork.server.userHelper.UserInformation;
 import net.relatedwork.server.utils.Config;
 import net.relatedwork.server.utils.IOHelper;
 import net.relatedwork.shared.SuggestTree;
@@ -35,10 +37,10 @@ public class ContextHelper {
 	private static final String URI_IDX = DBNodeProperties.URI_INDEX_NAME;
 
 	// Get NEO4J DB
-	public static EmbeddedReadOnlyGraphDatabase getReadOnlyGraphDatabase(ServletContext servletContext){
-		EmbeddedReadOnlyGraphDatabase graphDB = (EmbeddedReadOnlyGraphDatabase)servletContext.getAttribute(READ_ONLY_NEO4J);
+	public static EmbeddedGraphDatabase getGraphDatabase(ServletContext servletContext){
+		EmbeddedGraphDatabase graphDB = (EmbeddedGraphDatabase)servletContext.getAttribute(READ_ONLY_NEO4J);
 		if (graphDB == null){
-			graphDB = new EmbeddedReadOnlyGraphDatabase(Config.get().neo4jDbPath);
+			graphDB = new EmbeddedGraphDatabase(Config.get().neo4jDbPath);
 			servletContext.setAttribute(READ_ONLY_NEO4J, graphDB);
 		}
 		return graphDB;
@@ -81,7 +83,7 @@ public class ContextHelper {
 
 	// Search index
 	public static Index<Node> getSearchIndex(ServletContext servletContext){
-		EmbeddedReadOnlyGraphDatabase graphDB = getReadOnlyGraphDatabase(servletContext);
+		EmbeddedGraphDatabase graphDB = getGraphDatabase(servletContext);
 		Index<Node> index = (Index<Node>)servletContext.getAttribute(SEARCH_IDX_GWT);
 		if (index == null){
 			System.out.println("Adding search index - " + SEARCH_IDX_GWT + "- to servletContext.");
@@ -96,7 +98,7 @@ public class ContextHelper {
 
 	// URI index
 	public static Index<Node> getUriIndex(ServletContext servletContext){
-		EmbeddedReadOnlyGraphDatabase graphDB = getReadOnlyGraphDatabase(servletContext);
+		EmbeddedGraphDatabase graphDB = getGraphDatabase(servletContext);
 		Index<Node> index = (Index<Node>)servletContext.getAttribute(URI_IDX);
 		if (index == null){
 			System.out.println("Adding uri index - " + URI_IDX + " - to servletContext");
@@ -109,7 +111,7 @@ public class ContextHelper {
 	
 	// arxiv-id index
 	public static Index<Node> getPaperIndex(ServletContext servletContext){
-		EmbeddedReadOnlyGraphDatabase graphDB = getReadOnlyGraphDatabase(servletContext);
+		EmbeddedGraphDatabase graphDB = getGraphDatabase(servletContext);
 		Index<Node> index = (Index<Node>)servletContext.getAttribute(PAPER_IDX_GWT);
 		if (index == null){
 			System.out.println("Initializing paper index - " + PAPER_IDX_GWT);
@@ -120,12 +122,13 @@ public class ContextHelper {
 		return index;
 	}
 
-	public static Node getUserNode(String userUri, ServletContext servletContext) {
-		return getNodeByUri("user_"+userUri, servletContext);
-	}
 
 	public static Node getNodeByUri(String uri, ServletContext servletContext) {
 		return getUriIndex(servletContext).get("url", uri).getSingle();
+	}
+
+	public static Node getUserNodeFromEamil(String email, ServletContext servletContext) {
+		return getNodeByUri("rw:user:" + email, servletContext);
 	}
 	
 }

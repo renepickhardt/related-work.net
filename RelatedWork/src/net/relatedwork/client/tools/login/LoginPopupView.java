@@ -17,7 +17,7 @@ public class LoginPopupView extends PopupViewImpl implements
 	public interface Binder extends UiBinder<Widget, LoginPopupView> {
 	}
 
-	@UiField TextBox rwLoginUsername;
+	@UiField TextBox rwLoginEmail;
 	@UiField TextBox rwLoginPassword;
 	@UiField Button rwLoginButton;
 	@UiField Button rwLoginNewUserButton;
@@ -35,7 +35,7 @@ public class LoginPopupView extends PopupViewImpl implements
 	}
 	
 	public void clearFields() {
-		rwLoginUsername.setText("");
+		rwLoginEmail.setText("");
 		rwLoginPassword.setText("");
 	}
 
@@ -47,12 +47,12 @@ public class LoginPopupView extends PopupViewImpl implements
 		this.rwLoginNewUserButton = rwNewUserButton;
 	}
 
-	public TextBox getRwLoginUsername() {
-		return rwLoginUsername;
+	public TextBox getRwLoginEmail() {
+		return rwLoginEmail;
 	}
 
-	public void setRwLoginUsername(TextBox rwLoginUsername) {
-		this.rwLoginUsername = rwLoginUsername;
+	public void setRwLoginEmail(TextBox rwLoginEmail) {
+		this.rwLoginEmail= rwLoginEmail;
 	}
 
 	public TextBox getRwLoginPassword() {

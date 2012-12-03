@@ -8,7 +8,7 @@ import java.lang.String;
 
 public class LoginAction extends ActionImpl<LoginActionResult> {
 
-	private String username;
+	private String email;
 	private String password;
 	private SessionInformation session;
 
@@ -23,14 +23,14 @@ public class LoginAction extends ActionImpl<LoginActionResult> {
 		// For serialization only
 	}
 
-	public LoginAction(String username, String password, SessionInformation session) {
-		this.username = username;
+	public LoginAction(String email, String password, SessionInformation session) {
+		this.email = email;
 		this.password = password;
 		this.session = session;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getEmail() {
+		return email;
 	}
 
 	public String getPassword() {

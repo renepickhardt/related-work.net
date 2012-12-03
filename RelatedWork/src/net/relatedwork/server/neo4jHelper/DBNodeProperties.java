@@ -19,6 +19,13 @@ public class DBNodeProperties {
 	// Author nodes
 	public static String AUTHOR_NAME = "name";
 	
+	// User nodes
+	public static final String USER_EMAIL = "rw:user:foaf:email";
+	public static final String USER_PW_HASH = "rw:user:sessions";
+	public static final String USER_NAME = "rw:user:foaf:name";
+	public static final String USER_SESSIONS = "rw:user:sessions";
+	public static final String USER_DELETED = "rw:user:deleted";
+	
 	// Propery values for TYPE master nodes
 	public static String PAPER_LABEL_VALUE = "PAPER";
 	public static String AUTHOR_LABEL_VALUE = "AUTHOR";	
