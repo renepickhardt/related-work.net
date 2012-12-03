@@ -3,6 +3,7 @@ package net.relatedwork.server.action;
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
 import net.relatedwork.client.tools.session.SessionInformation;
 import net.relatedwork.server.userHelper.ServerSIO;
+import net.relatedwork.server.userHelper.UserInformation;
 import net.relatedwork.shared.dto.NewUserAction;
 import net.relatedwork.shared.dto.NewUserActionResult;
 
@@ -27,6 +28,8 @@ public class NewUserActionActionHandler implements
 		ServerSIO session = new ServerSIO(action.getSession());
 		session.save();
 
+		UserInformation UIO = new UserInformation(action);
+		UIO.save();
 
 //		session.setEmailAddress(action.getEmail());
 //		session.setUsername((action.getUsername()));
