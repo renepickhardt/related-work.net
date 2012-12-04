@@ -141,12 +141,13 @@ public class UserInformation {
 			throw new LoginException("Wrong password ");
 		}
 		
-		this.loadFromNode(userLoginNode);
-
+		loadFromNode(userLoginNode);
+		
+		registerSessionId(loginAction.getSession().sessionId);
+		save();
+		
 		IOHelper.log("User logged in");
 		print();
-		
-		
 	}
 
 	private boolean checkPassword(Node userLoginNode, String passwordHash) {

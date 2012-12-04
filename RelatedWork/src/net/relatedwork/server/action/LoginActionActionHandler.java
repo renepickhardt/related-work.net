@@ -32,6 +32,7 @@ public class LoginActionActionHandler implements
 		SessionInformation SIO = loginAction.getSession();
 		
 		UserInformation UIO = new UserInformation(servletContext);
+		
 		try {
 			UIO.loginUser(loginAction);
 		} catch (LoginException e) {
