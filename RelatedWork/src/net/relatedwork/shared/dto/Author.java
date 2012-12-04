@@ -73,5 +73,11 @@ public class Author implements Result, IsSerializable, IsRenderable{
 
 	public void setScore(Integer score) {
 		this.score = score;
+	}
+
+	@Override
+	public Boolean passesFilter(String mask) {
+		if (this.displayName.toLowerCase().contains(mask))return true;
+		return false;
 	}	
 }

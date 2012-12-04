@@ -143,9 +143,17 @@ div.rwList{
     width: 300px; 
 }
 
+div.listOptions{
+	min-height:30px;
+    border-style: solid;
+    border-width: 0;
+	padding: 4px 3px 4px 3px;
+    width: 270px;
+}
+
 div.rwListEntry{
 	clear:both;
-	border-radius: 4px 4px 4px 4px;
+	min-height:50px;
     border-style: solid;
     border-width: 0;
 	padding: 4px 3px 4px 3px;
@@ -154,7 +162,7 @@ div.rwListEntry{
 
 div.rwListEntry-hover{
 	clear:both;
-	border-radius: 4px 4px 4px 4px;
+	min-height:50px;
     border-style: solid;
     border-width: 0;
 	background-color: #DDDDDD;
@@ -167,6 +175,7 @@ div.rwVisibleListEntry{
 	float: left;
 }
 div.rwHoverableListEntry{
+	height: 15px;
 	float: right;
 }
 

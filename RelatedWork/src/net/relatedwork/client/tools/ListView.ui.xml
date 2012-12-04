@@ -9,7 +9,14 @@
 	<g:FocusPanel styleName="rwList" ui:field="listContainer">
 		<g:VerticalPanel>
 			<g:HTMLPanel ui:field="listTitle"></g:HTMLPanel>
-			<g:HTMLPanel ui:field="listOptions">options</g:HTMLPanel>
+			<g:HTMLPanel styleName="listOptions">
+				<g:HTMLPanel ui:field="listOptions">
+					<g:HorizontalPanel>
+						<g:TextBox ui:field="filterField">filter results</g:TextBox>
+						<g:Label>  Sorty by:</g:Label>
+					</g:HorizontalPanel>
+				</g:HTMLPanel>
+			</g:HTMLPanel>
 			<g:HTMLPanel ui:field="listContent"></g:HTMLPanel>
 			<g:HTMLPanel><hr/></g:HTMLPanel>
 			<g:Anchor href="javascript:;" ui:field="rwListMoreLink">

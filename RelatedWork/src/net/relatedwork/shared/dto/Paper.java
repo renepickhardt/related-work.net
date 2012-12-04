@@ -93,4 +93,10 @@ public class Paper implements IsRenderable, IsSerializable {
 	public Integer getScore(){
 		return citationCount;
 	}
+	
+	public Boolean passesFilter(String mask) {
+		if (this.title.toLowerCase().contains(mask))return true;
+		return false;
+	}	
+	
 }

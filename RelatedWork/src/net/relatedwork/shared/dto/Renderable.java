@@ -24,4 +24,9 @@ public class Renderable implements IsRenderable, IsSerializable{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public Boolean passesFilter(String mask) {
+		if (this.displayName.toLowerCase().contains(mask))return true;
+		return false;
+	}	
 }

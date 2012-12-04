@@ -8,6 +8,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -20,7 +21,16 @@ public class ListView extends ViewImpl implements ListPresenter.MyView {
 	@UiField Anchor rwListMoreLink;
 	@UiField HTMLPanel listOptions;
 	@UiField FocusPanel listContainer;
+	@UiField TextBox filterField;
 	
+	public TextBox getFilterField() {
+		return filterField;
+	}
+
+	public void setFilterField(TextBox filterField) {
+		this.filterField = filterField;
+	}
+
 	public Anchor getRwListMoreLink() {
 		return rwListMoreLink;
 	}

@@ -18,6 +18,8 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dev.util.Pair;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
@@ -31,6 +33,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ListPresenter<T extends IsRenderable> extends
@@ -52,6 +55,8 @@ public class ListPresenter<T extends IsRenderable> extends
 		public HTMLPanel getListOptions();		
 		public void setListOptions(HTMLPanel listOptions);
 		public void showOptions(boolean b);
+		public TextBox getFilterField();
+		public void setFilterField(TextBox filterField);
 	}
 
 	private int numElements;
@@ -79,17 +84,41 @@ public class ListPresenter<T extends IsRenderable> extends
 				getView().showOptions(false);
 			}
 		});
+		
+		final TextBox tb = getView().getFilterField();
+		tb.addKeyUpHandler(new KeyUpHandler(){
+
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				renderNewList(applyFiler(tb.getText()), numElements);	
+			}});
 	}
 
-	
+	//TODO: write a function on elements that matches against the filer
+	protected ArrayList<T> applyFiler(String text) {
+		ArrayList<T> filteredList = new ArrayList<T>();
+		int cnt = 0;
+		for (T element:myList){
+			if (element.passesFilter(text)){
+				filteredList.add(element);
+			}
+		}
+		return filteredList;
+	}
+
+
 	// from
 	// http://stackoverflow.com/questions/592046/inject-an-array-of-objects-in-guice
 	@Inject
 	Provider<ListEntryPresenter<IsRenderable>> provider;
 	
-	public void setList(ArrayList<T> list, int k) {
+	public void setList(ArrayList<T> list, Integer k) {
 		myList = list;
 		numElements = k;
+		renderNewList(list,k);
+	}
+	
+	private void renderNewList(ArrayList<T> list, Integer k){
 		getView().getListContent().clear();
 		int cnt = 0;
 		for (T element : list) {
@@ -108,7 +137,7 @@ public class ListPresenter<T extends IsRenderable> extends
 			public void onClick(ClickEvent event) {
 				setList(myList, 2 * numElements);
 			}
-		});
+		});		
 	}
 	
 	public void addMoreItems(int k){

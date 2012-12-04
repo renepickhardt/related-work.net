@@ -117,10 +117,10 @@ public class PaperPresenter extends
 
 				// Set paper list
 				ciationsListPresenter.setTitle("References");
-				ciationsListPresenter.setList(result.getCitesPapers(25),5);
+				ciationsListPresenter.setList(result.getCitesPapers(1000),5);
 
 				citedByListPresenter.setTitle("Cited by");
-				citedByListPresenter.setList(result.getCitedByPapers(25),5);
+				citedByListPresenter.setList(result.getCitedByPapers(1000),5);
 				
 			}
 		});
