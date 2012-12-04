@@ -1,5 +1,7 @@
 package net.relatedwork.server.action;
 
+import javax.servlet.ServletContext;
+
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
 import net.relatedwork.client.tools.session.SessionInformation;
 import net.relatedwork.server.userHelper.NewUserError;
@@ -15,6 +17,8 @@ import com.gwtplatform.dispatch.shared.ActionException;
 public class NewUserActionActionHandler implements
 		ActionHandler<NewUserAction, NewUserActionResult> {
 
+	@Inject ServletContext servletContext;
+	
 	@Inject
 	public NewUserActionActionHandler() {
 	}
@@ -31,7 +35,7 @@ public class NewUserActionActionHandler implements
 		
 		// Register new user on server 
 		try {
-			UserInformation UIO = new UserInformation();
+			UserInformation UIO = new UserInformation(servletContext);
 			UIO.registerNewUser(newUserAction);
 		} catch (NewUserError e) {
 			// something went wrong

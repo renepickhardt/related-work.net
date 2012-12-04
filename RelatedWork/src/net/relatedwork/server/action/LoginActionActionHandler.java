@@ -1,5 +1,7 @@
 package net.relatedwork.server.action;
 
+import javax.servlet.ServletContext;
+
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
 import net.relatedwork.client.tools.session.SessionInformation;
 import net.relatedwork.server.userHelper.LoginException;
@@ -14,6 +16,8 @@ import com.gwtplatform.dispatch.shared.ActionException;
 public class LoginActionActionHandler implements
 		ActionHandler<LoginAction, LoginActionResult> {
 
+	@Inject ServletContext servletContext;
+	
 	@Inject
 	public LoginActionActionHandler() {
 	}
@@ -27,7 +31,7 @@ public class LoginActionActionHandler implements
 		String password = loginAction.getPassword();
 		SessionInformation SIO = loginAction.getSession();
 		
-		UserInformation UIO = new UserInformation();
+		UserInformation UIO = new UserInformation(servletContext);
 		try {
 			UIO.loginUser(loginAction);
 		} catch (LoginException e) {

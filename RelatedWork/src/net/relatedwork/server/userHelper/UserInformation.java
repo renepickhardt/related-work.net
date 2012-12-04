@@ -33,12 +33,13 @@ public class UserInformation {
 	private Node userNode;
 
 	// used for db interaction
-	@Inject ServletContext servletContext;
+	private ServletContext servletContext;
 	// Remark: Since the servlet context is not static,
 	// we can not have static methods using the db!!
 	
 	
-	public UserInformation(){
+	public UserInformation(ServletContext servletContext){
+		this.servletContext = servletContext;
 	}
 	
 	public UserInformation(String email){
@@ -65,8 +66,25 @@ public class UserInformation {
 		// TODO: Secure password hashing with salt
 		passwordHash = newUserAction.getPassword();
 		registerSessionId(newUserAction.getSession().sessionId);		
-				
-		save();
+		
+		createUserNode();
+	}
+
+	private void createUserNode() {
+		EmbeddedGraphDatabase graphDB = ContextHelper.getGraphDatabase(servletContext);
+		
+		Transaction tx = graphDB.beginTx();
+		try{
+			userNode = graphDB.createNode();
+			save();
+			
+			tx.success();
+		} catch (Exception e){
+			tx.failure();
+			IOHelper.log(e.getMessage());
+		} finally {
+			tx.finish();
+		}
 	}
 
 	public boolean userRecordExists(String email) {
@@ -123,14 +141,6 @@ public class UserInformation {
 		sessionList  = (ArrayList<String>) userLoginNode.getProperty(DBNodeProperties.USER_SESSIONS);
 		userNode     = userLoginNode;
 		}
-	
-	
-	private Node getUserNode(){
-		if (userNode == null) {
-			userNode = ContextHelper.getUserNodeFromEamil(email,servletContext);
-		}
-		return userNode;
-	}
 
 	
 	public SessionInformation updateSIO(SessionInformation SIO) {
@@ -151,8 +161,6 @@ public class UserInformation {
 	public void deleteUser() {
 		EmbeddedGraphDatabase graphDB = ContextHelper.getGraphDatabase(servletContext);
 		
-		Node userNode = getUserNode();
-		
 		Transaction tx = graphDB.beginTx();
 		try{
 			userNode.setProperty(DBNodeProperties.USER_DELETED, true);
@@ -167,14 +175,12 @@ public class UserInformation {
 	
 	
 	public void save(){
-		saveToDb();
+		saveToNeo4J();
 	}
 	
-	private void saveToDb() {
+	private void saveToNeo4J() {
 		EmbeddedGraphDatabase graphDB = ContextHelper.getGraphDatabase(servletContext);
-		
-		Node userNode = getUserNode();
-		
+
 		Transaction tx = graphDB.beginTx();
 		try{
 			userNode.setProperty(DBNodeProperties.USER_EMAIL, email);

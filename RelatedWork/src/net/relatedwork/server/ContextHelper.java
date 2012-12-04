@@ -40,6 +40,7 @@ public class ContextHelper {
 	public static EmbeddedGraphDatabase getGraphDatabase(ServletContext servletContext){
 		EmbeddedGraphDatabase graphDB = (EmbeddedGraphDatabase)servletContext.getAttribute(READ_ONLY_NEO4J);
 		if (graphDB == null){
+			IOHelper.log("Adding Neo4J db to servlet context.");
 			graphDB = new EmbeddedGraphDatabase(Config.get().neo4jDbPath);
 			servletContext.setAttribute(READ_ONLY_NEO4J, graphDB);
 		}
