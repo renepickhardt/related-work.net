@@ -21,7 +21,7 @@ public class DBNodeProperties {
 	
 	// User nodes
 	public static final String USER_EMAIL = "rw:user:foaf:email";
-	public static final String USER_PW_HASH = "rw:user:sessions";
+	public static final String USER_PW_HASH = "rw:user:pwhash";
 	public static final String USER_NAME = "rw:user:foaf:name";
 	public static final String USER_SESSIONS = "rw:user:sessions";
 	public static final String USER_DELETED = "rw:user:deleted";

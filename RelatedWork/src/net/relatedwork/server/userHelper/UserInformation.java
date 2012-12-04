@@ -78,7 +78,7 @@ public class UserInformation {
 		username = newUserAction.getUsername();
 		// TODO: Secure password hashing with salt
 		passwordHash = newUserAction.getPassword();
-		registerSessionId(newUserAction.getSession().sessionId);		
+		registerSessionId(newUserAction.getSession().sessionId);
 		
 		createUserNode();
 	}
@@ -131,8 +131,6 @@ public class UserInformation {
 	 * Handle login Login Action
 	 */
 	public void loginUser(LoginAction loginAction) throws LoginException {
-		IOHelper.log("User login data: " + loginAction.toString());
-		
 		Node userLoginNode = ContextHelper.getUserNodeFromEamil(loginAction.getEmail(), servletContext);
 		
 		if ( userLoginNode == null ) {
@@ -144,6 +142,10 @@ public class UserInformation {
 		}
 		
 		this.loadFromNode(userLoginNode);
+
+		IOHelper.log("User logged in");
+		print();
+		
 		
 	}
 
@@ -157,13 +159,16 @@ public class UserInformation {
 		passwordHash = (String) userLoginNode.getProperty(DBNodeProperties.USER_PW_HASH);
 		username     = (String) userLoginNode.getProperty(DBNodeProperties.USER_NAME);
 		// OMG THIS IS DIRTY!
-		sessionList  =  (ArrayList<String>) Arrays.asList(((String[])userLoginNode.getProperty(DBNodeProperties.USER_SESSIONS)));
+		String[] sessions = (String[])userLoginNode.getProperty(DBNodeProperties.USER_SESSIONS);
+		for (String session:sessions){
+			sessionList.add(session);
+		}
 		userNode = userLoginNode;
 		}
 
 	
 	public SessionInformation updateSIO(SessionInformation SIO) {
-		((ServerSIO)SIO).save();
+		(new ServerSIO(SIO)).save();
 		SIO.clearLogs();
 		SIO.setEmailAddress(email);
 		SIO.setUsername(username);
