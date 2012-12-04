@@ -7,7 +7,7 @@ public class Comments implements IsSerializable {
 	Author author;
 	String comment;
 	String date;
-	int voting;
+	Integer voting;
 	
 	public Comments() {
 		// TODO Auto-generated constructor stub
@@ -62,14 +62,14 @@ public class Comments implements IsSerializable {
 	/**
 	 * @return the voting
 	 */
-	public int getVoting() {
+	public Integer getVoting() {
 		return voting;
 	}
 
 	/**
 	 * @param voting the voting to set
 	 */
-	public void setVoting(int voting) {
+	public void setVoting(Integer voting) {
 		this.voting = voting;
 	}
 
