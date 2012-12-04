@@ -67,9 +67,13 @@ public class SearchResultPagePresenter
 	@Inject DispatchAsync dispatcher;
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
-		// TODO Auto-generated method stub
 		super.prepareFromRequest(request);
+
 		String query = request.getParameter("q", "Bridgeland");
+		
+		// Log search query
+		MainPresenter.getSessionInformation().logSearch(query);
+
 		dispatcher.execute(new GlobalSearch(query), new AsyncCallback<GlobalSearchResult>() {
 			@Override
 			public void onFailure(Throwable caught) {

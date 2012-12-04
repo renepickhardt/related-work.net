@@ -1,7 +1,10 @@
 package net.relatedwork.server.action;
 
+import javax.servlet.ServletContext;
+
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
 import net.relatedwork.client.tools.session.SessionInformation;
+import net.relatedwork.server.userHelper.NewUserError;
 import net.relatedwork.server.userHelper.ServerSIO;
 import net.relatedwork.server.userHelper.UserInformation;
 import net.relatedwork.shared.dto.NewUserAction;
@@ -14,27 +17,32 @@ import com.gwtplatform.dispatch.shared.ActionException;
 public class NewUserActionActionHandler implements
 		ActionHandler<NewUserAction, NewUserActionResult> {
 
+	@Inject ServletContext servletContext;
+	
 	@Inject
 	public NewUserActionActionHandler() {
 	}
 
 	@Override
-	public NewUserActionResult execute(NewUserAction action,
+	public NewUserActionResult execute(NewUserAction newUserAction,
 			ExecutionContext context) throws ActionException {
 
-		//TODO: Register new user on server 
+		NewUserActionResult resultObject;
 		
 		// Update sessionInformation object for client
-		ServerSIO session = new ServerSIO(action.getSession());
+		ServerSIO session = new ServerSIO(newUserAction.getSession());
 		session.save();
-
-		UserInformation UIO = new UserInformation(action);
-		UIO.save();
-
-//		session.setEmailAddress(action.getEmail());
-//		session.setUsername((action.getUsername()));
 		
+		// Register new user on server 
+		try {
+			UserInformation UIO = new UserInformation(servletContext);
+			UIO.registerNewUser(newUserAction);
+		} catch (NewUserError e) {
+			// something went wrong
+			throw new ActionException(e.getMessage());
+		}
 		
+		// everything ok
 		return new NewUserActionResult();
 	}
 

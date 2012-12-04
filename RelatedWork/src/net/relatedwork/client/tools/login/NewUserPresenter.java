@@ -79,6 +79,9 @@ public class NewUserPresenter extends PresenterWidget<NewUserPresenter.MyView> {
 								// TODO: Display new user info
 								Window.alert("New user request send. Check your mails to confirm.");
 								
+								// Logs have been saved by the server. So we can savely erase them here.
+								MainPresenter.getSessionInformation().clearLogs();
+								
 //								// Login user !!
 //								getEventBus().fireEvent(new LoginEvent(result.getSession()));
 //								

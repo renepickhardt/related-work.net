@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
+import net.relatedwork.client.MainPresenter;
 import net.relatedwork.client.content.SearchResultPagePresenter;
 import net.relatedwork.client.handler.StartSearchHandler;
 import net.relatedwork.client.layout.HeaderPresenter;
@@ -39,6 +40,7 @@ public class SearchPresenter extends
 		public void setSearchContainer(HTMLPanel searchContainer);
 		public SuggestBox getSuggestBox();
 		public Button getSearchBox();
+		public void resetSuggestBox();
 	}
 
 	@ProxyCodeSplit
@@ -79,15 +81,10 @@ public class SearchPresenter extends
 				doSearch();
 			}
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ESCAPE){
-				resetSuggestBox();
+				getView().resetSuggestBox();
 			}
 		}
 		
-		private void resetSuggestBox() {
-			//TODO: discuss! I think this is bad practise rather a method in view saying clearSuggestBox() should be implemented for unit testing
-			getView().getSuggestBox().setText("");
-		}
-
 		
 		private void doSearch() {
 			final String query = getView().getSuggestBox().getText();

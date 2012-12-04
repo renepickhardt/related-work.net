@@ -10,4 +10,5 @@ public class NewUserActionResult implements Result {
 		// For serialization only
 	}
 
+
 }

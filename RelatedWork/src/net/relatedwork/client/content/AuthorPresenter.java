@@ -86,10 +86,14 @@ public class AuthorPresenter extends
 	
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
-		// TODO Auto-generated method stub
 		super.prepareFromRequest(request);
 		
-		dispatcher.execute(new DisplayAuthor(request.getParameter("q", "None")), new AsyncCallback<DisplayAuthorResult>() {
+		String author_url = request.getParameter("q", "None");
+		
+		// Log author visit
+		MainPresenter.getSessionInformation().logAuthor(author_url);
+		
+		dispatcher.execute(new DisplayAuthor(author_url), new AsyncCallback<DisplayAuthorResult>() {
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub

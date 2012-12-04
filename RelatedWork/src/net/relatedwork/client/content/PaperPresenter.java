@@ -91,6 +91,9 @@ public class PaperPresenter extends
 
 		// Get paper_id form query string
 		String paper_id = request.getParameter("q", "None");
+		
+		// Log paper visit
+		MainPresenter.getSessionInformation().logPaper(paper_id);
 
 		// Get paper data from server	
 		dispatcher.execute(new DisplayPaper(paper_id), new AsyncCallback<DisplayPaperResult>() {

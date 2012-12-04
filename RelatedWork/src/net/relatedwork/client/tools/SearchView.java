@@ -80,6 +80,12 @@ public class SearchView extends ViewImpl implements SearchPresenter.MyView {
 	public void setSearchContainer(HTMLPanel searchContainer) {
 		this.searchContainer = searchContainer;
 	}
+	
+	public void resetSuggestBox() {
+		rwSuggestBox.setText("");
+	}
+
+	
 
 //	private buildLocalSuggestTree(){
 //		

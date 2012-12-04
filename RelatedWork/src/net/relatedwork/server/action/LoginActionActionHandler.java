@@ -1,7 +1,11 @@
 package net.relatedwork.server.action;
 
+import javax.servlet.ServletContext;
+
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
 import net.relatedwork.client.tools.session.SessionInformation;
+import net.relatedwork.server.userHelper.LoginException;
+import net.relatedwork.server.userHelper.UserInformation;
 import net.relatedwork.shared.dto.LoginAction;
 import net.relatedwork.shared.dto.LoginActionResult;
 
@@ -12,30 +16,32 @@ import com.gwtplatform.dispatch.shared.ActionException;
 public class LoginActionActionHandler implements
 		ActionHandler<LoginAction, LoginActionResult> {
 
+	@Inject ServletContext servletContext;
+	
 	@Inject
 	public LoginActionActionHandler() {
 	}
 
 	@Override
-	public LoginActionResult execute(LoginAction action, ExecutionContext context)
+	public LoginActionResult execute(LoginAction loginAction, ExecutionContext context)
 			throws ActionException {
 		//TODO: Implement Serverside user handling
 		// Check login
-		String username = action.getUsername();
-		String password = action.getPassword();
-		SessionInformation session = action.getSession();
+		String email = loginAction.getEmail();
+		String password = loginAction.getPassword();
+		SessionInformation SIO = loginAction.getSession();
 		
-		// Lookup data from userdb
-		String emailAddress = "userseamil@hotmail.com";
-		
-		// register session to user
-		// userAccount.addSession(sessionId);
-		
+		UserInformation UIO = new UserInformation(servletContext);
+		try {
+			UIO.loginUser(loginAction);
+		} catch (LoginException e) {
+			throw new ActionException(e.getMessage());
+		}
+				
 		// return LoginResult object with userdata
-		session.setEmailAddress(emailAddress);
-		session.setUsername(username);
+		SIO = UIO.updateSIO(SIO);
 		
-        return new LoginActionResult(session);
+        return new LoginActionResult(SIO);
 	}
 
 	@Override

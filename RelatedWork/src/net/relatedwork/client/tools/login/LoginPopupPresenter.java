@@ -23,8 +23,8 @@ public class LoginPopupPresenter extends
 		PresenterWidget<LoginPopupPresenter.MyView> {
 
 	public interface MyView extends PopupView {
-		public TextBox getRwLoginUsername();
-		public void setRwLoginUsername(TextBox rwLoginUsername);
+		public TextBox getRwLoginEmail();
+		public void setRwLoginEmail(TextBox rwLoginUsername);
 		public TextBox getRwLoginPassword();
 		public void setRwLoginPassword(TextBox rwLoginPassword);
 		public Button getRwLoginButton();
@@ -56,8 +56,8 @@ public class LoginPopupPresenter extends
 					public void onClick(ClickEvent event) {
 						dispatchAsync.execute(
 								new LoginAction(
-								// username
-										getView().getRwLoginUsername().getText(),
+										// email
+										getView().getRwLoginEmail().getText(),
 										// hash password for security reasons
 										Integer.toString(getView().getRwLoginPassword().getText().hashCode()),
 										// session info
@@ -70,8 +70,7 @@ public class LoginPopupPresenter extends
 									}
 
 									@Override
-									public void onSuccess(
-											LoginActionResult result) {
+									public void onSuccess(LoginActionResult result) {
 										// LoginScucessfull
 										// fire LoginEvent
 										LoginPopupPresenter.this.eventBus.fireEvent(new LoginEvent(result.getSession()));
