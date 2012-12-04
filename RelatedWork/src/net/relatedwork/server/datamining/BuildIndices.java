@@ -101,7 +101,7 @@ public class BuildIndices extends Calculator{
 		uri = uri.replaceAll("\\W+"," ").trim().replace(' ','_');
 		
 		while (true) {
-			if(uriIndex.putIfAbsent(n, "uri", uri) == null){
+			if(uriIndex.putIfAbsent(n, DBNodeProperties.URI, uri) == null){
 				// if uri new - set into uri field
 				n.setProperty(DBNodeProperties.URI, uri);
 				break;

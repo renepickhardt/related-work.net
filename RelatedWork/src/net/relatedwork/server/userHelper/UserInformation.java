@@ -5,12 +5,18 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.servlet.ServletContext;
 
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
+import org.neo4j.graphdb.index.Index;
+import org.neo4j.index.impl.lucene.LuceneIndex;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
+import org.neo4j.kernel.EmbeddedReadOnlyGraphDatabase;
+
+import scala.actors.threadpool.Arrays;
 
 import com.google.inject.Inject;
 
@@ -37,6 +43,13 @@ public class UserInformation {
 	// Remark: Since the servlet context is not static,
 	// we can not have static methods using the db!!
 	
+	
+	public void print() {
+		IOHelper.log("email       : "+ email);
+		IOHelper.log("passwordHash: "+ passwordHash);
+		IOHelper.log("username    : "+ username);
+		IOHelper.log("sessionList : "+ sessionList.toString());
+	}
 	
 	public UserInformation(ServletContext servletContext){
 		this.servletContext = servletContext;
@@ -71,6 +84,9 @@ public class UserInformation {
 	}
 
 	private void createUserNode() {
+		IOHelper.log("Creating new user");
+		print();
+		
 		EmbeddedGraphDatabase graphDB = ContextHelper.getGraphDatabase(servletContext);
 		
 		Transaction tx = graphDB.beginTx();
@@ -115,6 +131,7 @@ public class UserInformation {
 	 * Handle login Login Action
 	 */
 	public void loginUser(LoginAction loginAction) throws LoginException {
+		IOHelper.log("User login data: " + loginAction.toString());
 		
 		Node userLoginNode = ContextHelper.getUserNodeFromEamil(loginAction.getEmail(), servletContext);
 		
@@ -123,23 +140,25 @@ public class UserInformation {
 		}
 		
 		if (!checkPassword(userLoginNode, loginAction.getPassword())){
-			throw new LoginException("Wrong password "+ loginAction.getPassword());
+			throw new LoginException("Wrong password ");
 		}
 		
 		this.loadFromNode(userLoginNode);
 		
 	}
 
-	private boolean checkPassword(Node userLoginNode, String password) {
-		return (userLoginNode.getProperty(DBNodeProperties.USER_PW_HASH).equals(password));
+	private boolean checkPassword(Node userLoginNode, String passwordHash) {
+		String storedPwHash = (String) userLoginNode.getProperty(DBNodeProperties.USER_PW_HASH);
+		return (storedPwHash.equals(passwordHash));
 	}
 
 	public void loadFromNode(Node userLoginNode) {
 		email        = (String) userLoginNode.getProperty(DBNodeProperties.USER_EMAIL);
 		passwordHash = (String) userLoginNode.getProperty(DBNodeProperties.USER_PW_HASH);
 		username     = (String) userLoginNode.getProperty(DBNodeProperties.USER_NAME);
-		sessionList  = (ArrayList<String>) userLoginNode.getProperty(DBNodeProperties.USER_SESSIONS);
-		userNode     = userLoginNode;
+		// OMG THIS IS DIRTY!
+		sessionList  =  (ArrayList<String>) Arrays.asList(((String[])userLoginNode.getProperty(DBNodeProperties.USER_SESSIONS)));
+		userNode = userLoginNode;
 		}
 
 	
@@ -186,7 +205,9 @@ public class UserInformation {
 			userNode.setProperty(DBNodeProperties.USER_EMAIL, email);
 			userNode.setProperty(DBNodeProperties.USER_PW_HASH, passwordHash);
 			userNode.setProperty(DBNodeProperties.USER_NAME, username);
-			userNode.setProperty(DBNodeProperties.USER_SESSIONS, sessionList);
+			userNode.setProperty(DBNodeProperties.USER_SESSIONS, sessionList.toArray(new String[sessionList.size()]));
+			
+			ContextHelper.indexUserNode(userNode, email, servletContext);
 			
 			tx.success();
 		} catch (Exception e){
@@ -234,6 +255,7 @@ public class UserInformation {
 			return null;
 		}
 	}
+
 
 
 }
