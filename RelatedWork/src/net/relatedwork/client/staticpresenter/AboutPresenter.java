@@ -21,9 +21,6 @@ public class AboutPresenter extends
 		Presenter<AboutPresenter.MyView, AboutPresenter.MyProxy> {
 
 	
-	@ContentSlot
-	public static final Type<RevealContentHandler<?>> TYPE_Discussion = new Type<RevealContentHandler<?>>();
-
 	public interface MyView extends View {
 	}
 
@@ -42,14 +39,11 @@ public class AboutPresenter extends
 	protected void revealInParent() {
 		RevealContentEvent.fire(this, MainPresenter.TYPE_SetMainContent, this);
 	}
-	
-	@Inject CommentPresenter commentPresenter;
+
 	
 	@Override
 	protected void onReveal() {
 		super.onReveal();
-
-		setInSlot(TYPE_Discussion, commentPresenter);
 		
 	}
 	

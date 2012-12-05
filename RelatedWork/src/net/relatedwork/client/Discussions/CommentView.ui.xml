@@ -12,6 +12,7 @@
 			Leave a comment!
 			</g:RichTextArea>
 			<g:Button ui:field="sendButton">Send Comment</g:Button>
+			<g:DecoratedTabPanel ui:field="discussionsTabPanel"></g:DecoratedTabPanel>
 			<g:HTMLPanel ui:field="commentContainer"></g:HTMLPanel>
 		</g:VerticalPanel>
 	</g:HTMLPanel>

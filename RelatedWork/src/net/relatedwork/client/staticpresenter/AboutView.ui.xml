@@ -7,6 +7,5 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel>About page!
-		<g:HTMLPanel ui:field="rwDiscussions" styleName="rwDiscussions"/>
 	</g:HTMLPanel>
 </ui:UiBinder>

@@ -37,7 +37,7 @@ public class ContextHelper {
 	private static final String URI_IDX = DBNodeProperties.URI_INDEX_NAME;
 
 	// Get NEO4J DB
-	public static EmbeddedReadOnlyGraphDatabase XXXgetReadOnlyGraphDatabase(ServletContext servletContext){
+	public static EmbeddedReadOnlyGraphDatabase getReadOnlyGraphDatabase(ServletContext servletContext){
 		EmbeddedReadOnlyGraphDatabase graphDB = (EmbeddedReadOnlyGraphDatabase)servletContext.getAttribute(READ_ONLY_NEO4J);
 		if (graphDB == null){
 			IOHelper.log("Adding neo4j RO db to servletContext");
@@ -95,8 +95,8 @@ public class ContextHelper {
 
 	// Search index
 	public static Index<Node> getSearchIndex(ServletContext servletContext){
-//		EmbeddedReadOnlyGraphDatabase graphDB = getReadOnlyGraphDatabase(servletContext);
-		EmbeddedGraphDatabase graphDB = getGraphDatabase(servletContext);
+		EmbeddedReadOnlyGraphDatabase graphDB = getReadOnlyGraphDatabase(servletContext);
+//		EmbeddedGraphDatabase graphDB = getGraphDatabase(servletContext);
 		Index<Node> index = (Index<Node>)servletContext.getAttribute(SEARCH_IDX_GWT);
 		if (index == null){
 			IOHelper.log("Adding search index - " + SEARCH_IDX_GWT + "- to servletContext.");
@@ -111,8 +111,8 @@ public class ContextHelper {
 
 	// URI index
 	public static Index<Node> getUriIndex(ServletContext servletContext){
-//		EmbeddedReadOnlyGraphDatabase graphDB = getReadOnlyGraphDatabase(servletContext);
-		EmbeddedGraphDatabase graphDB = getGraphDatabase(servletContext);
+		EmbeddedReadOnlyGraphDatabase graphDB = getReadOnlyGraphDatabase(servletContext);
+//		EmbeddedGraphDatabase graphDB = getGraphDatabase(servletContext);
 		Index<Node> index = (Index<Node>)servletContext.getAttribute(URI_IDX);
 		if (index == null){
 			IOHelper.log("Adding uri index - " + URI_IDX + " - to servletContext");
@@ -123,11 +123,9 @@ public class ContextHelper {
 		return index;
 	}
 
-
 	public static Node getNodeByUri(String uri, ServletContext servletContext) {
 		return getUriIndex(servletContext).get(DBNodeProperties.URI, uri).getSingle();
 	}
-
 
 	public static Node getUserNodeFromEamil(String email, ServletContext servletContext) {
 		return getNodeByUri("rw:user:" + email, servletContext);
@@ -136,8 +134,6 @@ public class ContextHelper {
 	public static void indexUserNode(Node userNode, String email, ServletContext servletContext) {
 		getUriIndex(servletContext).add(userNode, DBNodeProperties.URI, "rw:user:"+ email);
 		
-	}
-	
-	
+	}	
 
 }

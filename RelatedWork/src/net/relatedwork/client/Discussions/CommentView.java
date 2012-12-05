@@ -3,9 +3,13 @@ package net.relatedwork.client.Discussions;
 import net.relatedwork.shared.dto.Comments;
 
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DecoratedTabPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -22,6 +26,8 @@ public class CommentView extends ViewImpl implements CommentPresenter.MyView {
 	@UiField RichTextArea commentRichTextArea;
 	@UiField Button sendButton;
 	@UiField HTMLPanel commentContainer;
+//	HTMLPanel commentContainer;
+	@UiField DecoratedTabPanel discussionsTabPanel;
 	
 	public RichTextArea getCommentRichTextArea() {
 		return commentRichTextArea;
@@ -62,6 +68,23 @@ public class CommentView extends ViewImpl implements CommentPresenter.MyView {
 	@Inject
 	public CommentView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
+			
+		discussionsTabPanel.setWidth("800px");
+		discussionsTabPanel.setAnimationEnabled(true);
+
+		discussionsTabPanel.getElement().getStyle().setMarginBottom(10.0, Unit.PX);
+
+	    // Add a home tab
+		discussionsTabPanel.add(commentContainer, "Questions (4)");
+		discussionsTabPanel.add(new HTML("reviews"), "Review (2)");
+		discussionsTabPanel.add(new HTML("list some summaries"), "Summary (1)");
+		discussionsTabPanel.add(new HTML("general discussions"), "General Discussions (6)");
+	    
+	    // Return the content
+	    discussionsTabPanel.selectTab(0);
+	    discussionsTabPanel.ensureDebugId("cwTabPanel");
+
+
 	}
 
 	@Override

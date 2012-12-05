@@ -9,6 +9,7 @@ import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 
+import net.relatedwork.client.Discussions.CommentPresenter;
 import net.relatedwork.client.Discussions.events.DiscussionsReloadedEvent;
 import net.relatedwork.client.place.NameTokens;
 import net.relatedwork.client.tools.ListPresenter;
@@ -38,6 +39,9 @@ public class AuthorPresenter extends
 	@ContentSlot public static final Type<RevealContentHandler<?>> TYPE_CitedAuthors = new Type<RevealContentHandler<?>>();
 	@ContentSlot public static final Type<RevealContentHandler<?>> TYPE_CitedByAuthors = new Type<RevealContentHandler<?>>();
 	@ContentSlot public static final Type<RevealContentHandler<?>> TYPE_Papers = new Type<RevealContentHandler<?>>();
+	
+	@ContentSlot public static final Type<RevealContentHandler<?>> TYPE_Discussion = new Type<RevealContentHandler<?>>();
+
 	
 	public interface MyView extends View {
 		public void setAuthorName(String name);
@@ -72,6 +76,8 @@ public class AuthorPresenter extends
 	@Inject ListPresenter<Author> citedByAuthorsListPresenter;
 	@Inject ListPresenter<Paper> paperListPresenter;
 	
+	@Inject CommentPresenter commentPresenter;
+	
 	@Override
 	protected void onReveal() {
 		// TODO Auto-generated method stub
@@ -82,6 +88,7 @@ public class AuthorPresenter extends
 		setInSlot(TYPE_CoAuthors, coAuthorsListPresenter);
 		setInSlot(TYPE_CitedByAuthors, citedByAuthorsListPresenter);
 		setInSlot(TYPE_Papers, paperListPresenter);
+		setInSlot(TYPE_Discussion, commentPresenter);
 	}
 	
 	@Override
