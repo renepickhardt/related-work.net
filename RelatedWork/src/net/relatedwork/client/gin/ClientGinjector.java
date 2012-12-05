@@ -1,5 +1,6 @@
 package net.relatedwork.client.gin;
 
+
 import net.relatedwork.client.MainPresenter;
 import net.relatedwork.client.content.AuthorPresenter;
 import net.relatedwork.client.content.SearchResultPagePresenter;
@@ -14,7 +15,9 @@ import net.relatedwork.client.tools.SearchPresenter;
 import net.relatedwork.client.tools.login.LoginControlsPresenter;
 import net.relatedwork.client.content.PaperPresenter;
 
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
+//import com.google.web.bindery.event.shared.EventBus;
+
 import com.google.gwt.inject.client.AsyncProvider;
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;

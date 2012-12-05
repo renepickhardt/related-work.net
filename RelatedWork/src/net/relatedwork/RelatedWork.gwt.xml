@@ -26,5 +26,7 @@
 
 	<define-configuration-property name='gin.ginjector' is-multi-valued='false' />
 	<set-configuration-property name='gin.ginjector' value='net.relatedwork.client.gin.ClientGinjector' />
+	<!-- for compiling only for chrom form: http://stackoverflow.com/questions/1011863/how-do-i-speed-up-the-gwt-compiler -->
+	<set-property name="user.agent" value="safari"/>
 
 </module>

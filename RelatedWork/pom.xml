@@ -1,0 +1,140 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.relatedwork</groupId>
+	<artifactId>relatedwork</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<build>
+		<!-- http://stackoverflow.com/questions/224373/handling-unconventional-source-directory-for-a-web-project-in-maven -->
+
+		<sourceDirectory>src</sourceDirectory>
+		<!-- from http://www.jroller.com/eu/entry/configuring_separate_maven_output_folders -->
+		<outputDirectory>war/WEB-INF/classes</outputDirectory>
+		<!-- <testOutputDirectory>${basedir}/${target.dir}/test-classes</testOutputDirectory> -->
+
+		<!-- from http://stackoverflow.com/questions/4629190/gwt-maven-integration -->
+
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<version>2.5.0</version>
+				<configuration>
+				<!-- 	<module>net.relatedwork.server.guice.ServerModule</module> -->
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>            
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-war-plugin</artifactId>
+  <configuration>
+    <webXml>war/WEB-INF/web.xml</webXml>        
+  </configuration>
+</plugin>
+			
+		</plugins>
+
+	</build>
+
+	<properties>
+		<gwtp.version>0.7</gwtp.version>
+		<maven.compiler.source>1.6</maven.compiler.source>
+		<maven.compiler.target>1.6</maven.compiler.target>
+		<encoding>UTF-8</encoding>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-dev</artifactId>
+			<version>2.5.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>2.5.0</version>
+		</dependency>
+
+
+		<!-- MVP component -->
+		<dependency>
+			<groupId>com.gwtplatform</groupId>
+			<artifactId>gwtp-mvp-client</artifactId>
+			<version>${gwtp.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Dispatch component -->
+		<dependency>
+			<groupId>com.gwtplatform</groupId>
+			<artifactId>gwtp-dispatch-client</artifactId>
+			<version>${gwtp.version}</version>
+			<scope>provided</scope> <!-- Remove for GWTP 0.5.1 and earlier -->
+		</dependency>
+
+		<dependency>
+			<groupId>com.gwtplatform</groupId>
+			<artifactId>gwtp-dispatch-server-guice</artifactId>
+			<!-- Or, if you use spring: <artifactId>gwtp-dispatch-server-spring</artifactId> -->
+			<!-- For GWTP 0.5.1 and earlier: <artifactId>gwtp-dispatch-server</artifactId> -->
+			<version>${gwtp.version}</version>
+		</dependency>
+
+		<!-- Annotation component -->
+		<dependency>
+			<groupId>com.gwtplatform</groupId>
+			<artifactId>gwtp-processors</artifactId>
+			<version>${gwtp.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.gwt.inject</groupId>
+			<artifactId>gin</artifactId>
+			<version>2.0.0</version>
+			<classifier />
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-servlet</artifactId>
+			<version>3.0</version>
+		</dependency>
+
+
+		<!-- from http://docs.neo4j.org/chunked/stable/tutorials-java-embedded-setup.html -->
+
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j</artifactId>
+			<version>1.8</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
+			<!-- <scope>test</scope> -->
+		</dependency>
+
+
+	</dependencies>
+</project>

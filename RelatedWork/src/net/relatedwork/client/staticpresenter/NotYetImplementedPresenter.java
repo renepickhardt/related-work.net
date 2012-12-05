@@ -3,7 +3,7 @@ package net.relatedwork.client.staticpresenter;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.PopupView;
 import com.google.inject.Inject;
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
 
 public class NotYetImplementedPresenter extends
 		PresenterWidget<NotYetImplementedPresenter.MyView> {
