@@ -6,7 +6,6 @@ import com.google.gwt.event.shared.EventHandler;
 import java.lang.String;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.web.bindery.event.shared.HandlerRegistration;
-import com.google.gwt.thirdparty.guava.common.base.Ticker;
 
 public class HistoryTokenChangeEvent extends
 		GwtEvent<HistoryTokenChangeEvent.HistoryTokenChangeHandler> {

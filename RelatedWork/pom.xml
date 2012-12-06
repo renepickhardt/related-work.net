@@ -7,8 +7,8 @@
 	<packaging>war</packaging>
 	<build>
 		<!-- http://stackoverflow.com/questions/224373/handling-unconventional-source-directory-for-a-web-project-in-maven -->
-
 		<sourceDirectory>src</sourceDirectory>
+
 		<!-- from http://www.jroller.com/eu/entry/configuring_separate_maven_output_folders -->
 		<outputDirectory>war/WEB-INF/classes</outputDirectory>
 		<!-- <testOutputDirectory>${basedir}/${target.dir}/test-classes</testOutputDirectory> -->
@@ -29,6 +29,11 @@
 				<artifactId>gwt-maven-plugin</artifactId>
 				<version>2.5.0</version>
 				<configuration>
+                    <!-- URL that should be automatically opened in the GWT shell. -->
+                    <runTarget>RelatedWork.html</runTarget>
+
+                    <hostedWebapp>war</hostedWebapp>
+
 				<!-- 	<module>net.relatedwork.server.guice.ServerModule</module> -->
 				</configuration>
 				<executions>
@@ -40,16 +45,17 @@
 				</executions>
 			</plugin>
 			
-			<plugin>            
-  <groupId>org.apache.maven.plugins</groupId>
-  <artifactId>maven-war-plugin</artifactId>
-  <configuration>
-    <webXml>war/WEB-INF/web.xml</webXml>        
-  </configuration>
-</plugin>
+            <plugin>            
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <!-- Source web.xml deployment descriptor that is used for GWT shell and for deployment WAR to "merge" servlet entries. -->
+                    <webXml>war/WEB-INF/web.xml</webXml>        
+                </configuration>
+            </plugin>
 			
 		</plugins>
-
 	</build>
 
 	<properties>
@@ -60,12 +66,6 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-dev</artifactId>
-			<version>2.5.0</version>
-		</dependency>
-
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
@@ -105,11 +105,12 @@
 			<scope>provided</scope>
 		</dependency>
 
+        <!-- Additional dependencies -->
+
 		<dependency>
 			<groupId>com.google.gwt.inject</groupId>
 			<artifactId>gin</artifactId>
 			<version>2.0.0</version>
-			<classifier />
 		</dependency>
 
 		<dependency>
@@ -118,9 +119,13 @@
 			<version>3.0</version>
 		</dependency>
 
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
 
 		<!-- from http://docs.neo4j.org/chunked/stable/tutorials-java-embedded-setup.html -->
-
 		<dependency>
 			<groupId>org.neo4j</groupId>
 			<artifactId>neo4j</artifactId>

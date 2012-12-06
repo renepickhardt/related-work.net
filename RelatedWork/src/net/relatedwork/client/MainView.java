@@ -2,8 +2,6 @@ package net.relatedwork.client;
 
 import java.util.ArrayList;
 
-import org.mortbay.jetty.servlet.Dispatcher;
-
 import net.relatedwork.shared.ItemSuggestion;
 import net.relatedwork.shared.dto.RequestGlobalSearchSuggestion;
 import net.relatedwork.shared.dto.RequestGlobalSearchSuggestionResult;

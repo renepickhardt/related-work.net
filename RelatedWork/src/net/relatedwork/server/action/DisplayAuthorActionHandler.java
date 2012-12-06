@@ -31,7 +31,6 @@ import net.relatedwork.shared.dto.DisplayAuthor;
 import net.relatedwork.shared.dto.DisplayAuthorResult;
 import net.relatedwork.shared.dto.Paper;
 
-import com.google.gwt.dev.util.DefaultTextOutput;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
