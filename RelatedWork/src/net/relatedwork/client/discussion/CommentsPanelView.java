@@ -4,10 +4,7 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.DecoratedTabPanel;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 
@@ -43,6 +40,7 @@ public class CommentsPanelView  extends ViewImpl implements CommentsPanelPresent
             tabs[i] = new DockLayoutPanel(Style.Unit.PCT);
             tabs[i].addWest(new VerticalPanel(), 50);
             tabs[i].addEast(new VerticalPanel(), 50);
+            hackScroll(tabs[i].getWidget(0));
             commentsTabPanel.add(tabs[i], tabTitles.get(i));
         }
     }
@@ -68,7 +66,17 @@ public class CommentsPanelView  extends ViewImpl implements CommentsPanelPresent
     }
 
     @Override
+    public void resetReply(int tab) {
+        VerticalPanel replyList = (VerticalPanel) tabs[tab].getWidget(1);
+        replyList.clear();
+    }
+
+    @Override
     public Widget asWidget() {
         return widget;
+    }
+
+    private void hackScroll(Widget w) {
+//        w.getElement().getParentElement().getStyle().setOverflow(Style.Overflow.SCROLL);
     }
 }

@@ -67,6 +67,16 @@ public class CommentBoxView extends ViewImpl implements CommentBoxPresenter.MyVi
     }
 
     @Override
+    public String getNewComment() {
+        return commentRichTextArea.getHTML();
+    }
+
+    @Override
+    public void markExpanded(boolean selected) {
+        expand.setStyleName("selected-comment", selected);
+    }
+
+    @Override
     public void setExistingComment(Comments comment) {
         if (comment == null) {
             // show the new comment box
@@ -81,6 +91,11 @@ public class CommentBoxView extends ViewImpl implements CommentBoxPresenter.MyVi
             commentContainer.setHTML(comment.getComment());
             votes.setText(comment.getVoting().toString());
         }
+    }
+
+    @Override
+    public void setShowExpand(boolean show) {
+        expand.setVisible(show);
     }
 
     @Override

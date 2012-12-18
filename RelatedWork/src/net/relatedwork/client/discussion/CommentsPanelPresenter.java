@@ -1,6 +1,11 @@
 package net.relatedwork.client.discussion;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableList;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -13,11 +18,15 @@ import net.relatedwork.client.Discussions.events.DiscussionsReloadedEvent;
 import net.relatedwork.shared.dto.Comments;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import static com.google.common.base.Functions.toStringFunction;
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Lists.transform;
+import static net.relatedwork.shared.dto.Comments.CommentType;
+
 /**
- * The Presenter for {@link CommentsPanelView}.
+ * The Presenter for {@link CommentsPanelView}. It holds a list of comments under one paper/author.
  * Handles DiscussionsReloadedEvent.
  *
  * @author Xinruo Sun <xiaoruoruo@gmail.com>
@@ -25,21 +34,17 @@ import java.util.List;
 public class CommentsPanelPresenter
         extends Presenter<CommentsPanelPresenter.MyView, CommentsPanelPresenter.MyProxy> {
 
-    private static final List<String> COMMENT_TAB_TITLES = Arrays.asList(
-            "Question",
-            "Review",
-            "Summary",
-            "General Discussion"
-    );
+    private static final List<String> COMMENT_TAB_TITLES =
+            transform(ImmutableList.copyOf(CommentType.values()), toStringFunction());
+    private static final int FALLBACK_COMMENT_TAB = CommentType.GeneralDiscussion.ordinal();
 
     public interface MyView extends View {
         void setSelectionHandler(SelectionHandler<Integer> handler);
         void addPost(int tab, Widget widget);
         void addReply(int tab, Widget widget);
-
         void initTabs(List<String> tabTitles);
-
         void switchTab(int tab);
+        void resetReply(int tab);
     }
 
     @ProxyCodeSplit
@@ -47,6 +52,12 @@ public class CommentsPanelPresenter
     }
 
     private Provider<CommentBoxPresenter> commentBoxPresenterProvider;
+
+    /** Current selected comment box presenter in each tab */
+    private CommentBoxPresenter[] selectedCommentInTabs = new CommentBoxPresenter[CommentType.values().length];
+
+    /** All comments related to the current target (paper/author) */
+    private ArrayList<Comments> comments;
 
     @Inject
     public CommentsPanelPresenter(EventBus eventBus, MyView view, MyProxy proxy,
@@ -68,32 +79,121 @@ public class CommentsPanelPresenter
     }
 
     public void setComments(ArrayList<Comments> comments) {
+        this.comments = comments;
+
         getView().initTabs(COMMENT_TAB_TITLES);
-
-        // Existing comments
-        for (Comments c : comments) {
-            CommentBoxPresenter commentBoxPresenter = commentBoxPresenterProvider.get();
-            commentBoxPresenter.setComment(c);
-            getView().addPost(0, commentBoxPresenter.getWidget());
-        }
-
-        // New comment boxes
         for (int i = 0; i < COMMENT_TAB_TITLES.size(); i++){
-            CommentBoxPresenter postPresenter = commentBoxPresenterProvider.get();
-            postPresenter.setComment(null);
-            getView().addPost(i, postPresenter.getWidget());
-
-            CommentBoxPresenter replyPresenter = commentBoxPresenterProvider.get();
-            replyPresenter.setComment(null);
-            getView().addReply(i, replyPresenter.getWidget());
+            closeReplyList(i);
         }
+
+        putExistingPosts(filterCommentsByTarget(null /* current target */));
+
+        putNewPostBoxes();
 
         getView().switchTab(0);
+    }
+
+    private void putExistingPosts(Iterable<Comments> comments) {
+        for (Comments c : comments) {
+            CommentBoxPresenter commentBoxPresenter = commentBoxPresenterProvider.get();
+            commentBoxPresenter.setComment(c, false);
+
+            // Put it in the correct tab.
+            int tab = FALLBACK_COMMENT_TAB;
+            if (c.getType() != null) {
+                tab = c.getType().ordinal();
+            }
+            getView().addPost(tab, commentBoxPresenter.getWidget());
+
+            commentBoxPresenter.setExpandHandler(
+                    new ExpandCommentHandler(commentBoxPresenter, tab));
+        }
+    }
+
+    private void putNewPostBoxes() {
+        for (int i = 0; i < COMMENT_TAB_TITLES.size(); i++){
+            putNewPostBox(i);
+        }
+    }
+
+    private void putNewPostBox(final int tab) {
+        CommentBoxPresenter postPresenter = commentBoxPresenterProvider.get();
+        postPresenter.setComment(null, false);
+        postPresenter.setSubmittedEventHandler(new CommentSubmittedEventHandler() {
+            @Override
+            public void success(Comments newComment) {
+                putNewPostBox(tab);
+            }
+        });
+        getView().addPost(tab, postPresenter.getWidget());
+    }
+
+    private void showRepliesOf(Comments comment, int tab) {
+        getView().resetReply(tab);
+        for (Comments reply: filterCommentsByTarget(comment)) {
+            CommentBoxPresenter replyPresenter = commentBoxPresenterProvider.get();
+            replyPresenter.setComment(reply, true);
+            getView().addReply(tab, replyPresenter.getWidget());
+        }
+        putNewReplyBox(tab);
+    }
+
+    private void putNewReplyBox(final int tab) {
+        CommentBoxPresenter newReplyPresenter = commentBoxPresenterProvider.get();
+        newReplyPresenter.setComment(null, true);
+        newReplyPresenter.setSubmittedEventHandler(new CommentSubmittedEventHandler() {
+            @Override
+            public void success(Comments newComment) {
+                putNewReplyBox(tab);
+            }
+        });
+        getView().addReply(tab, newReplyPresenter.getWidget());
+    }
+
+    private void closeReplyList(int tab) {
+        getView().resetReply(tab);
+        getView().addReply(tab, new Label("Click on one of the comment on the left to view its replies."));
+    }
+
+    private final class ExpandCommentHandler implements ClickHandler {
+        private CommentBoxPresenter post;
+        private int tab;
+
+        public ExpandCommentHandler(CommentBoxPresenter post, int tab) {
+            this.post = post;
+            this.tab = tab;
+        }
+
+        @Override
+        public void onClick(ClickEvent event) {
+            CommentBoxPresenter newSelected = null;
+            if (post != selectedCommentInTabs[tab]) {
+                newSelected = post;
+                post.markExpanded(true);
+                showRepliesOf(post.getComment(), tab);
+            }
+            if (selectedCommentInTabs[tab] != null) {
+                selectedCommentInTabs[tab].markExpanded(false);
+                if (post == selectedCommentInTabs[tab]) {
+                    closeReplyList(tab);
+                }
+            }
+            selectedCommentInTabs[tab] = newSelected;
+        }
+    }
+
+    private Iterable<Comments> filterCommentsByTarget(final Object target) {
+        Iterable<Comments> replies = filter(comments, new Predicate<Comments>() {
+            @Override
+            public boolean apply(Comments c) {
+                return c.getTarget() == target;
+            }
+        });
+        return replies;
     }
 
     @Override
     protected void revealInParent() {
         throw new UnsupportedOperationException();
     }
-
 }

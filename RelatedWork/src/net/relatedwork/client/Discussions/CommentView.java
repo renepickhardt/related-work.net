@@ -62,7 +62,7 @@ public class CommentView extends ViewImpl implements CommentPresenter.MyView {
 //		comment.add(child);
 
         CommentBoxPresenter commentBoxPresenter = commentBoxPresenterProvider.get();
-        commentBoxPresenter.setComment(c);
+        commentBoxPresenter.setComment(c, false);
         commentContainer.add(commentBoxPresenter.getWidget());
 	}
 	

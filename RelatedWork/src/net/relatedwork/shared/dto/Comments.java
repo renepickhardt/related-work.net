@@ -11,10 +11,19 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class Comments implements IsSerializable {
 
     public enum CommentType {
-        Question,
-        Review,
-        Summary,
-        GeneralDiscussion,
+        Question("Question"),
+        Review("Review"),
+        Summary("Summary"),
+        GeneralDiscussion("General Discussion"),;
+
+        private final String title;
+        private CommentType(String title) {
+            this.title = title;
+        }
+        @Override
+        public String toString() {
+            return title;
+        }
     }
 
 	Author author;

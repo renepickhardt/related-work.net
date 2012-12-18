@@ -16,6 +16,9 @@
 	<inherits name='com.gwtplatform.mvp.Mvp'/>
 	<inherits name='com.gwtplatform.dispatch.Dispatch'/>
 
+    <!-- guava -->
+    <inherits name="com.google.common.collect.Collect"/>
+
 	<!-- Specify the app entry point class.                         -->
 	<entry-point class='net.relatedwork.client.RelatedWork'/>
 

@@ -6,6 +6,11 @@
              ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
              ui:generateLocales='default'>
     <ui:style>
+        .commentBox {
+            width: 100%;
+            margin: 10px;
+        }
+
         .votes {
         font-size: 24px;
         text-align: center;
@@ -19,7 +24,7 @@
         cursor: pointer;
         }
     </ui:style>
-    <g:HorizontalPanel width="100%">
+    <g:HorizontalPanel styleName="{style.commentBox}">
         <g:HorizontalPanel ui:field="viewCommentPanel" width="100%">
             <g:VerticalPanel>
                 <g:Image ui:field="upVote" url="images/up.png" styleName="{style.clickable}"/>

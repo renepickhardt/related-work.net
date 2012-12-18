@@ -125,6 +125,12 @@
             <version>2.6</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava-gwt</artifactId>
+            <version>13.0.1</version>
+        </dependency>
+
 		<!-- from http://docs.neo4j.org/chunked/stable/tutorials-java-embedded-setup.html -->
 		<dependency>
 			<groupId>org.neo4j</groupId>
