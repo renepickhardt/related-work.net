@@ -34,7 +34,7 @@ public class CommentBoxView extends ViewImpl implements CommentBoxPresenter.MyVi
     }
 
     @Override
-    public void setSubmitButtonClickHandler(ClickHandler handler) {
+    public void setSubmitHandler(ClickHandler handler) {
         submitButton.addClickHandler(handler);
     }
 

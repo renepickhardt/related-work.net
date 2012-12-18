@@ -11,6 +11,7 @@ import com.gwtplatform.mvp.client.annotations.NameToken;
 
 import net.relatedwork.client.Discussions.CommentPresenter;
 import net.relatedwork.client.Discussions.events.DiscussionsReloadedEvent;
+import net.relatedwork.client.discussion.CommentsPanelPresenter;
 import net.relatedwork.client.place.NameTokens;
 import net.relatedwork.client.tools.ListPresenter;
 
@@ -75,7 +76,7 @@ public class AuthorPresenter extends
 	@Inject ListPresenter<Author> citedByAuthorsListPresenter;
 	@Inject ListPresenter<Paper> paperListPresenter;
 	
-	@Inject CommentPresenter commentPresenter;
+	@Inject CommentsPanelPresenter commentPresenter;
 	
 	@Override
 	protected void onReveal() {

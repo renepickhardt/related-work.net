@@ -19,7 +19,7 @@ public class CommentBoxPresenter extends
         PresenterWidget<CommentBoxPresenter.MyView> {
 
     public interface MyView extends View {
-        void setSubmitButtonClickHandler(ClickHandler handler);
+        void setSubmitHandler(ClickHandler handler);
         void setExistingComment(Comments comment);
     }
 
@@ -37,7 +37,7 @@ public class CommentBoxPresenter extends
 
     @Inject
     public void initHandlers() {
-        getView().setSubmitButtonClickHandler(new ClickHandler() {
+        getView().setSubmitHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
                 Window.alert("submit clicked");
