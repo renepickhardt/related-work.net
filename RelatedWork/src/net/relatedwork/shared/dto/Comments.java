@@ -20,7 +20,7 @@ public class Comments implements IsSerializable {
 	Author author;
 	String comment;
 	String date;
-	Integer voting;
+	Integer voting = 0;
     Comments target;
     CommentType type;
 	

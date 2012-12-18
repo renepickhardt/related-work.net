@@ -1,5 +1,6 @@
 package net.relatedwork.client.discussion;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -22,8 +23,14 @@ public class CommentBoxView extends ViewImpl implements CommentBoxPresenter.MyVi
     private final Widget widget;
 
     @UiField HorizontalPanel viewCommentPanel;
-    @UiField VerticalPanel newCommentPanel;
+    @UiField HTMLPanel author;
     @UiField HTML commentContainer;
+    @UiField Image upVote;
+    @UiField Image downVote;
+    @UiField Label votes;
+    @UiField Label expand;
+
+    @UiField VerticalPanel newCommentPanel;
     @UiField RichTextArea commentRichTextArea;
     @UiField Button submitButton;
 
@@ -39,6 +46,27 @@ public class CommentBoxView extends ViewImpl implements CommentBoxPresenter.MyVi
     }
 
     @Override
+    public void setExpandHandler(ClickHandler handler) {
+        expand.addClickHandler(handler);
+    }
+
+    @Override
+    public void setVoteHandler(final CommentBoxPresenter.VoteEvent vote) {
+        upVote.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                vote.vote(true /*up*/);
+            }
+        });
+        downVote.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                vote.vote(false /*down*/);
+            }
+        });
+    }
+
+    @Override
     public void setExistingComment(Comments comment) {
         if (comment == null) {
             // show the new comment box
@@ -48,7 +76,10 @@ public class CommentBoxView extends ViewImpl implements CommentBoxPresenter.MyVi
             // show existing comment
             viewCommentPanel.setVisible(true);
             newCommentPanel.setVisible(false);
+            author.clear();
+            author.add(comment.getAuthor().getAuthorLink());
             commentContainer.setHTML(comment.getComment());
+            votes.setText(comment.getVoting().toString());
         }
     }
 

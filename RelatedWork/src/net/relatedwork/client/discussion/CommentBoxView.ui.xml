@@ -5,18 +5,38 @@
              ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
              ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
              ui:generateLocales='default'>
+    <ui:style>
+        .votes {
+        font-size: 24px;
+        text-align: center;
+        }
 
-    <g:HTMLPanel>
-        <g:HorizontalPanel>
-            <g:HorizontalPanel ui:field="viewCommentPanel">
-                <g:HTML ui:field="commentContainer"></g:HTML>
-            </g:HorizontalPanel>
-            <g:VerticalPanel ui:field="newCommentPanel">
-                <g:RichTextArea ui:field="commentRichTextArea">
-                    Write something...
-                </g:RichTextArea>
-                <g:Button ui:field="submitButton">Submit</g:Button>
+        .commentText {
+        padding-left: 10px;
+        }
+
+        .clickable {
+        cursor: pointer;
+        }
+    </ui:style>
+    <g:HorizontalPanel width="100%">
+        <g:HorizontalPanel ui:field="viewCommentPanel" width="100%">
+            <g:VerticalPanel>
+                <g:Image ui:field="upVote" url="images/up.png" styleName="{style.clickable}"/>
+                <g:Label ui:field="votes" styleName="{style.votes}">0</g:Label>
+                <g:Image ui:field="downVote" url="images/down.png" styleName="{style.clickable}"/>
             </g:VerticalPanel>
+            <g:HTMLPanel ui:field="author"></g:HTMLPanel>
+            <g:HTML ui:field="commentContainer" styleName="{style.commentText}"></g:HTML>
+            <g:cell verticalAlignment="middle">
+                <g:Label ui:field="expand" styleName="{style.clickable}">]]-</g:Label>
+            </g:cell>
         </g:HorizontalPanel>
-    </g:HTMLPanel>
+        <g:VerticalPanel ui:field="newCommentPanel">
+            <g:RichTextArea ui:field="commentRichTextArea">
+                Write something...
+            </g:RichTextArea>
+            <g:Button ui:field="submitButton">Submit</g:Button>
+        </g:VerticalPanel>
+    </g:HorizontalPanel>
 </ui:UiBinder>

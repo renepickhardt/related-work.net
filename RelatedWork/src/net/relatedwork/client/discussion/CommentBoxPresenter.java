@@ -21,6 +21,12 @@ public class CommentBoxPresenter extends
     public interface MyView extends View {
         void setSubmitHandler(ClickHandler handler);
         void setExistingComment(Comments comment);
+        void setExpandHandler(ClickHandler handler);
+        void setVoteHandler(VoteEvent vote);
+    }
+
+    public static interface VoteEvent {
+        void vote(boolean up);
     }
 
     private DispatchAsync dispatcher;
@@ -41,6 +47,15 @@ public class CommentBoxPresenter extends
             @Override
             public void onClick(ClickEvent clickEvent) {
                 Window.alert("submit clicked");
+            }
+        });
+
+        getView().setVoteHandler(new VoteEvent() {
+            @Override
+            public void vote(boolean up) {
+                int votes = comment.getVoting() + (up ? 1 : -1);
+                comment.setVoting(votes);
+                setComment(comment);
             }
         });
     }
