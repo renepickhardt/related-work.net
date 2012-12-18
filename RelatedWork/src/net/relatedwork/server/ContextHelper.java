@@ -37,15 +37,15 @@ public class ContextHelper {
 	private static final String URI_IDX = DBNodeProperties.URI_INDEX_NAME;
 
 	// Get NEO4J DB
-	public static EmbeddedReadOnlyGraphDatabase getReadOnlyGraphDatabase(ServletContext servletContext){
-		EmbeddedReadOnlyGraphDatabase graphDB = (EmbeddedReadOnlyGraphDatabase)servletContext.getAttribute(READ_ONLY_NEO4J);
-		if (graphDB == null){
-			IOHelper.log("Adding neo4j RO db to servletContext");
-			graphDB = new EmbeddedReadOnlyGraphDatabase(Config.get().neo4jDbPath);
-			servletContext.setAttribute(READ_ONLY_NEO4J, graphDB);
-		}
-		return graphDB;
-	}
+//	public static EmbeddedReadOnlyGraphDatabase getReadOnlyGraphDatabase(ServletContext servletContext){
+//		EmbeddedReadOnlyGraphDatabase graphDB = (EmbeddedReadOnlyGraphDatabase)servletContext.getAttribute(READ_ONLY_NEO4J);
+//		if (graphDB == null){
+//			IOHelper.log("Adding neo4j RO db to servletContext");
+//			graphDB = new EmbeddedReadOnlyGraphDatabase(Config.get().neo4jDbPath);
+//			servletContext.setAttribute(READ_ONLY_NEO4J, graphDB);
+//		}
+//		return graphDB;
+//	}
 
 	// Get NEO4J RW version
 	public static EmbeddedGraphDatabase getGraphDatabase(ServletContext servletContext){
@@ -95,8 +95,8 @@ public class ContextHelper {
 
 	// Search index
 	public static Index<Node> getSearchIndex(ServletContext servletContext){
-		EmbeddedReadOnlyGraphDatabase graphDB = getReadOnlyGraphDatabase(servletContext);
-//		EmbeddedGraphDatabase graphDB = getGraphDatabase(servletContext);
+//		EmbeddedReadOnlyGraphDatabase graphDB = getReadOnlyGraphDatabase(servletContext);
+		EmbeddedGraphDatabase graphDB = getGraphDatabase(servletContext);
 		Index<Node> index = (Index<Node>)servletContext.getAttribute(SEARCH_IDX_GWT);
 		if (index == null){
 			IOHelper.log("Adding search index - " + SEARCH_IDX_GWT + "- to servletContext.");
@@ -111,8 +111,8 @@ public class ContextHelper {
 
 	// URI index
 	public static Index<Node> getUriIndex(ServletContext servletContext){
-		EmbeddedReadOnlyGraphDatabase graphDB = getReadOnlyGraphDatabase(servletContext);
-//		EmbeddedGraphDatabase graphDB = getGraphDatabase(servletContext);
+//		EmbeddedReadOnlyGraphDatabase graphDB = getReadOnlyGraphDatabase(servletContext);
+		EmbeddedGraphDatabase graphDB = getGraphDatabase(servletContext);
 		Index<Node> index = (Index<Node>)servletContext.getAttribute(URI_IDX);
 		if (index == null){
 			IOHelper.log("Adding uri index - " + URI_IDX + " - to servletContext");
