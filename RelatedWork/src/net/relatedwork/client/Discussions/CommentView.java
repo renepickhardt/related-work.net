@@ -1,5 +1,9 @@
 package net.relatedwork.client.Discussions;
 
+import com.google.inject.Provider;
+import net.relatedwork.client.discussion.CommentBoxPresenter;
+import net.relatedwork.client.tools.ListEntryPresenter;
+import net.relatedwork.shared.IsRenderable;
 import net.relatedwork.shared.dto.Comments;
 
 import com.gwtplatform.mvp.client.ViewImpl;
@@ -28,8 +32,10 @@ public class CommentView extends ViewImpl implements CommentPresenter.MyView {
 	@UiField HTMLPanel commentContainer;
 //	HTMLPanel commentContainer;
 	@UiField DecoratedTabPanel discussionsTabPanel;
-	
-	public RichTextArea getCommentRichTextArea() {
+
+    Provider<CommentBoxPresenter> commentBoxPresenterProvider;
+
+    public RichTextArea getCommentRichTextArea() {
 		return commentRichTextArea;
 	}
 
@@ -38,36 +44,46 @@ public class CommentView extends ViewImpl implements CommentPresenter.MyView {
 	}
 	
 	public void addComment(Comments c){
-		HTMLPanel child = new HTMLPanel(c.getComment());
-		VerticalPanel votings = new VerticalPanel();
-		Image down = new Image();
-		down.setUrl("images/down.png");
-		Image up = new Image();
-		up.setUrl("images/up.png");
-		Label voting = new Label("5");
-		votings.add(up);
-		votings.add(voting);
-		votings.add(down);
+//		HTMLPanel child = new HTMLPanel(c.getComment());
+//		VerticalPanel votings = new VerticalPanel();
+//		Image down = new Image();
+//		down.setUrl("images/down.png");
+//		Image up = new Image();
+//		up.setUrl("images/up.png");
+//		Label voting = new Label("5");
+//		votings.add(up);
+//		votings.add(voting);
+//		votings.add(down);
+//
+//		HorizontalPanel comment = new HorizontalPanel();
+//
+//		comment.add(votings);
+//		comment.add(c.getAuthor().getAuthorLink());
+//		comment.add(child);
 
-		HorizontalPanel comment = new HorizontalPanel();
-
-		comment.add(votings);
-		comment.add(c.getAuthor().getAuthorLink());
-		comment.add(child);
-		
-		commentContainer.add(comment);
+        CommentBoxPresenter commentBoxPresenter = commentBoxPresenterProvider.get();
+        commentBoxPresenter.setComment(c);
+        commentContainer.add(commentBoxPresenter.getWidget());
 	}
 	
 	public Button getSendButton() {
 		return sendButton;
 	}
 
-	public interface Binder extends UiBinder<Widget, CommentView> {
+    @Override
+    public void reset() {
+        commentContainer.clear();
+        CommentBoxPresenter commentBoxPresenter = commentBoxPresenterProvider.get();
+        commentContainer.add(commentBoxPresenter.getWidget());
+    }
+
+    public interface Binder extends UiBinder<Widget, CommentView> {
 	}
 
 	@Inject
-	public CommentView(final Binder binder) {
-		widget = binder.createAndBindUi(this);
+	public CommentView(final Binder binder,
+                       Provider<CommentBoxPresenter> commentBoxPresenterProvider) {
+        widget = binder.createAndBindUi(this);
 			
 		discussionsTabPanel.setWidth("800px");
 		discussionsTabPanel.setAnimationEnabled(true);
@@ -84,8 +100,14 @@ public class CommentView extends ViewImpl implements CommentPresenter.MyView {
 	    discussionsTabPanel.selectTab(0);
 	    discussionsTabPanel.ensureDebugId("cwTabPanel");
 
+        this.commentBoxPresenterProvider = commentBoxPresenterProvider;
+        showDefaultCommentBox();
+    }
 
-	}
+    private void showDefaultCommentBox() {
+        CommentBoxPresenter commentBoxPresenter = commentBoxPresenterProvider.get();
+        commentContainer.add(commentBoxPresenter.getWidget());
+    }
 
 	@Override
 	public Widget asWidget() {

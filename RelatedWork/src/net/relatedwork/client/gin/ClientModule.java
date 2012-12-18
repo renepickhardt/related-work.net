@@ -11,6 +11,8 @@ import net.relatedwork.client.content.HomePresenter;
 import net.relatedwork.client.content.HomeView;
 import net.relatedwork.client.content.SearchResultPagePresenter;
 import net.relatedwork.client.content.SearchResultPageView;
+import net.relatedwork.client.discussion.CommentBoxPresenter;
+import net.relatedwork.client.discussion.CommentBoxView;
 import net.relatedwork.client.layout.BreadcrumbsPresenter;
 import net.relatedwork.client.layout.BreadcrumbsView;
 import net.relatedwork.client.layout.FooterPresenter;
@@ -71,10 +73,13 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(HomePresenter.class, HomePresenter.MyView.class,
 				HomeView.class);
 
-		bindPresenterWidget(CommentPresenter.class,
-				CommentPresenter.MyView.class, CommentView.class);
+        bindPresenterWidget(CommentPresenter.class,
+                CommentPresenter.MyView.class, CommentView.class);
 
-		bindPresenter(AboutPresenter.class, AboutPresenter.MyView.class,
+        bindPresenterWidget(CommentBoxPresenter.class,
+                CommentBoxPresenter.MyView.class, CommentBoxView.class);
+
+        bindPresenter(AboutPresenter.class, AboutPresenter.MyView.class,
 				AboutView.class, AboutPresenter.MyProxy.class);
 
 		bindPresenterWidget(NotYetImplementedPresenter.class,

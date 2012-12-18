@@ -4,6 +4,7 @@ package net.relatedwork.client.gin;
 import net.relatedwork.client.MainPresenter;
 import net.relatedwork.client.content.AuthorPresenter;
 import net.relatedwork.client.content.SearchResultPagePresenter;
+import net.relatedwork.client.discussion.CommentBoxPresenter;
 import net.relatedwork.client.layout.FooterPresenter;
 import net.relatedwork.client.layout.HeaderPresenter;
 import net.relatedwork.client.staticpresenter.AboutPresenter;
@@ -56,4 +57,6 @@ public interface ClientGinjector extends Ginjector {
 	AsyncProvider<PaperPresenter> getPaperPresenter();
 
 	AsyncProvider<ListEntryPresenter> getListEntryPresenter();
+
+    AsyncProvider<CommentBoxPresenter> getCommentBoxPresenter();
 }

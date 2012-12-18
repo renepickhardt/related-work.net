@@ -33,7 +33,7 @@
                     <runTarget>RelatedWork.html</runTarget>
 
                     <hostedWebapp>war</hostedWebapp>
-
+                    <bindAddress>0.0.0.0</bindAddress>
 				<!-- 	<module>net.relatedwork.server.guice.ServerModule</module> -->
 				</configuration>
 				<executions>

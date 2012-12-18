@@ -20,7 +20,7 @@ public class CommentPresenter extends PresenterWidget<CommentPresenter.MyView> {
 	public interface MyView extends View {
 		public RichTextArea getCommentRichTextArea();
 		public Button getSendButton();	
-		public HTMLPanel getCommentContainer();
+        public void reset();
 		public void addComment(Comments c);
 	}
 
@@ -41,7 +41,7 @@ public class CommentPresenter extends PresenterWidget<CommentPresenter.MyView> {
 		registerHandler(getEventBus().addHandler(DiscussionsReloadedEvent.getType(),new DiscussionsReloadedHandler(){
 			@Override
 			public void onDiscussionsReloaded(DiscussionsReloadedEvent event) {
-				getView().getCommentContainer().clear();
+				getView().reset();
 				for(Comments c:event.getComments()){
 					getView().addComment(c);
 				}
