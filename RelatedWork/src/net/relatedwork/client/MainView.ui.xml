@@ -11,7 +11,7 @@
 		<g:HTMLPanel ui:field="rwHeader" styleName="rwHeader" />
 
 		<g:HTMLPanel ui:field="rwOverlay" styleName="rwOverlayHidden">
-		<h1>Loading page</h1>
+		<h1 ui:field="rwLoadingMessage">Loading page</h1>
 		</g:HTMLPanel>
 
 		<g:HTMLPanel ui:field="rwBody" styleName="rwBody">

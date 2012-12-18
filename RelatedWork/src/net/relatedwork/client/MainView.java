@@ -6,6 +6,7 @@ import net.relatedwork.shared.ItemSuggestion;
 import net.relatedwork.shared.dto.RequestGlobalSearchSuggestion;
 import net.relatedwork.shared.dto.RequestGlobalSearchSuggestionResult;
 
+import com.google.gwt.dom.client.HeadingElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -35,6 +36,8 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 	@UiField HTMLPanel rwSidebar;
 	@UiField HTMLPanel rwFooter;
 	@UiField HTMLPanel rwOverlay;
+	
+	@UiField HeadingElement rwLoadingMessage; 
 		
 	public interface Binder extends UiBinder<Widget, MainView> {
 	}
@@ -91,8 +94,9 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 	}
 
 	
-	public void showLoadingOverlay() {
+	public void showLoadingOverlay(String message) {
 		this.rwOverlay.setStyleName("rwOverlay");
+		this.rwLoadingMessage.setInnerHTML("Loading <br>" + message);
 	}
 	
 	public void hideLoadingOverlay() {

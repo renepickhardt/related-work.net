@@ -78,19 +78,18 @@ public class SearchResultPagePresenter
 		MainPresenter.getSessionInformation().logSearch(query);
 
 		// show Loading Overlay
-		LoadingOverlayEvent.fire(getEventBus(), true);
+		getEventBus().fireEvent(new LoadingOverlayEvent(true));
 		
 		dispatcher.execute(new GlobalSearch(query), new AsyncCallback<GlobalSearchResult>() {
 			@Override
 			public void onSuccess(GlobalSearchResult result) {
-				LoadingOverlayEvent.fire(getEventBus(), false);
+				getEventBus().fireEvent(new LoadingOverlayEvent(false));
 				setResults(result.getSearchResults());
 			}
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				LoadingOverlayEvent.fire(getEventBus(), false);
+				getEventBus().fireEvent(new LoadingOverlayEvent(false));				
 			}	
 		});
 	}

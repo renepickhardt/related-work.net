@@ -97,7 +97,7 @@ public class PaperPresenter extends
 		MainPresenter.getSessionInformation().logPaper(paper_id);
 
 		// show Loading Overlay
-		LoadingOverlayEvent.fire(getEventBus(), true);
+		getEventBus().fireEvent(new LoadingOverlayEvent(true));
 		
 		// Get paper data from server	
 		dispatcher.execute(new DisplayPaper(paper_id), new AsyncCallback<DisplayPaperResult>() {
@@ -106,7 +106,9 @@ public class PaperPresenter extends
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
 				getView().getRwTitle().setInnerHTML("Failed Request");
-				LoadingOverlayEvent.fire(getEventBus(), false);
+
+				// hide loading overlay
+				getEventBus().fireEvent(new LoadingOverlayEvent(false));
 
 			}
 
@@ -129,7 +131,7 @@ public class PaperPresenter extends
 				citedByListPresenter.setList(result.getCitedByPapers(1000),5);
 
 				// hide loading overlay
-				LoadingOverlayEvent.fire(getEventBus(), false);
+				getEventBus().fireEvent(new LoadingOverlayEvent(true));
 				
 			}
 		});

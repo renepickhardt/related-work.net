@@ -12,6 +12,7 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
 
@@ -53,8 +54,8 @@ public class MainPresenter extends
 		public HTMLPanel getRwFooter();
 		public void setRwFooter(HTMLPanel rwFooter);
 		
+		public void showLoadingOverlay(String message);	
 		public void hideLoadingOverlay();
-		public void showLoadingOverlay();			
 	}
 	
 	@ProxyCodeSplit
@@ -153,24 +154,28 @@ public class MainPresenter extends
 	
 	LoadingOverlayHandler overlayHandler = new LoadingOverlayHandler() {
 		public void onLoadingOverlay(LoadingOverlayEvent event) {
+//			Window.alert("Handling Overlay. Count " + overlayCount.toString() );
+			
 			if (event.getShow() == true) {
 				// request to show overlay
 				overlayCount++;
 				
-				if (overlayCount == 1){
-					getView().showLoadingOverlay();
-				}
+				getView().showLoadingOverlay("wating for " + overlayCount.toString() + " requests.");
 												
 			} 
 			else {
 				// request to hide
 				overlayCount--;
 				
-				if (overlayCount == 0){
+				if (overlayCount > 0){
+					getView().showLoadingOverlay("wating for " + overlayCount.toString() + " requests.");
+				} else {
 					getView().hideLoadingOverlay();
+					overlayCount = 0;
 				}
 				
-			}			
+			}
+			
 		};
 	};
 }

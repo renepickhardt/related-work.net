@@ -97,15 +97,16 @@ public class AuthorPresenter extends
 		MainPresenter.getSessionInformation().logAuthor(author_url);
 		
 		// show Loading Overlay
-		LoadingOverlayEvent.fire(getEventBus(), true);
+		getEventBus().fireEvent(new LoadingOverlayEvent(true));
 		
 		dispatcher.execute(new DisplayAuthor(author_url), new AsyncCallback<DisplayAuthorResult>() {
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
 				getView().setAuthorName("Faild Request");			
-				// hide loading overlay
-				LoadingOverlayEvent.fire(getEventBus(), false);
+
+				// hide Loading overlay
+				getEventBus().fireEvent(new LoadingOverlayEvent(false));
 
 			}
 			
@@ -128,8 +129,8 @@ public class AuthorPresenter extends
 				paperListPresenter.setTitle("Articles");
 				paperListPresenter.setList(result.getWrittenPapers(30),10);
 				
-				// hide loading overlay
-				LoadingOverlayEvent.fire(getEventBus(), false);
+				// hide Loading overlay
+				getEventBus().fireEvent(new LoadingOverlayEvent(false));
 
 				getEventBus().fireEvent(new DiscussionsReloadedEvent(result.getComments()));
 			}
