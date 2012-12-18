@@ -1,7 +1,5 @@
 package net.relatedwork.client.content;
 
-import java.util.ArrayList;
-
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
@@ -9,8 +7,7 @@ import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 
-import net.relatedwork.client.Discussions.CommentPresenter;
-import net.relatedwork.client.Discussions.events.DiscussionsReloadedEvent;
+import net.relatedwork.client.discussion.DiscussionsReloadedEvent;
 import net.relatedwork.client.discussion.CommentsPanelPresenter;
 import net.relatedwork.client.place.NameTokens;
 import net.relatedwork.client.tools.ListPresenter;
@@ -22,8 +19,6 @@ import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import net.relatedwork.client.MainPresenter;
 import net.relatedwork.shared.dto.Author;

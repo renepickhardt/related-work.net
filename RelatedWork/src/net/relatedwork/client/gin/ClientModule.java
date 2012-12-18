@@ -3,8 +3,6 @@ package net.relatedwork.client.gin;
 
 import net.relatedwork.client.MainPresenter;
 import net.relatedwork.client.MainView;
-import net.relatedwork.client.Discussions.CommentPresenter;
-import net.relatedwork.client.Discussions.CommentView;
 import net.relatedwork.client.content.AuthorPresenter;
 import net.relatedwork.client.content.AuthorView;
 import net.relatedwork.client.content.HomePresenter;
@@ -74,9 +72,6 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(HomePresenter.class, HomePresenter.MyView.class,
 				HomeView.class);
-
-        bindPresenterWidget(CommentPresenter.class,
-                CommentPresenter.MyView.class, CommentView.class);
 
         bindPresenter(CommentsPanelPresenter.class, CommentsPanelPresenter.MyView.class,
                 CommentsPanelView.class, CommentsPanelPresenter.MyProxy.class);

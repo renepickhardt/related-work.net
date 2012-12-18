@@ -14,7 +14,7 @@ import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.proxy.Proxy;
-import net.relatedwork.client.Discussions.events.DiscussionsReloadedEvent;
+import net.relatedwork.client.discussion.DiscussionsReloadedEvent;
 import net.relatedwork.shared.dto.Comments;
 
 import java.util.ArrayList;
