@@ -3,14 +3,16 @@ package net.relatedwork.client.gin;
 
 import net.relatedwork.client.MainPresenter;
 import net.relatedwork.client.MainView;
-import net.relatedwork.client.Discussions.CommentPresenter;
-import net.relatedwork.client.Discussions.CommentView;
 import net.relatedwork.client.content.AuthorPresenter;
 import net.relatedwork.client.content.AuthorView;
 import net.relatedwork.client.content.HomePresenter;
 import net.relatedwork.client.content.HomeView;
 import net.relatedwork.client.content.SearchResultPagePresenter;
 import net.relatedwork.client.content.SearchResultPageView;
+import net.relatedwork.client.discussion.CommentBoxPresenter;
+import net.relatedwork.client.discussion.CommentBoxView;
+import net.relatedwork.client.discussion.CommentsPanelPresenter;
+import net.relatedwork.client.discussion.CommentsPanelView;
 import net.relatedwork.client.layout.BreadcrumbsPresenter;
 import net.relatedwork.client.layout.BreadcrumbsView;
 import net.relatedwork.client.layout.FooterPresenter;
@@ -71,10 +73,13 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(HomePresenter.class, HomePresenter.MyView.class,
 				HomeView.class);
 
-		bindPresenterWidget(CommentPresenter.class,
-				CommentPresenter.MyView.class, CommentView.class);
+        bindPresenter(CommentsPanelPresenter.class, CommentsPanelPresenter.MyView.class,
+                CommentsPanelView.class, CommentsPanelPresenter.MyProxy.class);
 
-		bindPresenter(AboutPresenter.class, AboutPresenter.MyView.class,
+        bindPresenterWidget(CommentBoxPresenter.class,
+                CommentBoxPresenter.MyView.class, CommentBoxView.class);
+
+        bindPresenter(AboutPresenter.class, AboutPresenter.MyView.class,
 				AboutView.class, AboutPresenter.MyProxy.class);
 
 		bindPresenterWidget(NotYetImplementedPresenter.class,

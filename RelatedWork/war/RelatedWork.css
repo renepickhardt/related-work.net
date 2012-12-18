@@ -137,14 +137,17 @@ html, body, .rwMain {
 
 /***************** SPECIAL PRESENTER STYLE ******************/
 
-div.rwDiscussions{
-	width: 400px;
-	float: left;
-	min-height: 100px;
-	clear: both;
-	padding: 10px;
+.rwDiscussions{
+	width: 800px;
 }
 
+.rwDiscussions .gwt-TabPanelBottom {
+    height: 400px;
+}
+
+.selected-comment {
+    background-color: yellow;
+}
 
 
 /***** List Styling ******/

@@ -10,12 +10,11 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 import com.google.inject.Inject;
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
 
-import net.relatedwork.client.Discussions.CommentPresenter;
 import net.relatedwork.client.content.HomePresenter;
 import net.relatedwork.client.layout.BreadcrumbsPresenter;
 import net.relatedwork.client.layout.FooterPresenter;

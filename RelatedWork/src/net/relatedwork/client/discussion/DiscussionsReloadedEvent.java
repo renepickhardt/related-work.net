@@ -1,4 +1,4 @@
-package net.relatedwork.client.Discussions.events;
+package net.relatedwork.client.discussion;
 
 import java.util.ArrayList;
 

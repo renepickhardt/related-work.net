@@ -14,7 +14,6 @@ import net.relatedwork.server.utils.IOHelper;
 import net.relatedwork.shared.dto.Author;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.tools.ant.types.CommandlineJava.SysProperties;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
