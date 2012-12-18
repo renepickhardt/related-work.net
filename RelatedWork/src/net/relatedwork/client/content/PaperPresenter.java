@@ -14,6 +14,7 @@ import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import net.relatedwork.client.place.NameTokens;
 import net.relatedwork.client.tools.ListPresenter;
+import net.relatedwork.client.tools.events.LoadingOverlayEvent;
 
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
@@ -95,6 +96,9 @@ public class PaperPresenter extends
 		// Log paper visit
 		MainPresenter.getSessionInformation().logPaper(paper_id);
 
+		// show Loading Overlay
+		LoadingOverlayEvent.fire(getEventBus(), true);
+		
 		// Get paper data from server	
 		dispatcher.execute(new DisplayPaper(paper_id), new AsyncCallback<DisplayPaperResult>() {
 
@@ -102,6 +106,8 @@ public class PaperPresenter extends
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
 				getView().getRwTitle().setInnerHTML("Failed Request");
+				LoadingOverlayEvent.fire(getEventBus(), false);
+
 			}
 
 			@Override
@@ -121,6 +127,9 @@ public class PaperPresenter extends
 
 				citedByListPresenter.setTitle("Cited by");
 				citedByListPresenter.setList(result.getCitedByPapers(1000),5);
+
+				// hide loading overlay
+				LoadingOverlayEvent.fire(getEventBus(), false);
 				
 			}
 		});

@@ -13,6 +13,7 @@ import net.relatedwork.client.Discussions.CommentPresenter;
 import net.relatedwork.client.Discussions.events.DiscussionsReloadedEvent;
 import net.relatedwork.client.place.NameTokens;
 import net.relatedwork.client.tools.ListPresenter;
+import net.relatedwork.client.tools.events.LoadingOverlayEvent;
 
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
@@ -100,11 +101,17 @@ public class AuthorPresenter extends
 		// Log author visit
 		MainPresenter.getSessionInformation().logAuthor(author_url);
 		
+		// show Loading Overlay
+		LoadingOverlayEvent.fire(getEventBus(), true);
+		
 		dispatcher.execute(new DisplayAuthor(author_url), new AsyncCallback<DisplayAuthorResult>() {
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
 				getView().setAuthorName("Faild Request");			
+				// hide loading overlay
+				LoadingOverlayEvent.fire(getEventBus(), false);
+
 			}
 			
 			@Override
@@ -126,6 +133,9 @@ public class AuthorPresenter extends
 				paperListPresenter.setTitle("Articles");
 				paperListPresenter.setList(result.getWrittenPapers(30),10);
 				
+				// hide loading overlay
+				LoadingOverlayEvent.fire(getEventBus(), false);
+
 				getEventBus().fireEvent(new DiscussionsReloadedEvent(result.getComments()));
 			}
 		});

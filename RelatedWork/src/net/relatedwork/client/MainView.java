@@ -36,6 +36,7 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 	@UiField HTMLPanel rwContent;
 	@UiField HTMLPanel rwSidebar;
 	@UiField HTMLPanel rwFooter;
+	@UiField HTMLPanel rwOverlay;
 		
 	public interface Binder extends UiBinder<Widget, MainView> {
 	}
@@ -58,7 +59,6 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 	public Widget asWidget() {
 		return widget;
 	}
-
 	
 	public HTMLPanel getRwHeader() {
 		return rwHeader;
@@ -92,6 +92,14 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 		this.rwFooter = rwFooter;
 	}
 
+	
+	public void showLoadingOverlay() {
+		this.rwOverlay.setStyleName("rwOverlay");
+	}
+	
+	public void hideLoadingOverlay() {
+		this.rwOverlay.setStyleName("rwOverlayHidden");
+	}
 	
 	
 	// Nested presenter setters

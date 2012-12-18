@@ -22,6 +22,8 @@ import net.relatedwork.client.layout.FooterPresenter;
 import net.relatedwork.client.layout.HeaderPresenter;
 import net.relatedwork.client.navigation.HistoryTokenChangeEvent;
 import net.relatedwork.client.place.NameTokens;
+import net.relatedwork.client.tools.events.LoadingOverlayEvent;
+import net.relatedwork.client.tools.events.LoadingOverlayEvent.LoadingOverlayHandler;
 import net.relatedwork.client.tools.events.LoginEvent;
 import net.relatedwork.client.tools.events.LogoutEvent;
 import net.relatedwork.client.tools.events.LoginEvent.LoginHandler;
@@ -51,6 +53,9 @@ public class MainPresenter extends
 		public void setRwSidebar(HTMLPanel rwSidebar);
 		public HTMLPanel getRwFooter();
 		public void setRwFooter(HTMLPanel rwFooter);
+		
+		public void hideLoadingOverlay();
+		public void showLoadingOverlay();			
 	}
 	
 	@ProxyCodeSplit
@@ -81,6 +86,7 @@ public class MainPresenter extends
 		super.onBind();
 		registerHandler(getEventBus().addHandler(LoginEvent.getType(), loginHandler));
 		registerHandler(getEventBus().addHandler(LogoutEvent.getType(), logoutHandler));
+		registerHandler(getEventBus().addHandler(LoadingOverlayEvent.getType(), overlayHandler));
 	}
 	
 
@@ -139,6 +145,34 @@ public class MainPresenter extends
 			sessionInformation.continueSession(); // register cookie, set userid
 		}
 	};
+	
+	/**
+	 * Loading overlay 
+	 */
 
+	private static Integer overlayCount = 0; 
+	
+	LoadingOverlayHandler overlayHandler = new LoadingOverlayHandler() {
+		public void onLoadingOverlay(LoadingOverlayEvent event) {
+			if (event.getShow() == true) {
+				// request to show overlay
+				overlayCount++;
+				
+				if (overlayCount == 1){
+					getView().showLoadingOverlay();
+				}
+												
+			} 
+			else {
+				// request to hide
+				overlayCount--;
+				
+				if (overlayCount == 0){
+					getView().hideLoadingOverlay();
+				}
+				
+			}			
+		};
+	};
 }
 

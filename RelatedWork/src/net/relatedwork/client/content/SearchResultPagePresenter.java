@@ -8,6 +8,7 @@ import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import net.relatedwork.client.place.NameTokens;
+import net.relatedwork.client.tools.events.LoadingOverlayEvent;
 
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
@@ -68,26 +69,36 @@ public class SearchResultPagePresenter
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
-
+		
+		getView().getSerpContainer().clear();
+		
 		String query = request.getParameter("q", "Bridgeland");
 		
 		// Log search query
 		MainPresenter.getSessionInformation().logSearch(query);
 
+		// show Loading Overlay
+		LoadingOverlayEvent.fire(getEventBus(), true);
+		
 		dispatcher.execute(new GlobalSearch(query), new AsyncCallback<GlobalSearchResult>() {
+			@Override
+			public void onSuccess(GlobalSearchResult result) {
+				LoadingOverlayEvent.fire(getEventBus(), false);
+				setResults(result.getSearchResults());
+			}
+
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
-				
+				LoadingOverlayEvent.fire(getEventBus(), false);
 			}	
-			@Override
-			public void onSuccess(GlobalSearchResult result) {
-				setResults(result.getSearchResults());
-			}
 		});
 	}
+	
 	public void setResults(ArrayList<IsRenderable> searchResults) {
-		getView().getSerpContainer().clear();
+		
+		//getView().getSerpContainer().clear();
+		
 		for (IsRenderable r:searchResults){
 			//getView().getSerpContainer().add(r.getLink());
 			HorizontalPanel panel = new HorizontalPanel();
