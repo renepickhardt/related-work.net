@@ -42,6 +42,7 @@ public class CommentsPanelPresenter
         void addPost(int tab, Widget widget);
         void addReply(int tab, Widget widget);
         void initTabs(List<String> tabTitles);
+        void setPostCount(int tab, int count);
         void switchTab(int tab);
         void resetReply(int tab);
     }
@@ -53,7 +54,10 @@ public class CommentsPanelPresenter
     private Provider<CommentBoxPresenter> commentBoxPresenterProvider;
 
     /** Current selected comment box presenter in each tab */
-    private CommentBoxPresenter[] selectedCommentInTabs = new CommentBoxPresenter[CommentType.values().length];
+    private CommentBoxPresenter[] selectedCommentInTabs;
+
+    /** How many posts are in each tab */
+    private int[] postCounts;
 
     /** All comments related to the current target (paper/author) */
     private List<Comments> comments;
@@ -80,6 +84,9 @@ public class CommentsPanelPresenter
     }
 
     public void setComments(List<Comments> comments, String targetUri) {
+        selectedCommentInTabs = new CommentBoxPresenter[CommentType.values().length];
+        postCounts = new int[CommentType.values().length];
+
         this.comments = Lists.newArrayList(comments);
         this.targetUri = targetUri;
 
@@ -106,9 +113,14 @@ public class CommentsPanelPresenter
                 tab = c.getType().ordinal();
             }
             getView().addPost(tab, commentBoxPresenter.getWidget());
+            postCounts[tab] ++;
 
             commentBoxPresenter.setExpandHandler(
                     new ExpandCommentHandler(commentBoxPresenter, tab));
+        }
+
+        for (int i = 0; i < COMMENT_TAB_TITLES.size(); i++) {
+            getView().setPostCount(i, postCounts[i]);
         }
     }
 
