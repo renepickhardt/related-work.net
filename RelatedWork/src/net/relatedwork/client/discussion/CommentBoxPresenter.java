@@ -72,7 +72,7 @@ public class CommentBoxPresenter extends
                     public void onSuccess(Comments newComment) {
                         Window.alert("New comment success: " + newComment.getComment());
 
-                        setExistingComment(newComment);
+                        getView().setExistingComment(null);
                         if (submission != null) {
                             submission.success(newComment);
                         }

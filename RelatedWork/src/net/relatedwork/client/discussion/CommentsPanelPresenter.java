@@ -2,6 +2,7 @@ package net.relatedwork.client.discussion;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionHandler;
@@ -79,7 +80,7 @@ public class CommentsPanelPresenter
     }
 
     public void setComments(List<Comments> comments, String targetUri) {
-        this.comments = comments;
+        this.comments = Lists.newArrayList(comments);
         this.targetUri = targetUri;
 
         getView().initTabs(COMMENT_TAB_TITLES);
@@ -123,7 +124,8 @@ public class CommentsPanelPresenter
         postPresenter.setSubmittedEventHandler(new CommentSubmittedEventHandler() {
             @Override
             public void success(Comments newComment) {
-                putNewPostBox(tab);
+                putExistingPosts(ImmutableList.of(newComment));
+                comments.add(newComment);
             }
         });
         getView().addPost(tab, postPresenter.getWidget());
@@ -132,11 +134,15 @@ public class CommentsPanelPresenter
     private void showRepliesOf(Comments comment, int tab) {
         getView().resetReply(tab);
         for (Comments reply: filterCommentsByTarget(comment.getUri())) {
-            CommentBoxPresenter replyPresenter = commentBoxPresenterProvider.get();
-            replyPresenter.setExistingComment(reply);
-            getView().addReply(tab, replyPresenter.getWidget());
+            putExistingReply(tab, reply);
         }
         putNewReplyBox(tab, comment);
+    }
+
+    private void putExistingReply(int tab, Comments reply) {
+        CommentBoxPresenter replyPresenter = commentBoxPresenterProvider.get();
+        replyPresenter.setExistingComment(reply);
+        getView().addReply(tab, replyPresenter.getWidget());
     }
 
     private void putNewReplyBox(final int tab, final Comments post) {
@@ -145,7 +151,8 @@ public class CommentsPanelPresenter
         newReplyPresenter.setSubmittedEventHandler(new CommentSubmittedEventHandler() {
             @Override
             public void success(Comments newComment) {
-                putNewReplyBox(tab, post);
+                putExistingReply(tab, newComment);
+                comments.add(newComment);
             }
         });
         getView().addReply(tab, newReplyPresenter.getWidget());

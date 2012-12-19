@@ -24,6 +24,8 @@ public class CommentsPanelView  extends ViewImpl implements CommentsPanelPresent
 
     private DockLayoutPanel[] tabs;
 
+    // TODO should have dedicated new post/reply boxes in each tab
+
     public interface Binder extends UiBinder<Widget, CommentsPanelView> {
     }
 

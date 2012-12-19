@@ -82,6 +82,7 @@ public class CommentBoxView extends ViewImpl implements CommentBoxPresenter.MyVi
             // show the new comment box
             viewCommentPanel.setVisible(false);
             newCommentPanel.setVisible(true);
+            commentRichTextArea.setHTML("");
         } else {
             // show existing comment
             viewCommentPanel.setVisible(true);
