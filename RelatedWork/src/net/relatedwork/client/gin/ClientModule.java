@@ -51,8 +51,6 @@ import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
 import net.relatedwork.client.staticpresenter.UserVerifyPresenter;
 import net.relatedwork.client.staticpresenter.UserVerifyView;
-import net.relatedwork.client.sidebar.SidebarPresenter;
-import net.relatedwork.client.sidebar.SidebarView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -132,7 +130,5 @@ public class ClientModule extends AbstractPresenterModule {
 				UserVerifyPresenter.MyView.class, UserVerifyView.class,
 				UserVerifyPresenter.MyProxy.class);
 		
-		bindPresenter(SidebarPresenter.class, SidebarPresenter.MyView.class,
-				SidebarView.class, SidebarPresenter.MyProxy.class);
 	}
 }

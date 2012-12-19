@@ -108,6 +108,9 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 		else if (slot == MainPresenter.TYPE_Header) {
 			setHeader(content);
 		} 
+		else if (slot == MainPresenter.TYPE_Sidebar) {
+			setSidebar(content);
+		}
 		else {
 			super.setInSlot(slot, content);
 		}
@@ -121,6 +124,13 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 		}
 	}
 
+	private void setSidebar(Widget content) {
+		rwSidebar.clear();
+		if (content != null) {
+			rwSidebar.add(content);
+		}
+	}
+	
 	private void setFooter(Widget content) {
 		rwFooter.clear();
 		if (content != null) {
