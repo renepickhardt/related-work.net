@@ -1,39 +1,23 @@
 package net.relatedwork.server.action;
 
-import java.util.NoSuchElementException;
 
-import javax.servlet.ServletContext;
-
-import org.apache.lucene.search.Sort;
-import org.apache.lucene.search.SortField;
-import org.neo4j.graphdb.Direction;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Relationship;
-import org.neo4j.graphdb.index.Index;
-import org.neo4j.graphdb.index.IndexHits;
-import org.neo4j.index.lucene.QueryContext;
-import org.neo4j.kernel.EmbeddedReadOnlyGraphDatabase;
-
-import sun.security.x509.AuthorityInfoAccessExtension;
-
+import com.google.inject.Inject;
+import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
-
+import com.gwtplatform.dispatch.shared.ActionException;
 import net.relatedwork.server.ContextHelper;
-import net.relatedwork.server.neo4jHelper.DBNodeProperties;
-import net.relatedwork.server.neo4jHelper.DBRelationshipProperties;
-import net.relatedwork.server.neo4jHelper.Neo4jToDTOHelper;
-import net.relatedwork.server.neo4jHelper.NodeType;
-import net.relatedwork.server.neo4jHelper.DBRelationshipTypes;
+import net.relatedwork.server.neo4jHelper.*;
 import net.relatedwork.server.utils.IOHelper;
 import net.relatedwork.shared.dto.Author;
 import net.relatedwork.shared.dto.Comments;
 import net.relatedwork.shared.dto.DisplayAuthor;
 import net.relatedwork.shared.dto.DisplayAuthorResult;
-import net.relatedwork.shared.dto.Paper;
+import org.neo4j.graphdb.Direction;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.index.Index;
 
-import com.google.inject.Inject;
-import com.gwtplatform.dispatch.server.ExecutionContext;
-import com.gwtplatform.dispatch.shared.ActionException;
+import javax.servlet.ServletContext;
 
 public class DisplayAuthorActionHandler implements
 		ActionHandler<DisplayAuthor, DisplayAuthorResult> {
@@ -53,6 +37,8 @@ public class DisplayAuthorActionHandler implements
 		
 		String uri = action.getUri();
 		IOHelper.log("Rendering author page with uri '"+ uri +"'");
+
+        result.setUri(uri);
 		
 		// TODO: This still gives
 		// Service exception while executing net.relatedwork.shared.dto.DisplayAuthor: Service exception executing action "DisplayAuthor", java.lang.NullPointerException
@@ -103,12 +89,21 @@ public class DisplayAuthorActionHandler implements
 
 		//TODO: those should be taken from the data base!
         Comments c1 = new Comments(new Author(), "this is some comment");
-        result.addComment(c1);
+        c1.setTarget(uri);
+        c1.setUri("comment1");
         Comments reply1 = new Comments(new Author(), "this is a reply");
-        reply1.setTarget(c1);
+        reply1.setTarget(c1.getUri());
+        Comments c2 = new Comments(new Author(), "another comment");
+        c2.setUri("comment2");
+        c2.setTarget(uri);
+        Comments c3 = new Comments(new Author(), "and more comments");
+        c3.setUri("comment3");
+        c3.setTarget(uri);
+
+        result.addComment(c1);
         result.addComment(reply1);
-		result.addComment(new Comments(new Author(),"another comment"));
-        result.addComment(new Comments(new Author(),"and more comments"));
+        result.addComment(c2);
+        result.addComment(c3);
 
 		return result;
 	}

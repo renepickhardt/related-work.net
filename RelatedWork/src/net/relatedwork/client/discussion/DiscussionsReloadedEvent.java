@@ -17,17 +17,24 @@ public class DiscussionsReloadedEvent extends
 		void onDiscussionsReloaded(DiscussionsReloadedEvent event);
 	}
 
-	
-	private ArrayList<Comments> comments;
+    /** Comment target: either Paper or Author */
+    private String targetUri;
+    /** A list of comments and replies for the target */
+    private ArrayList<Comments> comments;
 	
 	public DiscussionsReloadedEvent() {
 	}
 
-	public DiscussionsReloadedEvent(ArrayList<Comments> comments) {
-		this.comments = comments;
+	public DiscussionsReloadedEvent(String targetUri, ArrayList<Comments> comments) {
+        this.targetUri = targetUri;
+        this.comments = comments;
 	}
 
-	public ArrayList<Comments> getComments() {
+    public String getTargetUri() {
+        return targetUri;
+    }
+
+    public ArrayList<Comments> getComments() {
 		return comments;
 	}
 	

@@ -12,7 +12,7 @@ import com.gwtplatform.mvp.client.View;
 import net.relatedwork.client.tools.events.LoadingOverlayEvent;
 import net.relatedwork.shared.dto.*;
 
-import static net.relatedwork.shared.dto.CommentVoteResult.VoteResult;
+import static net.relatedwork.shared.dto.Comments.CommentType;
 
 /**
  * The PresenterWidget for {@link CommentBoxView}.
@@ -39,7 +39,9 @@ public class CommentBoxPresenter extends
     private DispatchAsync dispatcher;
     private CommentSubmittedEventHandler submission;
 
+    private String targetUri;
     private Comments comment;
+    private CommentType type;
     private boolean isReply;
 
     @Inject
@@ -47,7 +49,7 @@ public class CommentBoxPresenter extends
                            final DispatchAsync dispatcher) {
         super(eventBus, view);
         this.dispatcher = dispatcher;
-        setComment(null /* default to new comment */, false /* default to post */);
+        setNewComment(false /* default to post */, null, "");
     }
 
     @Inject
@@ -57,7 +59,8 @@ public class CommentBoxPresenter extends
             public void onClick(ClickEvent clickEvent) {
                 getEventBus().fireEvent(new LoadingOverlayEvent(true));
 
-                dispatcher.execute(new NewCommentAction(getComment()), new AsyncCallback<Comments>() {
+                NewCommentAction newCommentAction = new NewCommentAction(getComment());
+                dispatcher.execute(newCommentAction, new AsyncCallback<Comments>() {
                     @Override
                     public void onFailure(Throwable caught) {
                         Window.alert("Sorry, server error, retry later.");
@@ -69,7 +72,7 @@ public class CommentBoxPresenter extends
                     public void onSuccess(Comments newComment) {
                         Window.alert("New comment success: " + newComment.getComment());
 
-                        setComment(newComment, isReply);
+                        setExistingComment(newComment);
                         if (submission != null) {
                             submission.success(newComment);
                         }
@@ -85,7 +88,7 @@ public class CommentBoxPresenter extends
             public void vote(boolean up) {
                 getEventBus().fireEvent(new LoadingOverlayEvent(true));
 
-                CommentVoteAction commentVoteAction = new CommentVoteAction(null, null, up);
+                CommentVoteAction commentVoteAction = new CommentVoteAction(null, comment.getUri(), up);
                 dispatcher.execute(commentVoteAction, new AsyncCallback<CommentVoteResult>() {
                     @Override
                     public void onFailure(Throwable caught) {
@@ -102,7 +105,7 @@ public class CommentBoxPresenter extends
                             break;
                         case SUCCESS:
                             comment.setVoting(result.getVotes());
-                            setComment(comment, isReply);
+                            setExistingComment(comment);
                             break;
                         }
                         getEventBus().fireEvent(new LoadingOverlayEvent(false));
@@ -112,10 +115,21 @@ public class CommentBoxPresenter extends
         });
     }
 
-    public void setComment(Comments comment, boolean isReply) {
+    public void setExistingComment(Comments comment) {
         this.comment = comment;
-        this.isReply = isReply;
+        this.isReply = comment.getType() == null;
+        this.type = comment.getType();
+        this.targetUri = comment.getTargetUri();
         getView().setExistingComment(comment);
+        getView().setShowExpand(!isReply);
+    }
+
+    public void setNewComment(boolean isReply, CommentType type, String targetUri) {
+        this.comment = null;
+        this.isReply = isReply;
+        this.type = type;
+        this.targetUri = targetUri;
+        getView().setExistingComment(null);
         getView().setShowExpand(!isReply);
     }
 
@@ -127,12 +141,9 @@ public class CommentBoxPresenter extends
         // new comment
         Comments c = new Comments();
         c.setComment(getView().getNewComment());
-        c.setVoting(0);
-        // TODO
         c.setAuthor(new Author());
-        //c.setDate();
-        //c.setTarget();
-        //c.setType();
+        c.setTarget(targetUri);
+        c.setType(type);
         return c;
     }
 

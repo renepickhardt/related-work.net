@@ -26,11 +26,13 @@ public class Comments implements Result {
         }
     }
 
+    String uri;
 	Author author;
 	String comment;
 	String date;
 	Integer voting = 0;
-    Comments target;
+    String targetUri;
+    /** if this is reply, type is null */
     CommentType type;
 	
 	public Comments() {
@@ -97,12 +99,12 @@ public class Comments implements Result {
 		this.voting = voting;
 	}
 
-    public Comments getTarget() {
-        return target;
+    public String getTargetUri() {
+        return targetUri;
     }
 
-    public void setTarget(Comments target) {
-        this.target = target;
+    public void setTarget(String targetUri) {
+        this.targetUri = targetUri;
     }
 
     public CommentType getType() {
@@ -111,5 +113,17 @@ public class Comments implements Result {
 
     public void setType(CommentType type) {
         this.type = type;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public boolean isReply() {
+        return type == null;
     }
 }

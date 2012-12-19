@@ -31,7 +31,9 @@
                 <g:Label ui:field="votes" styleName="{style.votes}">0</g:Label>
                 <g:Image ui:field="downVote" url="images/down.png" styleName="{style.clickable}"/>
             </g:VerticalPanel>
-            <g:HTMLPanel ui:field="author"></g:HTMLPanel>
+            <g:VerticalPanel ui:field="authorAndDate">
+
+            </g:VerticalPanel>
             <g:HTML ui:field="commentContainer" styleName="{style.commentText}"></g:HTML>
             <g:cell verticalAlignment="middle">
                 <g:Label ui:field="expand" styleName="{style.clickable}">]]-</g:Label>

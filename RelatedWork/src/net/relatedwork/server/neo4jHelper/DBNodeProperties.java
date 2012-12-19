@@ -29,6 +29,7 @@ public class DBNodeProperties {
 	public static final String USER_AUTH_SECRET = "rw:user:authsecret";
 
     // Comment nodes
+    public static final String COMMENT_URI = "rw:comment:uri";
     public static final String COMMENT_BODY = "rw:comment:body";
     public static final String COMMENT_DATE = "rw:comment:date";
     public static final String COMMENT_VOTES = "rw:comment:votes";

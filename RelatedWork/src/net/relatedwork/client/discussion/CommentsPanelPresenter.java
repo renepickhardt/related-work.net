@@ -14,7 +14,6 @@ import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.proxy.Proxy;
-import net.relatedwork.client.discussion.DiscussionsReloadedEvent;
 import net.relatedwork.shared.dto.Comments;
 
 import java.util.ArrayList;
@@ -59,6 +58,8 @@ public class CommentsPanelPresenter
     /** All comments related to the current target (paper/author) */
     private ArrayList<Comments> comments;
 
+    private String targetUri;
+
     @Inject
     public CommentsPanelPresenter(EventBus eventBus, MyView view, MyProxy proxy,
                                   Provider<CommentBoxPresenter> commentBoxPresenterProvider) {
@@ -71,15 +72,16 @@ public class CommentsPanelPresenter
         registerHandler(getEventBus().addHandler(DiscussionsReloadedEvent.getType(), new DiscussionsReloadedEvent.DiscussionsReloadedHandler() {
             @Override
             public void onDiscussionsReloaded(DiscussionsReloadedEvent event) {
-                setComments(event.getComments());
+                setComments(event.getComments(), event.getTargetUri());
             }
         }));
 
         super.onBind();
     }
 
-    public void setComments(ArrayList<Comments> comments) {
+    public void setComments(ArrayList<Comments> comments, String targetUri) {
         this.comments = comments;
+        this.targetUri = targetUri;
 
         getView().initTabs(COMMENT_TAB_TITLES);
         for (int i = 0; i < COMMENT_TAB_TITLES.size(); i++){
@@ -96,7 +98,7 @@ public class CommentsPanelPresenter
     private void putExistingPosts(Iterable<Comments> comments) {
         for (Comments c : comments) {
             CommentBoxPresenter commentBoxPresenter = commentBoxPresenterProvider.get();
-            commentBoxPresenter.setComment(c, false);
+            commentBoxPresenter.setExistingComment(c);
 
             // Put it in the correct tab.
             int tab = FALLBACK_COMMENT_TAB;
@@ -118,7 +120,7 @@ public class CommentsPanelPresenter
 
     private void putNewPostBox(final int tab) {
         CommentBoxPresenter postPresenter = commentBoxPresenterProvider.get();
-        postPresenter.setComment(null, false);
+        postPresenter.setNewComment(false, CommentType.values()[tab], targetUri);
         postPresenter.setSubmittedEventHandler(new CommentSubmittedEventHandler() {
             @Override
             public void success(Comments newComment) {
@@ -130,9 +132,9 @@ public class CommentsPanelPresenter
 
     private void showRepliesOf(Comments comment, int tab) {
         getView().resetReply(tab);
-        for (Comments reply: filterCommentsByTarget(comment)) {
+        for (Comments reply: filterCommentsByTarget(comment.getTargetUri())) {
             CommentBoxPresenter replyPresenter = commentBoxPresenterProvider.get();
-            replyPresenter.setComment(reply, true);
+            replyPresenter.setExistingComment(reply);
             getView().addReply(tab, replyPresenter.getWidget());
         }
         putNewReplyBox(tab);
@@ -140,7 +142,7 @@ public class CommentsPanelPresenter
 
     private void putNewReplyBox(final int tab) {
         CommentBoxPresenter newReplyPresenter = commentBoxPresenterProvider.get();
-        newReplyPresenter.setComment(null, true);
+        newReplyPresenter.setNewComment(true, null, targetUri);
         newReplyPresenter.setSubmittedEventHandler(new CommentSubmittedEventHandler() {
             @Override
             public void success(Comments newComment) {
@@ -182,11 +184,11 @@ public class CommentsPanelPresenter
         }
     }
 
-    private Iterable<Comments> filterCommentsByTarget(final Object target) {
+    private Iterable<Comments> filterCommentsByTarget(final String targetUri) {
         Iterable<Comments> replies = filter(comments, new Predicate<Comments>() {
             @Override
             public boolean apply(Comments c) {
-                return c.getTarget() == target;
+                return c.getTargetUri() == targetUri;
             }
         });
         return replies;

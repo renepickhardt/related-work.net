@@ -112,6 +112,10 @@ public class AuthorPresenter extends
 			
 			@Override
 			public void onSuccess(DisplayAuthorResult result) {
+                Author author = new Author();
+                author.setDisplayName(result.getName());
+                author.setUri(result.getUri());
+
 				getView().setAuthorName(result.getName());
 				
 				similarAuthorsListPresenter.setTitle("Similar authors");
@@ -132,7 +136,7 @@ public class AuthorPresenter extends
 				// hide Loading overlay
 				getEventBus().fireEvent(new LoadingOverlayEvent(false));
 
-				getEventBus().fireEvent(new DiscussionsReloadedEvent(result.getComments()));
+				getEventBus().fireEvent(new DiscussionsReloadedEvent(author.getUri(), result.getComments()));
 			}
 		});
 		

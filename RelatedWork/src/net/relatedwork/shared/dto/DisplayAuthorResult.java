@@ -16,6 +16,7 @@ public class DisplayAuthorResult implements Result {
 	private ArrayList<Paper>  writtenPapers = new ArrayList<Paper>();
 	private ArrayList<Comments> comments = new ArrayList<Comments>();
 	private String name;
+    private String uri;
 	
 
 	public DisplayAuthorResult() {
@@ -93,4 +94,12 @@ public class DisplayAuthorResult implements Result {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
 }
