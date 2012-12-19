@@ -1,0 +1,23 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:FocusPanel ui:field="urlContainer">
+		<g:HTMLPanel>
+			<g:HorizontalPanel ui:field="displayTemplate" visible="true">
+				<g:Anchor ui:field="urlLink"></g:Anchor>
+				<!-- from http://findicons.com/icon/263248/edit?id=348507 -->
+				<g:Image url="/images/edit.png" ui:field="editIcon" visible="false"></g:Image>
+			</g:HorizontalPanel>
+			
+			<g:HorizontalPanel ui:field="editTemplate" visible="false">
+				<g:TextBox ui:field="urlField"></g:TextBox>
+				<g:Button ui:field="sendButton">Set Website</g:Button>
+			</g:HorizontalPanel>
+		</g:HTMLPanel>
+	</g:FocusPanel>
+</ui:UiBinder>

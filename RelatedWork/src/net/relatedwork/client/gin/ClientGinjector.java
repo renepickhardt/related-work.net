@@ -26,6 +26,8 @@ import com.google.gwt.inject.client.Ginjector;
 import com.gwtplatform.dispatch.client.gin.DispatchAsyncModule;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import net.relatedwork.client.staticpresenter.UserVerifyPresenter;
+import net.relatedwork.client.sidebar.SidebarPresenter;
+import net.relatedwork.client.sidebar.WebsiteSidebarPresenter;
 
 @GinModules({ DispatchAsyncModule.class, ClientModule.class })
 public interface ClientGinjector extends Ginjector {
@@ -65,4 +67,8 @@ public interface ClientGinjector extends Ginjector {
     AsyncProvider<CommentsPanelPresenter> getCommentsPanelPresenter();
     
     AsyncProvider<UserVerifyPresenter> getUserVerifyPresenter();
+
+	AsyncProvider<SidebarPresenter> getSidebarPresenter();
+
+	AsyncProvider<WebsiteSidebarPresenter> getWebsiteSidebarPresenter();
 }
