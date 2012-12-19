@@ -142,7 +142,7 @@ public class CommentBoxPresenter extends
         Comments c = new Comments();
         c.setComment(getView().getNewComment());
         c.setAuthor(new Author());
-        c.setTarget(targetUri);
+        c.setTargetUri(targetUri);
         c.setType(type);
         return c;
     }

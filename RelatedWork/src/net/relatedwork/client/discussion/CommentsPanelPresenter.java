@@ -16,7 +16,6 @@ import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import net.relatedwork.shared.dto.Comments;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.base.Functions.toStringFunction;
@@ -56,7 +55,7 @@ public class CommentsPanelPresenter
     private CommentBoxPresenter[] selectedCommentInTabs = new CommentBoxPresenter[CommentType.values().length];
 
     /** All comments related to the current target (paper/author) */
-    private ArrayList<Comments> comments;
+    private List<Comments> comments;
 
     private String targetUri;
 
@@ -79,7 +78,7 @@ public class CommentsPanelPresenter
         super.onBind();
     }
 
-    public void setComments(ArrayList<Comments> comments, String targetUri) {
+    public void setComments(List<Comments> comments, String targetUri) {
         this.comments = comments;
         this.targetUri = targetUri;
 
@@ -88,7 +87,7 @@ public class CommentsPanelPresenter
             closeReplyList(i);
         }
 
-        putExistingPosts(filterCommentsByTarget(null /* current target */));
+        putExistingPosts(filterCommentsByTarget(targetUri));
 
         putNewPostBoxes();
 
@@ -132,21 +131,21 @@ public class CommentsPanelPresenter
 
     private void showRepliesOf(Comments comment, int tab) {
         getView().resetReply(tab);
-        for (Comments reply: filterCommentsByTarget(comment.getTargetUri())) {
+        for (Comments reply: filterCommentsByTarget(comment.getUri())) {
             CommentBoxPresenter replyPresenter = commentBoxPresenterProvider.get();
             replyPresenter.setExistingComment(reply);
             getView().addReply(tab, replyPresenter.getWidget());
         }
-        putNewReplyBox(tab);
+        putNewReplyBox(tab, comment);
     }
 
-    private void putNewReplyBox(final int tab) {
+    private void putNewReplyBox(final int tab, final Comments post) {
         CommentBoxPresenter newReplyPresenter = commentBoxPresenterProvider.get();
-        newReplyPresenter.setNewComment(true, null, targetUri);
+        newReplyPresenter.setNewComment(true, null, post.getUri());
         newReplyPresenter.setSubmittedEventHandler(new CommentSubmittedEventHandler() {
             @Override
             public void success(Comments newComment) {
-                putNewReplyBox(tab);
+                putNewReplyBox(tab, post);
             }
         });
         getView().addReply(tab, newReplyPresenter.getWidget());
@@ -185,13 +184,12 @@ public class CommentsPanelPresenter
     }
 
     private Iterable<Comments> filterCommentsByTarget(final String targetUri) {
-        Iterable<Comments> replies = filter(comments, new Predicate<Comments>() {
+        return filter(comments, new Predicate<Comments>() {
             @Override
             public boolean apply(Comments c) {
-                return c.getTargetUri() == targetUri;
+                return c.getTargetUri().equals(targetUri);
             }
         });
-        return replies;
     }
 
     @Override

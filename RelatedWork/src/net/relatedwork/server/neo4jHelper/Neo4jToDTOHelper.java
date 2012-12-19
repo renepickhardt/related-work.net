@@ -1,8 +1,6 @@
 package net.relatedwork.server.neo4jHelper;
 
-import net.relatedwork.shared.dto.Author;
 import net.relatedwork.shared.dto.Paper;
-
 import org.neo4j.graphdb.Node;
 
 public class Neo4jToDTOHelper {
@@ -17,17 +15,5 @@ public class Neo4jToDTOHelper {
 		String uri = (String)n.getProperty(DBNodeProperties.URI);
 		String source = (String)n.getProperty(DBNodeProperties.PAPER_SOURCE_URI);
 		return new Paper(name, uri, source, score);
-	}
-
-	public static Author authorFromNode(Node n){
-		Double pageRank = (Double)n.getProperty(DBNodeProperties.PAGE_RANK_VALUE);
-		Integer score = (int)(pageRank*1000.);
-		return authorFromNode(n,score);
-	}
-	
-	public static Author authorFromNode(Node n, Integer score){
-		String name = (String)n.getProperty(DBNodeProperties.AUTHOR_NAME);
-		String uri  = (String)n.getProperty(DBNodeProperties.URI);
-		return new Author(name, uri, score);
 	}
 }

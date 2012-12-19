@@ -36,14 +36,8 @@ public class Comments implements Result {
     CommentType type;
 	
 	public Comments() {
-		// TODO Auto-generated constructor stub
 	}
 
-	public Comments(Author author, String comment){
-		this.author=author;
-		this.comment=comment;
-	}
-	
 	/**
 	 * @return the author
 	 */
@@ -103,7 +97,7 @@ public class Comments implements Result {
         return targetUri;
     }
 
-    public void setTarget(String targetUri) {
+    public void setTargetUri(String targetUri) {
         this.targetUri = targetUri;
     }
 

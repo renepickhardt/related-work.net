@@ -1,47 +1,32 @@
 package net.relatedwork.server.action;
 
-import javax.servlet.ServletContext;
-
+import com.google.inject.Inject;
+import com.gwtplatform.dispatch.server.ExecutionContext;
+import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
+import com.gwtplatform.dispatch.shared.ActionException;
+import net.relatedwork.server.ContextHelper;
+import net.relatedwork.server.dao.AuthorAccessHandler;
+import net.relatedwork.server.neo4jHelper.DBNodeProperties;
+import net.relatedwork.server.neo4jHelper.Neo4jToDTOHelper;
+import net.relatedwork.server.neo4jHelper.NodeType;
+import net.relatedwork.server.utils.IOHelper;
+import net.relatedwork.shared.dto.GlobalSearch;
+import net.relatedwork.shared.dto.GlobalSearchResult;
 import org.apache.lucene.queryParser.QueryParser.Operator;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
-import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.index.Index;
 import org.neo4j.graphdb.index.IndexHits;
 import org.neo4j.index.lucene.QueryContext;
 
-import sun.security.x509.DistributionPointName;
-
-import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
-
-import net.relatedwork.server.ContextHelper;
-import net.relatedwork.server.neo4jHelper.DBNodeProperties;
-import net.relatedwork.server.neo4jHelper.DBRelationshipProperties;
-import net.relatedwork.server.neo4jHelper.Neo4jToDTOHelper;
-import net.relatedwork.server.neo4jHelper.NodeType;
-import net.relatedwork.server.neo4jHelper.DBRelationshipTypes;
-import net.relatedwork.server.utils.IOHelper;
-import net.relatedwork.shared.dto.Author;
-import net.relatedwork.shared.dto.DisplayAuthorResult;
-import net.relatedwork.shared.dto.GlobalSearch;
-import net.relatedwork.shared.dto.GlobalSearchResult;
-import net.relatedwork.shared.dto.Paper;
-
-import com.google.gwt.uibinder.elementparsers.DialogBoxParser;
-import com.google.inject.Inject;
-import com.gwtplatform.dispatch.server.ExecutionContext;
-import com.gwtplatform.dispatch.shared.ActionException;
+import javax.servlet.ServletContext;
 
 public class GlobalSearchActionHandler implements
 		ActionHandler<GlobalSearch, GlobalSearchResult> {
 
 	@Inject ServletContext servletContext;
-	
-	@Inject
-	public GlobalSearchActionHandler() {
-	}
+    @Inject AuthorAccessHandler authorAccessHandler;
 
 	public static String prepareQuery(String queryString){
 		queryString = queryString.replaceAll("\\W+", " ");
@@ -84,7 +69,7 @@ public class GlobalSearchActionHandler implements
 			
 			// Add query Results to result object
 			if (NodeType.isAuthorNode(n)) {
-				result.addAuthor(Neo4jToDTOHelper.authorFromNode(n));
+				result.addAuthor(authorAccessHandler.authorFromNode(n));
 			}
 
 			if (NodeType.isPaperNode(n)){
