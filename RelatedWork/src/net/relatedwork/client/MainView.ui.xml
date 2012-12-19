@@ -22,7 +22,6 @@
 					</td>
 					<td id="bodyRightCell">
 						<g:HTMLPanel ui:field="rwSidebar" styleName="rwSidebar">
-							Side bar
 						</g:HTMLPanel>
 					</td>
 				</tr>
