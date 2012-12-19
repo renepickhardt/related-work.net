@@ -122,6 +122,28 @@ public class CommentsAccessHelper {
         }
     }
 
+    /** Vote for a comment.
+     *
+     * @return the new votes
+     */
+    public int voteComment(Author author, String commentUri, boolean upVote) throws ActionException {
+        Node node = getTargetNode(commentUri, true);
+        int newVote;
+
+        Transaction tx = database.beginTx();
+        try {
+            int oldVotes = (Integer)node.getProperty(DBNodeProperties.COMMENT_VOTES, INITIAL_COMMENT_VOTES);
+            newVote = upVote ? oldVotes + 1 : oldVotes - 1;
+            node.setProperty(DBNodeProperties.COMMENT_VOTES, newVote);
+            tx.success();
+        } catch (Exception e) {
+            throw new ActionException("Error occurred when voting comment", e);
+        } finally {
+            tx.finish();
+        }
+        return newVote;
+    }
+
     private Comments getCommentObject(Node commentNode, RelationshipType relationshipType, Node fromNode) {
         Node authorNode = null;
         for (Relationship rel: commentNode.getRelationships(DBRelationshipTypes.COMMENT_AUTHOR)) {
