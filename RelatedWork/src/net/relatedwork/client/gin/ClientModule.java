@@ -49,6 +49,8 @@ import net.relatedwork.client.content.PaperView;
 
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
+import net.relatedwork.client.sidebar.SidebarPresenter;
+import net.relatedwork.client.sidebar.SidebarView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -123,5 +125,8 @@ public class ClientModule extends AbstractPresenterModule {
 				PaperView.class, PaperPresenter.MyProxy.class);
 		bindPresenterWidget(ListEntryPresenter.class,
 				ListEntryPresenter.MyView.class, ListEntryView.class);
+
+		bindPresenter(SidebarPresenter.class, SidebarPresenter.MyView.class,
+				SidebarView.class, SidebarPresenter.MyProxy.class);
 	}
 }
