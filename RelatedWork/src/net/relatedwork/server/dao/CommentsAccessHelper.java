@@ -4,12 +4,12 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.gwtplatform.dispatch.shared.ActionException;
+import net.relatedwork.client.tools.session.SessionInformation;
 import net.relatedwork.server.ContextHelper;
 import net.relatedwork.server.neo4jHelper.DBNodeProperties;
 import net.relatedwork.server.neo4jHelper.DBRelationshipTypes;
 import net.relatedwork.server.neo4jHelper.DiscussionTypeMapper;
 import net.relatedwork.server.utils.MD5Util;
-import net.relatedwork.shared.dto.Author;
 import net.relatedwork.shared.dto.Comments;
 import org.neo4j.graphdb.*;
 import org.neo4j.graphdb.index.Index;
@@ -103,7 +103,7 @@ public class CommentsAccessHelper {
         try {
             Node newNode = database.createNode();
 
-            // TODO COMMENT_AUTHOR
+            // TODO lookup the author and set COMMENT_AUTHOR relation.
             newNode.setProperty(DBNodeProperties.COMMENT_BODY, comment.getComment());
             newNode.setProperty(DBNodeProperties.COMMENT_DATE, comment.getDate());
             newNode.setProperty(DBNodeProperties.COMMENT_URI, comment.getUri());
@@ -153,12 +153,12 @@ public class CommentsAccessHelper {
             authorNode = rel.getOtherNode(commentNode);
         }
 
-        Author author;
+        SessionInformation author;
         if (authorNode == null) {
             // assume a default author if not found
-            author = new Author();
+            author = new SessionInformation();
         } else {
-            author = authorAccessHandler.authorFromNode(authorNode);
+            author = null; // construct from authorNode
         }
 
         String targetUri;
@@ -191,7 +191,7 @@ public class CommentsAccessHelper {
     private static String generateCommentUri(Comments comment) {
         long timeSince = new Date().getTime();
         String timestamp = Long.toHexString(timeSince);
-        String content = MD5Util.md5Hex(comment.getAuthor().getUri() + comment.getComment());
+        String content = MD5Util.md5Hex(comment.getAuthor().getEmailAddress() + comment.getComment());
         return String.format("%s-%s", timestamp, content.substring(0, 32));
     }
 }

@@ -10,6 +10,8 @@ import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import net.relatedwork.client.tools.events.LoadingOverlayEvent;
+import net.relatedwork.client.tools.session.SessionInformation;
+import net.relatedwork.client.tools.session.SessionInformationManager;
 import net.relatedwork.shared.dto.*;
 
 import static net.relatedwork.shared.dto.Comments.CommentType;
@@ -37,6 +39,7 @@ public class CommentBoxPresenter extends
     }
 
     private DispatchAsync dispatcher;
+    private SessionInformationManager sessionInformationManager;
     private CommentSubmittedEventHandler submission;
 
     private String targetUri;
@@ -45,10 +48,11 @@ public class CommentBoxPresenter extends
     private boolean isReply;
 
     @Inject
-    public CommentBoxPresenter(final EventBus eventBus, final MyView view,
-                           final DispatchAsync dispatcher) {
+    public CommentBoxPresenter(final EventBus eventBus, final MyView view, final DispatchAsync dispatcher,
+                               SessionInformationManager sessionInformationManager) {
         super(eventBus, view);
         this.dispatcher = dispatcher;
+        this.sessionInformationManager = sessionInformationManager;
         setNewComment(false /* default to post */, null, "");
     }
 
@@ -57,6 +61,8 @@ public class CommentBoxPresenter extends
         getView().setSubmitHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
+                if (checkLogin() == null) return;
+
                 getEventBus().fireEvent(new LoadingOverlayEvent(true));
 
                 NewCommentAction newCommentAction = new NewCommentAction(getComment());
@@ -86,10 +92,12 @@ public class CommentBoxPresenter extends
         getView().setVoteHandler(new VoteEvent() {
             @Override
             public void vote(boolean up) {
+                SessionInformation sessionInformation = checkLogin();
+                if (sessionInformation == null) return;
+
                 getEventBus().fireEvent(new LoadingOverlayEvent(true));
 
-                // TODO get logged in user
-                String loggedInUser = targetUri;
+                String loggedInUser = sessionInformation.getEmailAddress();
 
                 CommentVoteAction commentVoteAction = new CommentVoteAction(loggedInUser, comment.getUri(), up);
                 dispatcher.execute(commentVoteAction, new AsyncCallback<CommentVoteResult>() {
@@ -144,7 +152,7 @@ public class CommentBoxPresenter extends
         // new comment
         Comments c = new Comments();
         c.setComment(getView().getNewComment());
-        c.setAuthor(new Author());
+        c.setAuthor(checkLogin());
         c.setTargetUri(targetUri);
         c.setType(type);
         return c;
@@ -160,5 +168,15 @@ public class CommentBoxPresenter extends
 
     public void setSubmittedEventHandler(CommentSubmittedEventHandler submitted) {
         this.submission = submitted;
+    }
+
+
+    private SessionInformation checkLogin() {
+        SessionInformation sessionInformation = sessionInformationManager.get();
+        if (!sessionInformation.isLoggedIn()) {
+//            Window.alert("Please login!");
+//            return null;
+        }
+        return sessionInformation;
     }
 }

@@ -1,6 +1,7 @@
 package net.relatedwork.shared.dto;
 
 import com.gwtplatform.dispatch.shared.Result;
+import net.relatedwork.client.tools.session.SessionInformation;
 
 /**
  * A data transfer object for one single comment of any type.
@@ -27,7 +28,7 @@ public class Comments implements Result {
     }
 
     String uri;
-	Author author;
+	SessionInformation author;
 	String comment;
 	String date;
 	Integer voting = 0;
@@ -41,14 +42,14 @@ public class Comments implements Result {
 	/**
 	 * @return the author
 	 */
-	public Author getAuthor() {
+	public SessionInformation getAuthor() {
 		return author;
 	}
 
 	/**
 	 * @param author the author to set
 	 */
-	public void setAuthor(Author author) {
+	public void setAuthor(SessionInformation author) {
 		this.author = author;
 	}
 

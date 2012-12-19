@@ -88,7 +88,7 @@ public class CommentBoxView extends ViewImpl implements CommentBoxPresenter.MyVi
             viewCommentPanel.setVisible(true);
             newCommentPanel.setVisible(false);
             authorAndDate.clear();
-            authorAndDate.add(comment.getAuthor().getAuthorLink());
+            authorAndDate.add(new Label(comment.getAuthor().getUsername()));
             authorAndDate.add(new Label(comment.getDate()));
             commentContainer.setHTML(comment.getComment());
             votes.setText(comment.getVoting().toString());
