@@ -1,6 +1,6 @@
 package net.relatedwork.shared.dto;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
+import com.gwtplatform.dispatch.shared.Result;
 
 /**
  * A data transfer object for one single comment of any type.
@@ -8,7 +8,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * @author Rene Pickhardt
  * @author Xinruo Sun <xiaoruoruo@gmail.com>
  */
-public class Comments implements IsSerializable {
+public class Comments implements Result {
 
     public enum CommentType {
         Question("Question"),

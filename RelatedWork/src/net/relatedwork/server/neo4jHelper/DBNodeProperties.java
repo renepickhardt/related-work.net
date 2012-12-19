@@ -27,7 +27,13 @@ public class DBNodeProperties {
 	public static final String USER_DELETED = "rw:user:deleted";
 	public static final String USER_VERIFIED = "rw:user:verified";
 	public static final String USER_AUTH_SECRET = "rw:user:authsecret";
-	
+
+    // Comment nodes
+    public static final String COMMENT_BODY = "rw:comment:body";
+    public static final String COMMENT_DATE = "rw:comment:date";
+    public static final String COMMENT_VOTES = "rw:comment:votes";
+
+
 	// Propery values for TYPE master nodes
 	public static String PAPER_LABEL_VALUE = "PAPER";
 	public static String AUTHOR_LABEL_VALUE = "AUTHOR";	
