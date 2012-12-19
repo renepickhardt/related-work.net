@@ -27,7 +27,7 @@ public class AuthorAccessHandler {
     /**
      * Return the author node. If not found or multiple nodes have the uri, return null.
      */
-    public Node getAuthorNodeFromUri(String uri) {
+    public Node authorNodeFromUri(String uri) {
         // TODO: This still gives
         // Service exception while executing net.relatedwork.shared.dto.DisplayAuthor: Service exception executing action "DisplayAuthor", java.lang.NullPointerException
         // when URI not found e.g. "Filippenko, A. V."

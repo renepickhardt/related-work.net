@@ -88,7 +88,10 @@ public class CommentBoxPresenter extends
             public void vote(boolean up) {
                 getEventBus().fireEvent(new LoadingOverlayEvent(true));
 
-                CommentVoteAction commentVoteAction = new CommentVoteAction(null, comment.getUri(), up);
+                // TODO get logged in user
+                String loggedInUser = targetUri;
+
+                CommentVoteAction commentVoteAction = new CommentVoteAction(loggedInUser, comment.getUri(), up);
                 dispatcher.execute(commentVoteAction, new AsyncCallback<CommentVoteResult>() {
                     @Override
                     public void onFailure(Throwable caught) {

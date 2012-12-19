@@ -126,15 +126,18 @@ public class CommentsAccessHelper {
      *
      * @return the new votes
      */
-    public int voteComment(Author author, String commentUri, boolean upVote) throws ActionException {
-        Node node = getTargetNode(commentUri, true);
+    public int voteComment(String userUri, String commentUri, boolean upVote) throws ActionException {
         int newVote;
+        Node node = getTargetNode(commentUri, true);
+        Node userNode = authorAccessHandler.authorNodeFromUri(userUri);
 
         Transaction tx = database.beginTx();
         try {
             int oldVotes = (Integer)node.getProperty(DBNodeProperties.COMMENT_VOTES, INITIAL_COMMENT_VOTES);
             newVote = upVote ? oldVotes + 1 : oldVotes - 1;
             node.setProperty(DBNodeProperties.COMMENT_VOTES, newVote);
+            node.createRelationshipTo(userNode,
+                    upVote ? DBRelationshipTypes.COMMENT_UP_VOTE : DBRelationshipTypes.COMMENT_DOWN_VOTE);
             tx.success();
         } catch (Exception e) {
             throw new ActionException("Error occurred when voting comment", e);

@@ -31,7 +31,7 @@ public class DisplayAuthorActionHandler implements
 		String uri = action.getUri();
 		IOHelper.log("Rendering author page with uri '"+ uri +"'");
 
-        Node n = authorAccessHandler.getAuthorNodeFromUri(uri);
+        Node n = authorAccessHandler.authorNodeFromUri(uri);
         if (n == null) {
             System.out.println("URI INDEX ERROR. uri " + uri + " has more than one associated node.");
             return result;

@@ -23,11 +23,11 @@ public class CommentVoteActionHandler implements ActionHandler<CommentVoteAction
     public CommentVoteResult execute(CommentVoteAction commentVoteAction, ExecutionContext executionContext) throws ActionException {
         String commentUri = commentVoteAction.getCommentUri();
         boolean upVote = commentVoteAction.isUpVote();
-        Author author = new Author(); // TODO use logged in user
+        String user = commentVoteAction.getUser();
 
         IOHelper.log("Vote for comment " + upVote + " " + commentUri);
 
-        int newVote = commentsAccessHelper.voteComment(author, commentUri, upVote);
+        int newVote = commentsAccessHelper.voteComment(user, commentUri, upVote);
 
         // TODO handle cases where user already voted
 
