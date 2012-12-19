@@ -1,5 +1,7 @@
 package net.relatedwork.client.tools.events;
 
+import net.relatedwork.shared.dto.AuthorSidebar;
+
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.HasHandlers;
@@ -13,23 +15,27 @@ public class SidebarReloadedEvent extends
 		void onSidebarReloaded(SidebarReloadedEvent event);
 	}
 
-	private String test;
+	private AuthorSidebar authorSidebar;
+
+
 	
 	public SidebarReloadedEvent() {
 	}
 
 	
-	public SidebarReloadedEvent(String test) {
-		this.test= test;
+	public SidebarReloadedEvent(AuthorSidebar asb) {
+		this.authorSidebar = asb;
 	}
 
-	public String getTest() {
-		return test;
+	public AuthorSidebar getAuthorSidebar() {
+		return authorSidebar;
 	}
 
-	public void setTest(String test) {
-		this.test = test;
+
+	public void setAuthorSidebar(AuthorSidebar authorSidebar) {
+		this.authorSidebar = authorSidebar;
 	}
+
 
 	@Override
 	protected void dispatch(SidebarReloadedHandler handler) {

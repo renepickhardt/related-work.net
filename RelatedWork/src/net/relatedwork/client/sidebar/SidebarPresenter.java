@@ -15,6 +15,7 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import net.relatedwork.client.MainPresenter;
 import net.relatedwork.client.discussion.DiscussionsReloadedEvent;
 import net.relatedwork.client.tools.events.SidebarReloadedEvent;
+import net.relatedwork.shared.dto.AuthorSidebar;
 
 public class SidebarPresenter extends
 		Presenter<SidebarPresenter.MyView, SidebarPresenter.MyProxy> {
@@ -51,31 +52,24 @@ public class SidebarPresenter extends
 			@Override
 			public void onSidebarReloaded(SidebarReloadedEvent event) {
 				getView().clearWidgets();
-				setAuthorSidebar();
+				setAuthorSidebar(event.getAuthorSidebar());
 			}
 		}));
 		
 		super.onBind();
 	}
 
-	/**
-	 * Follow (probably star bookmark)
-	 * Send Privae message (contact author)
-	 * reputation scores (citation, H, pagerank, related work internal scores)
-	 * Website
-	 * twitter handle
-	 * Attanded universities
-	 * PhD advisor
-	 * students
-	 * tagging box and tags (discuss if we want a tagsonomy)
-	 * IDEA: similar authors as Tagcloud
-	 */
+
 	
 	@Inject WebsiteSidebarPresenter websiteSidebarPresenter;
-	protected void setAuthorSidebar() {
-//		websiteSidebarPresenter.setWebSite("http://www.test.de");
-		websiteSidebarPresenter.setWebSite(null);
-		setInSlot(TYPE_Widgets, websiteSidebarPresenter);
+	@Inject WebsiteSidebarPresenter twitterSidebarPresenter;
+	protected void setAuthorSidebar(AuthorSidebar authorSidebar) {
+		if (authorSidebar!=null){
+			websiteSidebarPresenter.setWebSite(authorSidebar.getWebsite());
+			setInSlot(TYPE_Widgets, websiteSidebarPresenter);
+//			twitterSidebarPresenter.setWebSite(authorSidebar.getTwitterHandle());
+//			setInSlot(TYPE_Widgets, twitterSidebarPresenter);
+		}
 	}
 	
 	

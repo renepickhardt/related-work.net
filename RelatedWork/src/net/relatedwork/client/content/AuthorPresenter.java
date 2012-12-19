@@ -133,7 +133,7 @@ public class AuthorPresenter extends
 				// hide Loading overlay
 				getEventBus().fireEvent(new LoadingOverlayEvent(false));
 
-				getEventBus().fireEvent(new SidebarReloadedEvent(result.getName()+"'s sidebar"));
+				getEventBus().fireEvent(new SidebarReloadedEvent(result.getSidebar()));
 				
 				getEventBus().fireEvent(new DiscussionsReloadedEvent(result.getComments()));
 			}

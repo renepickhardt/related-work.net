@@ -60,6 +60,5 @@ public class SidebarView extends ViewImpl implements SidebarPresenter.MyView {
 		if (content != null) {
 			sidebarWidgets.add(content);
 		}
-
 	}
 }

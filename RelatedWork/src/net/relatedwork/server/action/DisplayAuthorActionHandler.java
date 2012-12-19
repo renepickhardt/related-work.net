@@ -26,6 +26,7 @@ import net.relatedwork.server.neo4jHelper.NodeType;
 import net.relatedwork.server.neo4jHelper.DBRelationshipTypes;
 import net.relatedwork.server.utils.IOHelper;
 import net.relatedwork.shared.dto.Author;
+import net.relatedwork.shared.dto.AuthorSidebar;
 import net.relatedwork.shared.dto.Comments;
 import net.relatedwork.shared.dto.DisplayAuthor;
 import net.relatedwork.shared.dto.DisplayAuthorResult;
@@ -71,6 +72,14 @@ public class DisplayAuthorActionHandler implements
 		
 		// Add data to result. Requires URIs to be set.
 		result.setName((String)n.getProperty(DBNodeProperties.AUTHOR_NAME));
+
+		//TODO: get from data base
+		AuthorSidebar authorSidebar = new AuthorSidebar();
+		authorSidebar.setWebsite("http://www.rene-pickhardt.de");
+		authorSidebar.setTwitterHandle("renepickhardt");
+		authorSidebar.setAdvisor(null);
+		authorSidebar.setStudents(null);
+		result.setSidebar(authorSidebar);
 		
 		for (Relationship rel:n.getRelationships(DBRelationshipTypes.CO_AUTHOR_COUNT)){
 			Node coAuthor = rel.getEndNode();
