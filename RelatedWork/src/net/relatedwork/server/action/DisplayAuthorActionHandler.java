@@ -75,7 +75,12 @@ public class DisplayAuthorActionHandler implements
 
 		//TODO: get from data base
 		AuthorSidebar authorSidebar = new AuthorSidebar();
-		authorSidebar.setWebsite("http://www.rene-pickhardt.de");
+		if (n.hasProperty("metadata:url")){
+			authorSidebar.setWebsite((String)n.getProperty("metadata:url"));
+		}
+		else {
+			authorSidebar.setWebsite(null);
+		}
 		authorSidebar.setTwitterHandle("renepickhardt");
 		authorSidebar.setAdvisor(null);
 		authorSidebar.setStudents(null);

@@ -23,6 +23,7 @@ public class SidebarPresenter extends
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> TYPE_Widgets = new Type<RevealContentHandler<?>>();
 
+	public String uri;
 	
 	public interface MyView extends View {
 		public HTMLPanel getSidebarWidgets();
@@ -52,6 +53,7 @@ public class SidebarPresenter extends
 			@Override
 			public void onSidebarReloaded(SidebarReloadedEvent event) {
 				getView().clearWidgets();
+				uri = event.getUri();
 				setAuthorSidebar(event.getAuthorSidebar());
 			}
 		}));
@@ -65,10 +67,9 @@ public class SidebarPresenter extends
 	@Inject WebsiteSidebarPresenter twitterSidebarPresenter;
 	protected void setAuthorSidebar(AuthorSidebar authorSidebar) {
 		if (authorSidebar!=null){
+			websiteSidebarPresenter.setUri(uri);
 			websiteSidebarPresenter.setWebSite(authorSidebar.getWebsite());
 			setInSlot(TYPE_Widgets, websiteSidebarPresenter);
-//			twitterSidebarPresenter.setWebSite(authorSidebar.getTwitterHandle());
-//			setInSlot(TYPE_Widgets, twitterSidebarPresenter);
 		}
 	}
 	

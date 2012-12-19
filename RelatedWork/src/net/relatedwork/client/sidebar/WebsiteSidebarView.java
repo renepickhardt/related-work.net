@@ -76,4 +76,8 @@ public class WebsiteSidebarView extends ViewImpl implements
 	public Image getEditIcon() {
 		return editIcon;
 	}
+	
+	public TextBox getUrlField() {
+		return urlField;
+	}
 }

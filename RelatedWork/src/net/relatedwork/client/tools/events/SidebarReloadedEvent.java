@@ -16,10 +16,12 @@ public class SidebarReloadedEvent extends
 	}
 
 	private AuthorSidebar authorSidebar;
-
+	private String uri;
 
 	
-	public SidebarReloadedEvent() {
+	public SidebarReloadedEvent(AuthorSidebar authorSidebar2, String author_url) {
+		this.authorSidebar= authorSidebar2;
+		this.uri = author_url;
 	}
 
 	
@@ -32,6 +34,10 @@ public class SidebarReloadedEvent extends
 	}
 
 
+	public String getUri() {
+		return uri;
+	}
+	
 	public void setAuthorSidebar(AuthorSidebar authorSidebar) {
 		this.authorSidebar = authorSidebar;
 	}
