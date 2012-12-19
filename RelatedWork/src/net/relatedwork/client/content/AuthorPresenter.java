@@ -12,6 +12,7 @@ import net.relatedwork.client.discussion.CommentsPanelPresenter;
 import net.relatedwork.client.place.NameTokens;
 import net.relatedwork.client.tools.ListPresenter;
 import net.relatedwork.client.tools.events.LoadingOverlayEvent;
+import net.relatedwork.client.tools.events.SidebarReloadedEvent;
 
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
@@ -91,7 +92,7 @@ public class AuthorPresenter extends
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
 		
-		String author_url = request.getParameter("q", "None");
+		final String author_url = request.getParameter("q", "None");
 		
 		// Log author visit
 		MainPresenter.getSessionInformation().logAuthor(author_url);
@@ -132,6 +133,8 @@ public class AuthorPresenter extends
 				// hide Loading overlay
 				getEventBus().fireEvent(new LoadingOverlayEvent(false));
 
+				getEventBus().fireEvent(new SidebarReloadedEvent(result.getSidebar(), author_url));
+				
 				getEventBus().fireEvent(new DiscussionsReloadedEvent(result.getComments()));
 			}
 		});

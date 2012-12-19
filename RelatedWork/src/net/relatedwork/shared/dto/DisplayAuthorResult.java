@@ -16,6 +16,7 @@ public class DisplayAuthorResult implements Result {
 	private ArrayList<Paper>  writtenPapers = new ArrayList<Paper>();
 	private ArrayList<Comments> comments = new ArrayList<Comments>();
 	private String name;
+	private AuthorSidebar sidebar;
 	
 
 	public DisplayAuthorResult() {
@@ -92,5 +93,13 @@ public class DisplayAuthorResult implements Result {
 	
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void setSidebar(AuthorSidebar authorSidebar) {
+		this.sidebar = authorSidebar;
+	}
+	
+	public AuthorSidebar getSidebar() {
+		return sidebar;
 	}
 }

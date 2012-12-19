@@ -17,6 +17,8 @@ import net.relatedwork.server.action.NewUserActionActionHandler;
 import net.relatedwork.shared.dto.DisplayPaper;
 import net.relatedwork.server.action.DisplayPaperActionHandler;
 import net.relatedwork.server.action.UserVerifyActionActionHandler;
+import net.relatedwork.shared.dto.SetAuthorMetaDataActionHandler;
+import net.relatedwork.server.action.SetAuthorMetaDataActionHandlerActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -42,5 +44,8 @@ public class ServerModule extends HandlerModule {
 		bindHandler(DisplayPaper.class, DisplayPaperActionHandler.class);
 
 		bindHandler(UserVerifyAction.class, UserVerifyActionActionHandler.class);
+
+		bindHandler(SetAuthorMetaDataActionHandler.class,
+				SetAuthorMetaDataActionHandlerActionHandler.class);
 	}
 }

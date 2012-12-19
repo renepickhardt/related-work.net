@@ -22,6 +22,7 @@ import net.relatedwork.client.layout.FooterPresenter;
 import net.relatedwork.client.layout.HeaderPresenter;
 import net.relatedwork.client.navigation.HistoryTokenChangeEvent;
 import net.relatedwork.client.place.NameTokens;
+import net.relatedwork.client.sidebar.SidebarPresenter;
 import net.relatedwork.client.tools.events.LoadingOverlayEvent;
 import net.relatedwork.client.tools.events.LoadingOverlayEvent.LoadingOverlayHandler;
 import net.relatedwork.client.tools.events.LoginEvent;
@@ -81,6 +82,7 @@ public class MainPresenter extends
 	@Inject HomePresenter homePresenter;
 	@Inject HeaderPresenter headerPresenter;
 	@Inject BreadcrumbsPresenter breadcrumbsPresenter;
+	@Inject SidebarPresenter sidebarPresenter;
 
 	@Inject DispatchAsync dispatchAsync;
 	
@@ -98,7 +100,7 @@ public class MainPresenter extends
 		super.onReveal();
 		setInSlot(TYPE_Footer, footerPresenter);
 		setInSlot(TYPE_Header, headerPresenter);
-//		setInSlot(TYPE_Sidebar, sidebarPresenter);
+		setInSlot(TYPE_Sidebar, sidebarPresenter);
 		
 		// Register Session
 		sessionInformation.continueSession();
