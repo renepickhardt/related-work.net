@@ -131,7 +131,7 @@ public class PaperPresenter extends
 				citedByListPresenter.setList(result.getCitedByPapers(1000),5);
 
 				// hide loading overlay
-				getEventBus().fireEvent(new LoadingOverlayEvent(true));
+				getEventBus().fireEvent(new LoadingOverlayEvent(false));
 				
 			}
 		});

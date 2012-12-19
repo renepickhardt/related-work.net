@@ -103,7 +103,7 @@ public class AuthorPresenter extends
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
-				getView().setAuthorName("Faild Request");			
+				getView().setAuthorName("Faild Request");	
 
 				// hide Loading overlay
 				getEventBus().fireEvent(new LoadingOverlayEvent(false));

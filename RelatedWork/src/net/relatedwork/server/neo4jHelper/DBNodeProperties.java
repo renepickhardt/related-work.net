@@ -25,6 +25,8 @@ public class DBNodeProperties {
 	public static final String USER_NAME = "rw:user:foaf:name";
 	public static final String USER_SESSIONS = "rw:user:sessions";
 	public static final String USER_DELETED = "rw:user:deleted";
+	public static final String USER_VERIFIED = "rw:user:verified";
+	public static final String USER_AUTH_SECRET = "rw:user:authsecret";
 	
 	// Propery values for TYPE master nodes
 	public static String PAPER_LABEL_VALUE = "PAPER";
