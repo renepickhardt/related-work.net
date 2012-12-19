@@ -10,18 +10,20 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 import com.google.inject.Inject;
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
 
-import net.relatedwork.client.Discussions.CommentPresenter;
 import net.relatedwork.client.content.HomePresenter;
 import net.relatedwork.client.layout.BreadcrumbsPresenter;
 import net.relatedwork.client.layout.FooterPresenter;
 import net.relatedwork.client.layout.HeaderPresenter;
 import net.relatedwork.client.navigation.HistoryTokenChangeEvent;
 import net.relatedwork.client.place.NameTokens;
+import net.relatedwork.client.tools.events.LoadingOverlayEvent;
+import net.relatedwork.client.tools.events.LoadingOverlayEvent.LoadingOverlayHandler;
 import net.relatedwork.client.tools.events.LoginEvent;
 import net.relatedwork.client.tools.events.LogoutEvent;
 import net.relatedwork.client.tools.events.LoginEvent.LoginHandler;
@@ -51,6 +53,9 @@ public class MainPresenter extends
 		public void setRwSidebar(HTMLPanel rwSidebar);
 		public HTMLPanel getRwFooter();
 		public void setRwFooter(HTMLPanel rwFooter);
+		
+		public void showLoadingOverlay(String message);	
+		public void hideLoadingOverlay();
 	}
 	
 	@ProxyCodeSplit
@@ -81,6 +86,7 @@ public class MainPresenter extends
 		super.onBind();
 		registerHandler(getEventBus().addHandler(LoginEvent.getType(), loginHandler));
 		registerHandler(getEventBus().addHandler(LogoutEvent.getType(), logoutHandler));
+		registerHandler(getEventBus().addHandler(LoadingOverlayEvent.getType(), overlayHandler));
 	}
 	
 
@@ -139,6 +145,38 @@ public class MainPresenter extends
 			sessionInformation.continueSession(); // register cookie, set userid
 		}
 	};
+	
+	/**
+	 * Loading overlay 
+	 */
 
+	private static Integer overlayCount = 0; 
+	
+	LoadingOverlayHandler overlayHandler = new LoadingOverlayHandler() {
+		public void onLoadingOverlay(LoadingOverlayEvent event) {
+//			Window.alert("Handling Overlay. Count " + overlayCount.toString() );
+			
+			if (event.getShow() == true) {
+				// request to show overlay
+				overlayCount++;
+				
+				getView().showLoadingOverlay("wating for " + overlayCount.toString() + " requests.");
+												
+			} 
+			else {
+				// request to hide
+				overlayCount--;
+				
+				if (overlayCount > 0){
+					getView().showLoadingOverlay("wating for " + overlayCount.toString() + " requests.");
+				} else {
+					getView().hideLoadingOverlay();
+					overlayCount = 0;
+				}
+				
+			}
+			
+		};
+	};
 }
 

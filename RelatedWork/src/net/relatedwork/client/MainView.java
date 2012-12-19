@@ -2,16 +2,17 @@ package net.relatedwork.client;
 
 import java.util.ArrayList;
 
-import org.mortbay.jetty.servlet.Dispatcher;
-
 import net.relatedwork.shared.ItemSuggestion;
 import net.relatedwork.shared.dto.RequestGlobalSearchSuggestion;
 import net.relatedwork.shared.dto.RequestGlobalSearchSuggestionResult;
 
+import com.google.gwt.dom.client.HeadingElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FileUpload;
+import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
@@ -34,6 +35,9 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 	@UiField HTMLPanel rwContent;
 	@UiField HTMLPanel rwSidebar;
 	@UiField HTMLPanel rwFooter;
+	@UiField HTMLPanel rwOverlay;
+	
+	@UiField HeadingElement rwLoadingMessage; 
 		
 	public interface Binder extends UiBinder<Widget, MainView> {
 	}
@@ -41,13 +45,21 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 	@Inject
 	public MainView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
+		HTMLPanel p = new HTMLPanel("");
+		FormPanel fp = new FormPanel();
+		FileUpload fu = new FileUpload();
+		Button b = new Button();
+		b.setText("Upload a Paper");
+		p.add(fu);
+		p.add(b);
+		fp.add(p);
+		rwSidebar.add(fp);
 	}
 	
 	@Override
 	public Widget asWidget() {
 		return widget;
 	}
-
 	
 	public HTMLPanel getRwHeader() {
 		return rwHeader;
@@ -81,6 +93,15 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 		this.rwFooter = rwFooter;
 	}
 
+	
+	public void showLoadingOverlay(String message) {
+		this.rwOverlay.setStyleName("rwOverlay");
+		this.rwLoadingMessage.setInnerHTML("Loading <br>" + message);
+	}
+	
+	public void hideLoadingOverlay() {
+		this.rwOverlay.setStyleName("rwOverlayHidden");
+	}
 	
 	
 	// Nested presenter setters

@@ -37,15 +37,15 @@ public class ContextHelper {
 	private static final String URI_IDX = DBNodeProperties.URI_INDEX_NAME;
 
 	// Get NEO4J DB
-	public static EmbeddedReadOnlyGraphDatabase XXXgetReadOnlyGraphDatabase(ServletContext servletContext){
-		EmbeddedReadOnlyGraphDatabase graphDB = (EmbeddedReadOnlyGraphDatabase)servletContext.getAttribute(READ_ONLY_NEO4J);
-		if (graphDB == null){
-			IOHelper.log("Adding neo4j RO db to servletContext");
-			graphDB = new EmbeddedReadOnlyGraphDatabase(Config.get().neo4jDbPath);
-			servletContext.setAttribute(READ_ONLY_NEO4J, graphDB);
-		}
-		return graphDB;
-	}
+//	public static EmbeddedReadOnlyGraphDatabase getReadOnlyGraphDatabase(ServletContext servletContext){
+//		EmbeddedReadOnlyGraphDatabase graphDB = (EmbeddedReadOnlyGraphDatabase)servletContext.getAttribute(READ_ONLY_NEO4J);
+//		if (graphDB == null){
+//			IOHelper.log("Adding neo4j RO db to servletContext");
+//			graphDB = new EmbeddedReadOnlyGraphDatabase(Config.get().neo4jDbPath);
+//			servletContext.setAttribute(READ_ONLY_NEO4J, graphDB);
+//		}
+//		return graphDB;
+//	}
 
 	// Get NEO4J RW version
 	public static EmbeddedGraphDatabase getGraphDatabase(ServletContext servletContext){
@@ -123,11 +123,9 @@ public class ContextHelper {
 		return index;
 	}
 
-
 	public static Node getNodeByUri(String uri, ServletContext servletContext) {
 		return getUriIndex(servletContext).get(DBNodeProperties.URI, uri).getSingle();
 	}
-
 
 	public static Node getUserNodeFromEamil(String email, ServletContext servletContext) {
 		return getNodeByUri("rw:user:" + email, servletContext);
@@ -136,8 +134,6 @@ public class ContextHelper {
 	public static void indexUserNode(Node userNode, String email, ServletContext servletContext) {
 		getUriIndex(servletContext).add(userNode, DBNodeProperties.URI, "rw:user:"+ email);
 		
-	}
-	
-	
+	}	
 
 }

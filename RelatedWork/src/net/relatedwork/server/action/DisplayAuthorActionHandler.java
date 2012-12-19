@@ -31,7 +31,6 @@ import net.relatedwork.shared.dto.DisplayAuthor;
 import net.relatedwork.shared.dto.DisplayAuthorResult;
 import net.relatedwork.shared.dto.Paper;
 
-import com.google.gwt.dev.util.DefaultTextOutput;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
@@ -103,10 +102,14 @@ public class DisplayAuthorActionHandler implements
 		}
 
 		//TODO: those should be taken from the data base!
-		result.addComment(new Comments(new Author(),"this is some comment"));
+        Comments c1 = new Comments(new Author(), "this is some comment");
+        result.addComment(c1);
+        Comments reply1 = new Comments(new Author(), "this is a reply");
+        reply1.setTarget(c1);
+        result.addComment(reply1);
 		result.addComment(new Comments(new Author(),"another comment"));
-		result.addComment(new Comments(new Author(),"and more comments"));
-		
+        result.addComment(new Comments(new Author(),"and more comments"));
+
 		return result;
 	}
 

@@ -6,8 +6,11 @@ import net.relatedwork.shared.IsRenderable;
 
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 
 /**
@@ -52,8 +55,23 @@ public class Paper implements IsRenderable, IsSerializable {
 	
 	public HTMLPanel getHoverable(){
 		HTMLPanel panel = new HTMLPanel("");
-		Label l = new Label(citationCount+"");
-		panel.add(l);
+		HorizontalPanel hp = new HorizontalPanel();
+		Label l = new Label(citationCount + " Citations ");
+		Anchor a = new Anchor();
+		a.setHref(source.replaceAll("abs", "pdf"));
+		a.setTarget("_blank");
+		a.setText("Download pdf");
+		Image star = new Image();
+		int rand = (int)(Math.random()*2);
+		if (rand == 0){
+			star.setUrl("images/follow.svg");			
+		}
+		else
+			star.setUrl("images/unfollow.svg");
+		hp.add(l);
+		hp.add(a);
+		hp.add(star);
+		panel.add(hp);
 		return panel;
 	}
 	

@@ -46,11 +46,28 @@ div.rwContent {
 	padding: 20px;
 }
 
+div.rwOverlay {
+		background-color: rgba(160, 160, 160, 0.88);
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		
+		/* Loading text positioning */
+		text-align: center;
+		padding-top: 5px;
+	}
+
+div.rwOverlayHidden {
+	visibility: hidden;
+	
+	/* do not consume space */
+	position: absolute;
+}
 
 /***************** HEADER CONTENT ********************/
 
 div.rwLogo {
-	width: 50px;
+	width: 250px;
 	float: left;
 }
 
@@ -120,14 +137,17 @@ html, body, .rwMain {
 
 /***************** SPECIAL PRESENTER STYLE ******************/
 
-div.rwDiscussions{
-	width: 400px;
-	float: left;
-	min-height: 100px;
-	clear: both;
-	padding: 10px;
+.rwDiscussions{
+	width: 800px;
 }
 
+.rwDiscussions .gwt-TabPanelBottom {
+    height: 400px;
+}
+
+.selected-comment {
+    background-color: yellow;
+}
 
 
 /***** List Styling ******/
@@ -138,9 +158,9 @@ div.rwList{
     border-style: solid;
     border-width: 0;
     box-shadow: 1px 1px 5px;
-    margin: 10px 30px 20px 0;
+    margin: 0px 30px 20px 0;
     padding: 0 8px 26px 18px;
-    width: 300px; 
+    width: 400px; 
 }
 
 div.listOptions{
@@ -148,7 +168,7 @@ div.listOptions{
     border-style: solid;
     border-width: 0;
 	padding: 4px 3px 4px 3px;
-    width: 270px;
+    width: 370px;
 }
 
 div.rwListEntry{
@@ -157,7 +177,7 @@ div.rwListEntry{
     border-style: solid;
     border-width: 0;
 	padding: 4px 3px 4px 3px;
-    width: 270px;
+    width: 370px;
 }
 
 div.rwListEntry-hover{
@@ -167,8 +187,8 @@ div.rwListEntry-hover{
     border-width: 0;
 	background-color: #DDDDDD;
     padding: 4px 3px 4px 3px;
-    width: 270px;
-    height: 14px;
+    width: 370px;
+    height: 16px;
 }
 
 div.rwVisibleListEntry{
@@ -176,7 +196,9 @@ div.rwVisibleListEntry{
 }
 div.rwHoverableListEntry{
 	height: 15px;
-	float: right;
+	float: left;
+	margin-top: 2px;
+	martin-left: 5px;
 }
 
 /************* HELPER CLASSES *****************/

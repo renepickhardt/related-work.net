@@ -1,0 +1,47 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+             ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+             ui:generateLocales='default'>
+    <ui:style>
+        .commentBox {
+            width: 100%;
+            margin: 10px;
+        }
+
+        .votes {
+        font-size: 24px;
+        text-align: center;
+        }
+
+        .commentText {
+        padding-left: 10px;
+        }
+
+        .clickable {
+        cursor: pointer;
+        }
+    </ui:style>
+    <g:HorizontalPanel styleName="{style.commentBox}">
+        <g:HorizontalPanel ui:field="viewCommentPanel" width="100%">
+            <g:VerticalPanel>
+                <g:Image ui:field="upVote" url="images/up.png" styleName="{style.clickable}"/>
+                <g:Label ui:field="votes" styleName="{style.votes}">0</g:Label>
+                <g:Image ui:field="downVote" url="images/down.png" styleName="{style.clickable}"/>
+            </g:VerticalPanel>
+            <g:HTMLPanel ui:field="author"></g:HTMLPanel>
+            <g:HTML ui:field="commentContainer" styleName="{style.commentText}"></g:HTML>
+            <g:cell verticalAlignment="middle">
+                <g:Label ui:field="expand" styleName="{style.clickable}">]]-</g:Label>
+            </g:cell>
+        </g:HorizontalPanel>
+        <g:VerticalPanel ui:field="newCommentPanel">
+            <g:RichTextArea ui:field="commentRichTextArea">
+                Write something...
+            </g:RichTextArea>
+            <g:Button ui:field="submitButton">Submit</g:Button>
+        </g:VerticalPanel>
+    </g:HorizontalPanel>
+</ui:UiBinder>

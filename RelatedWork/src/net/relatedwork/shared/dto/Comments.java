@@ -2,12 +2,36 @@ package net.relatedwork.shared.dto;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
+/**
+ * A data transfer object for one single comment of any type.
+ *
+ * @author Rene Pickhardt
+ * @author Xinruo Sun <xiaoruoruo@gmail.com>
+ */
 public class Comments implements IsSerializable {
+
+    public enum CommentType {
+        Question("Question"),
+        Review("Review"),
+        Summary("Summary"),
+        GeneralDiscussion("General Discussion"),;
+
+        private final String title;
+        private CommentType(String title) {
+            this.title = title;
+        }
+        @Override
+        public String toString() {
+            return title;
+        }
+    }
 
 	Author author;
 	String comment;
 	String date;
-	Integer voting;
+	Integer voting = 0;
+    Comments target;
+    CommentType type;
 	
 	public Comments() {
 		// TODO Auto-generated constructor stub
@@ -73,5 +97,19 @@ public class Comments implements IsSerializable {
 		this.voting = voting;
 	}
 
-	
+    public Comments getTarget() {
+        return target;
+    }
+
+    public void setTarget(Comments target) {
+        this.target = target;
+    }
+
+    public CommentType getType() {
+        return type;
+    }
+
+    public void setType(CommentType type) {
+        this.type = type;
+    }
 }
