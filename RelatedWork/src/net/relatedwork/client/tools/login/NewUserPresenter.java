@@ -1,22 +1,21 @@
 package net.relatedwork.client.tools.login;
 
-import net.relatedwork.client.MainPresenter;
-import net.relatedwork.client.tools.events.ClearPopupsEvent;
-import net.relatedwork.client.tools.events.ClearPopupsEvent.ClearPopupsHandler;
-import net.relatedwork.shared.dto.NewUserAction;
-import net.relatedwork.shared.dto.NewUserActionResult;
-
-import com.gwtplatform.dispatch.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.PresenterWidget;
-import com.gwtplatform.mvp.client.PopupView;
-import com.google.inject.Inject;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
+import com.gwtplatform.dispatch.shared.DispatchAsync;
+import com.gwtplatform.mvp.client.PopupView;
+import com.gwtplatform.mvp.client.PresenterWidget;
+import net.relatedwork.client.tools.events.ClearPopupsEvent;
+import net.relatedwork.client.tools.events.ClearPopupsEvent.ClearPopupsHandler;
+import net.relatedwork.client.tools.session.SessionInformationManager;
+import net.relatedwork.shared.dto.NewUserAction;
+import net.relatedwork.shared.dto.NewUserActionResult;
 
 public class NewUserPresenter extends PresenterWidget<NewUserPresenter.MyView> {
 
@@ -35,7 +34,9 @@ public class NewUserPresenter extends PresenterWidget<NewUserPresenter.MyView> {
 		public void mockPassword();
 	}
 
-	@Inject
+    @Inject SessionInformationManager sessionInformationManager;
+
+    @Inject
 	public NewUserPresenter(final EventBus eventBus, final MyView view) {
 		super(eventBus, view);
 	}
@@ -64,7 +65,7 @@ public class NewUserPresenter extends PresenterWidget<NewUserPresenter.MyView> {
 								getView().getRwNewUsername().getText(),
 								Integer.toString(getView().getRwNewPassword().getText().hashCode()),
 								getView().getRwNewEmail().getText(), 
-								MainPresenter.getSessionInformation()
+								sessionInformationManager.get()
 								), 
 						
 						new AsyncCallback<NewUserActionResult>(){
@@ -80,7 +81,7 @@ public class NewUserPresenter extends PresenterWidget<NewUserPresenter.MyView> {
 								Window.alert("New user request send. Check your mails to confirm.");
 								
 								// Logs have been saved by the server. So we can savely erase them here.
-								MainPresenter.getSessionInformation().clearLogs();
+								sessionInformationManager.get().clearLogs();
 								
 //								// Login user !!
 //								getEventBus().fireEvent(new LoginEvent(result.getSession()));

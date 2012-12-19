@@ -1,33 +1,31 @@
 package net.relatedwork.client.content;
 
-import java.util.ArrayList;
-
-import com.gwtplatform.dispatch.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.Presenter;
-import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
-import com.gwtplatform.mvp.client.annotations.NameToken;
-import net.relatedwork.client.place.NameTokens;
-import net.relatedwork.client.tools.events.LoadingOverlayEvent;
-
-import com.gwtplatform.mvp.client.proxy.PlaceRequest;
-import com.gwtplatform.mvp.client.proxy.ProxyPlace;
-import com.google.inject.Inject;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
+import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
+import com.gwtplatform.dispatch.shared.DispatchAsync;
+import com.gwtplatform.mvp.client.Presenter;
+import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.NameToken;
+import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
+import com.gwtplatform.mvp.client.proxy.PlaceRequest;
+import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import net.relatedwork.client.MainPresenter;
+import net.relatedwork.client.place.NameTokens;
+import net.relatedwork.client.tools.events.LoadingOverlayEvent;
+import net.relatedwork.client.tools.session.SessionInformationManager;
 import net.relatedwork.shared.IsRenderable;
 import net.relatedwork.shared.dto.Author;
 import net.relatedwork.shared.dto.GlobalSearch;
 import net.relatedwork.shared.dto.GlobalSearchResult;
 import net.relatedwork.shared.dto.Paper;
-import net.relatedwork.shared.dto.Renderable;
+
+import java.util.ArrayList;
 
 public class SearchResultPagePresenter
 		extends
@@ -44,7 +42,9 @@ public class SearchResultPagePresenter
 	public interface MyProxy extends ProxyPlace<SearchResultPagePresenter> {
 	}
 
-	@Inject
+    @Inject SessionInformationManager sessionInformationManager;
+
+    @Inject
 	public SearchResultPagePresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy) {
 		super(eventBus, view, proxy);
@@ -75,7 +75,7 @@ public class SearchResultPagePresenter
 		String query = request.getParameter("q", "Bridgeland");
 		
 		// Log search query
-		MainPresenter.getSessionInformation().logSearch(query);
+		sessionInformationManager.get().logSearch(query);
 
 		// show Loading Overlay
 		getEventBus().fireEvent(new LoadingOverlayEvent(true));

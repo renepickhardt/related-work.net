@@ -1,27 +1,24 @@
 package net.relatedwork.client.tools.login;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Label;
+import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.proxy.Proxy;
-import com.google.inject.Inject;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.web.bindery.event.shared.EventBus;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Label;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
-
-import net.relatedwork.client.MainPresenter;
 import net.relatedwork.client.layout.HeaderPresenter;
 import net.relatedwork.client.tools.events.LoginEvent;
-import net.relatedwork.client.tools.events.LogoutEvent;
 import net.relatedwork.client.tools.events.LoginEvent.LoginHandler;
+import net.relatedwork.client.tools.events.LogoutEvent;
 import net.relatedwork.client.tools.events.LogoutEvent.LogoutHandler;
 import net.relatedwork.client.tools.session.SessionInformation;
+import net.relatedwork.client.tools.session.SessionInformationManager;
 
 public class LoginControlsPresenter
 		extends
@@ -41,7 +38,9 @@ public class LoginControlsPresenter
 	public interface MyProxy extends Proxy<LoginControlsPresenter> {
 	}
 
-	@Inject
+    @Inject SessionInformationManager sessionInformationManager;
+
+    @Inject
 	public LoginControlsPresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy) {
 		super(eventBus, view, proxy);
@@ -114,7 +113,7 @@ public class LoginControlsPresenter
 
 	
 	private void updateLabel() {
-		SessionInformation session = MainPresenter.getSessionInformation();
+		SessionInformation session = sessionInformationManager.get();
 //		Window.alert("UpdatingLabel " + session.getSessionId());
 		getView().getLoginStatus().setText(
 				"Username:" + session.getUsername() + " -- " +

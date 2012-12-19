@@ -1,34 +1,27 @@
 package net.relatedwork.client.content;
 
-import java.io.IOException;
-
-import javax.security.auth.callback.Callback;
-import javax.security.auth.callback.CallbackHandler;
-import javax.security.auth.callback.UnsupportedCallbackException;
-
+import com.google.gwt.dom.client.HeadingElement;
+import com.google.gwt.dom.client.ParagraphElement;
+import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
-import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.NameToken;
+import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
+import com.gwtplatform.mvp.client.proxy.PlaceRequest;
+import com.gwtplatform.mvp.client.proxy.ProxyPlace;
+import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
+import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
+import net.relatedwork.client.MainPresenter;
 import net.relatedwork.client.place.NameTokens;
 import net.relatedwork.client.tools.ListPresenter;
 import net.relatedwork.client.tools.events.LoadingOverlayEvent;
-
-import com.gwtplatform.mvp.client.proxy.PlaceRequest;
-import com.gwtplatform.mvp.client.proxy.ProxyPlace;
-import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
-import com.google.inject.Inject;
-import com.google.gwt.dom.client.HeadingElement;
-import com.google.gwt.dom.client.ParagraphElement;
-import com.google.web.bindery.event.shared.EventBus;
-import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
-import net.relatedwork.client.MainPresenter;
+import net.relatedwork.client.tools.session.SessionInformationManager;
 import net.relatedwork.shared.dto.Author;
 import net.relatedwork.shared.dto.DisplayPaper;
 import net.relatedwork.shared.dto.DisplayPaperResult;
@@ -77,8 +70,10 @@ public class PaperPresenter extends
 	
 	@Inject ListPresenter<Paper> ciationsListPresenter;
 	@Inject ListPresenter<Paper> citedByListPresenter;
-	
-	@Override
+    @Inject SessionInformationManager sessionInformationManager;
+
+
+    @Override
 	protected void onReveal() {
 		super.onReveal();
 		
@@ -94,7 +89,7 @@ public class PaperPresenter extends
 		String paper_id = request.getParameter("q", "None");
 		
 		// Log paper visit
-		MainPresenter.getSessionInformation().logPaper(paper_id);
+		sessionInformationManager.get().logPaper(paper_id);
 
 		// show Loading Overlay
 		getEventBus().fireEvent(new LoadingOverlayEvent(true));

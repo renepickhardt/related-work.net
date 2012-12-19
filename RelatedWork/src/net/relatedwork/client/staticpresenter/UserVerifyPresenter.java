@@ -1,5 +1,6 @@
 package net.relatedwork.client.staticpresenter;
 
+import net.relatedwork.client.tools.session.SessionInformationManager;
 import org.neo4j.graphdb.Node;
 
 import com.gwtplatform.dispatch.shared.DispatchAsync;
@@ -37,6 +38,8 @@ public class UserVerifyPresenter extends
 	public interface MyProxy extends ProxyPlace<UserVerifyPresenter> {
 	}
 
+    @Inject SessionInformationManager sessionInformationManager;
+
 	@Inject
 	public UserVerifyPresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy) {
@@ -63,7 +66,7 @@ public class UserVerifyPresenter extends
 
 		Window.alert("sending request" + secret + " - " + email);
 		
-		dispatcher.execute(new UserVerifyAction(email, secret, MainPresenter.getSessionInformation()), new AsyncCallback<UserVerifyActionResult>() {
+		dispatcher.execute(new UserVerifyAction(email, secret, sessionInformationManager.get()), new AsyncCallback<UserVerifyActionResult>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
