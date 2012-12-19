@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 import javax.servlet.ServletContext;
 
@@ -28,6 +29,8 @@ import net.relatedwork.server.utils.IOHelper;
 import net.relatedwork.shared.dto.LoginAction;
 import net.relatedwork.shared.dto.NewUserAction;
 import net.relatedwork.shared.dto.NewUserActionResult;
+import net.relatedwork.shared.dto.UserVerifyAction;
+import net.relatedwork.shared.dto.UserVerifyActionResult;
 
 public class UserInformation {
 	
@@ -35,8 +38,10 @@ public class UserInformation {
 	public String passwordHash = "";
 	public String username = "";
 	public ArrayList<String> sessionList = new ArrayList<String>();
+	public Boolean isVerified = false;
+	public String authSecret = "";
 	
-	private Node userNode;
+	private Node userNode = null;
 
 	// used for db interaction
 	private ServletContext servletContext;
@@ -47,6 +52,7 @@ public class UserInformation {
 	public void print() {
 		IOHelper.log("email       : "+ email);
 		IOHelper.log("passwordHash: "+ passwordHash);
+		IOHelper.log("verified?   : "+ isVerified.toString());
 		IOHelper.log("username    : "+ username);
 		IOHelper.log("sessionList : "+ sessionList.toString());
 	}
@@ -55,33 +61,161 @@ public class UserInformation {
 		this.servletContext = servletContext;
 	}
 	
-	public UserInformation(String email){
-		this.email = email;
-	}
+//	public UserInformation(String email){
+//		this.email = email;
+//	}
 
 	/**
-	 * Initialize UIO from NewUser Action.
-	 * check if details are consistent
-	 * check if user is new
-	 * writes to db.
+	 * NewUser action handler 
 	 */
 	public void registerNewUser(NewUserAction newUserAction) throws NewUserError {
+		/* Check details */
 		if (! userDetailsOk(newUserAction)) {
 			throw new NewUserError("Error in user details");
 		}
-
+		
+		/* Check if user is new */
 		if (userRecordExists(newUserAction.getEmail())) {
 			throw new NewUserError("User exists already");
 		}
 		
+		/* set local variables */
 		email    = newUserAction.getEmail();
 		username = newUserAction.getUsername();
 		// TODO: Secure password hashing with salt
 		passwordHash = newUserAction.getPassword();
 		registerSessionId(newUserAction.getSession().sessionId);
-		
+		authSecret = generateAuthSecret();
+
+		/* save to database */
 		createUserNode();
+		
+		/* send verification email */
+		sendVerificationEmail();
 	}
+
+
+
+	/**
+	 * Email verification handler
+	 */
+	
+	public UserVerifyActionResult verifyUser(UserVerifyAction action) throws VerificationException {
+
+		/* Fetch user node from db */
+		try {
+			loadFromEmail(action.getEmail());
+		} catch (IOException e) {
+			throw new VerificationException(e.getMessage());
+		}
+		
+		/* Check authentication secret */
+		if (! authSecret.equals(action.getSecret())){
+			throw new VerificationException("Verification failed! " + 
+					authSecret + " != " + action.getSecret()
+					);
+		}
+		
+		/* User is correctly authenticated */
+		this.isVerified = true;
+		IOHelper.log("User "+ this.email+ " authenticated: "+ 
+		 authSecret + " == " + action.getSecret());
+		
+		/* Login user */
+		registerSessionId(action.getSession().sessionId);
+		SessionInformation session = updateSIO(action.getSession());
+		
+		save();
+		
+		return new UserVerifyActionResult(session);
+		
+	}
+	
+
+	/**
+	 * Login action handler
+	 */
+	public void loginUser(LoginAction loginAction) throws LoginException {
+		Node userLoginNode = ContextHelper.getUserNodeFromEamil(loginAction.getEmail(), servletContext);
+		
+		if ( userLoginNode == null ) {
+			throw new LoginException("No such user "+ email);
+		}
+		
+		if (!checkPassword(userLoginNode, loginAction.getPassword())){
+			throw new LoginException("Wrong password ");
+		}
+		
+		loadFromNode(userLoginNode);
+		
+		registerSessionId(loginAction.getSession().sessionId);
+		SessionInformation session = updateSIO(loginAction.getSession());
+		
+		save();
+		
+		IOHelper.log("User logged in");
+		print();	
+	}
+
+	/************ DATABASE ACTIONS **************/
+	
+	private void loadFromEmail(String email) throws IOException {
+		Node userLoginNode = ContextHelper.getUserNodeFromEamil(email, servletContext);
+
+		if ( userLoginNode == null ) {
+			throw new IOException("Address not found"+ email);
+		}
+		
+		loadFromNode(userLoginNode);		
+	}
+
+	private void loadFromNode(Node userLoginNode) {
+		email        = (String) userLoginNode.getProperty(DBNodeProperties.USER_EMAIL);
+		passwordHash = (String) userLoginNode.getProperty(DBNodeProperties.USER_PW_HASH);
+		username     = (String) userLoginNode.getProperty(DBNodeProperties.USER_NAME);
+		isVerified   = (Boolean) userLoginNode.getProperty(DBNodeProperties.USER_VERIFIED);
+		authSecret   = (String) userLoginNode.getProperty(DBNodeProperties.USER_AUTH_SECRET);
+		
+		userNode     = userLoginNode;
+		
+		// TODO: OMG THIS IS DIRTY!
+		String[] sessions = (String[])userLoginNode.getProperty(DBNodeProperties.USER_SESSIONS);
+		for (String session:sessions){
+			sessionList.add(session);
+		}
+		
+		
+		}
+	
+	private void save() {
+		if (userNode == null) {
+			IOHelper.log("Error saving to node: userNode not set.");
+			print();
+			return;
+		}
+		
+		EmbeddedGraphDatabase graphDB = ContextHelper.getGraphDatabase(servletContext);
+
+		Transaction tx = graphDB.beginTx();
+		try{
+			userNode.setProperty(DBNodeProperties.USER_EMAIL, email);
+			userNode.setProperty(DBNodeProperties.USER_PW_HASH, passwordHash);
+			userNode.setProperty(DBNodeProperties.USER_NAME, username);
+			userNode.setProperty(DBNodeProperties.USER_SESSIONS, sessionList.toArray(new String[sessionList.size()]));
+			userNode.setProperty(DBNodeProperties.USER_VERIFIED, isVerified);
+			userNode.setProperty(DBNodeProperties.USER_AUTH_SECRET, authSecret);
+			
+			ContextHelper.indexUserNode(userNode, email, servletContext);
+			
+			tx.success();
+		} catch (Exception e){
+			tx.failure();
+			IOHelper.log(e.getMessage());
+		} finally {
+			tx.finish();
+		}
+	}
+
 
 	private void createUserNode() {
 		IOHelper.log("Creating new user");
@@ -102,72 +236,37 @@ public class UserInformation {
 			tx.finish();
 		}
 	}
-
-	public boolean userRecordExists(String email) {
+	
+	private void deleteUser() {
+		EmbeddedGraphDatabase graphDB = ContextHelper.getGraphDatabase(servletContext);
+		
+		Transaction tx = graphDB.beginTx();
+		try{
+			userNode.setProperty(DBNodeProperties.USER_DELETED, true);
+			tx.success();
+		} catch (Exception e){
+			tx.failure();
+			IOHelper.log(e.getMessage());
+		} finally {
+			tx.finish();
+		}
+	}
+	
+	private boolean userRecordExists(String email) {
 		Node userNode = ContextHelper.getUserNodeFromEamil(email, servletContext);
 		if (userNode == null){ 
 			return false;
 		} else if ((Boolean) userNode.getProperty(DBNodeProperties.USER_DELETED) == true) {
 			return false;
+		} else if ((Boolean) userNode.getProperty(DBNodeProperties.USER_VERIFIED) == false) {
+			return false;
 		}
+
 		return true;
 	}
 	
-	public static boolean userDetailsOk( NewUserAction newUser ) {
-		// TODO: More checks
-		if (newUser.getUsername() == "") {
-			IOHelper.log("Usernam invalid: "+ newUser.getUsername());
-			return false;
-		}
-		if (! newUser.getEmail().contains("@")){
-			IOHelper.log("Email address invalid: "+ newUser.getEmail());
-			return false;
-		}
-		return true;
-	}
+	/***************** SESSION OBJECT MANAGEMENT *************/
 
-	
-	/**
-	 * Handle login Login Action
-	 */
-	public void loginUser(LoginAction loginAction) throws LoginException {
-		Node userLoginNode = ContextHelper.getUserNodeFromEamil(loginAction.getEmail(), servletContext);
-		
-		if ( userLoginNode == null ) {
-			throw new LoginException("No such user "+ email);
-		}
-		
-		if (!checkPassword(userLoginNode, loginAction.getPassword())){
-			throw new LoginException("Wrong password ");
-		}
-		
-		loadFromNode(userLoginNode);
-		
-		registerSessionId(loginAction.getSession().sessionId);
-		save();
-		
-		IOHelper.log("User logged in");
-		print();
-	}
-
-	private boolean checkPassword(Node userLoginNode, String passwordHash) {
-		String storedPwHash = (String) userLoginNode.getProperty(DBNodeProperties.USER_PW_HASH);
-		return (storedPwHash.equals(passwordHash));
-	}
-
-	public void loadFromNode(Node userLoginNode) {
-		email        = (String) userLoginNode.getProperty(DBNodeProperties.USER_EMAIL);
-		passwordHash = (String) userLoginNode.getProperty(DBNodeProperties.USER_PW_HASH);
-		username     = (String) userLoginNode.getProperty(DBNodeProperties.USER_NAME);
-		// OMG THIS IS DIRTY!
-		String[] sessions = (String[])userLoginNode.getProperty(DBNodeProperties.USER_SESSIONS);
-		for (String session:sessions){
-			sessionList.add(session);
-		}
-		userNode = userLoginNode;
-		}
-
-	
 	public SessionInformation updateSIO(SessionInformation SIO) {
 		(new ServerSIO(SIO)).save();
 		SIO.clearLogs();
@@ -183,85 +282,49 @@ public class UserInformation {
 		}
 	}
 	
-	public void deleteUser() {
-		EmbeddedGraphDatabase graphDB = ContextHelper.getGraphDatabase(servletContext);
-		
-		Transaction tx = graphDB.beginTx();
-		try{
-			userNode.setProperty(DBNodeProperties.USER_DELETED, true);
-			tx.success();
-		} catch (Exception e){
-			tx.failure();
-			IOHelper.log(e.getMessage());
-		} finally {
-			tx.finish();
+
+	/*************** SMALL HELPER METHODS *************/
+	
+	private static boolean userDetailsOk( NewUserAction newUser ) {
+		// TODO: More checks
+		if (newUser.getUsername() == "") {
+			IOHelper.log("Usernam invalid: "+ newUser.getUsername());
+			return false;
 		}
+		if (! newUser.getEmail().contains("@")){
+			IOHelper.log("Email address invalid: "+ newUser.getEmail());
+			return false;
+		}
+		return true;
 	}
 	
+	private boolean checkPassword(Node userLoginNode, String passwordHash) {
+		String storedPwHash = (String) userLoginNode.getProperty(DBNodeProperties.USER_PW_HASH);
+		return (storedPwHash.equals(passwordHash));
+	}
+
+
+	private void sendVerificationEmail() {
+		String VERIFY_URL = "http://127.0.0.1:8888/RelatedWork.html?gwt.codesvr=127.0.0.1:9997#!userverify";
+		
+		String linkTarget = VERIFY_URL + 
+				";email=" + this.email + 
+				";secret=" + this.authSecret; 
+				
+		String subject = "Related-Work.net registration";
+		String body = "Hello, "+ this.username  + "\n" +
+				"Thank you for registering with Related-Work.net\n" +
+				"Click here to verify your email address: \n"+
+				linkTarget;
+		
+		Email mailHandler = new Email(this.email, subject, body);
+		mailHandler.send();
+	}
+
+	private String generateAuthSecret() {
+		Random generator = new Random();
+		return ((Integer)generator.nextInt()).toString(); 
+	}
+
 	
-	public void save(){
-		saveToNeo4J();
-	}
-	
-	private void saveToNeo4J() {
-		EmbeddedGraphDatabase graphDB = ContextHelper.getGraphDatabase(servletContext);
-
-		Transaction tx = graphDB.beginTx();
-		try{
-			userNode.setProperty(DBNodeProperties.USER_EMAIL, email);
-			userNode.setProperty(DBNodeProperties.USER_PW_HASH, passwordHash);
-			userNode.setProperty(DBNodeProperties.USER_NAME, username);
-			userNode.setProperty(DBNodeProperties.USER_SESSIONS, sessionList.toArray(new String[sessionList.size()]));
-			
-			ContextHelper.indexUserNode(userNode, email, servletContext);
-			
-			tx.success();
-		} catch (Exception e){
-			tx.failure();
-			IOHelper.log(e.getMessage());
-		} finally {
-			tx.finish();
-		}
-		
-	}
-
-
-	/**
-	 * Save UIO to file -- deprecated
-	 */
-	public void saveToFile() {
-		File target = new File(Config.get().userDir, email + ".txt");
-		target.getParentFile().mkdirs();
-		
-		IOHelper.log("Writing file: " + getSavePath());
-		BufferedWriter writer;
-		
-		try {
-			if ( (new File(getSavePath())).exists() ){
-				writer = IOHelper.openWriteFile(getSavePath());
-				writer.write("username: " + username + "\n");
-				writer.write("email: " + email + "\n");
-			} else {
-				writer = IOHelper.openWriteFile(getSavePath());
-			}
-			for (String sessionId: sessionList){
-				writer.write(sessionId + "\n");
-			}
-			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-	}
-	
-	private String getSavePath(){
-		try {
-			return (new File(Config.get().userDir, email + ".txt")).getCanonicalPath();
-		} catch (IOException e) {
-			return null;
-		}
-	}
-
-
-
 }

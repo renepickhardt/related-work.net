@@ -8,6 +8,7 @@ import net.relatedwork.shared.dto.GlobalSearch;
 import net.relatedwork.shared.dto.LoginAction;
 import net.relatedwork.shared.dto.NewUserAction;
 import net.relatedwork.shared.dto.RequestGlobalSearchSuggestion;
+import net.relatedwork.shared.dto.UserVerifyAction;
 import net.relatedwork.server.action.GlobalSearchActionHandler;
 import net.relatedwork.server.action.LoginActionActionHandler;
 import net.relatedwork.shared.dto.RequestLocalSearchSuggestion;
@@ -15,6 +16,7 @@ import net.relatedwork.server.RequestLocalSearchSuggestionActionHandler;
 import net.relatedwork.server.action.NewUserActionActionHandler;
 import net.relatedwork.shared.dto.DisplayPaper;
 import net.relatedwork.server.action.DisplayPaperActionHandler;
+import net.relatedwork.server.action.UserVerifyActionActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -38,5 +40,7 @@ public class ServerModule extends HandlerModule {
 		bindHandler(NewUserAction.class, NewUserActionActionHandler.class);
 
 		bindHandler(DisplayPaper.class, DisplayPaperActionHandler.class);
+
+		bindHandler(UserVerifyAction.class, UserVerifyActionActionHandler.class);
 	}
 }

@@ -73,7 +73,7 @@ public class LoginPopupPresenter extends
 									public void onSuccess(LoginActionResult result) {
 										// LoginScucessfull
 										// fire LoginEvent
-										LoginPopupPresenter.this.eventBus.fireEvent(new LoginEvent(result.getSession()));
+										getEventBus().fireEvent(new LoginEvent(result.getSession()));
 
 										// Clear username/pw from login popup
 										getView().clearFields();

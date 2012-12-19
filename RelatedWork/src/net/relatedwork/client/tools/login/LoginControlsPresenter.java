@@ -106,7 +106,7 @@ public class LoginControlsPresenter
 			@Override
 			public void onLogout(LogoutEvent event) {
 				getView().hideLogoutLink();
-				updateLabel();				
+				updateLabel();
 			}
 		}));
 

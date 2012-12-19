@@ -43,7 +43,7 @@ public class ServerSIO extends SessionInformation implements Serializable {
 	}
 	
 	/**
-	 * Save object to local storage directory
+	 * Append Session logs to session file
 	 */
 	public void save(){
 		// Question: Shall we serialize the whole object here?
