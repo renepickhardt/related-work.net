@@ -24,17 +24,17 @@ import net.relatedwork.shared.SuggestTree;
 
 public class ContextHelper {
 
-	private static final String SUGGEST_TREE = "sugges-ttree";
-	private static final String READ_ONLY_NEO4J = "read-only-neo4j";
-	private static final String RW_NEO4J = "rw-neo4j";
+	public static final String SUGGEST_TREE = "sugges-ttree";
+	public static final String READ_ONLY_NEO4J = "read-only-neo4j";
+	public static final String RW_NEO4J = "rw-neo4j";
 	
-	private static final String SEARCH_IDX_NEO4J = DBNodeProperties.SEARCH_INDEX_NAME;
-	private static final String SEARCH_IDX_GWT = "searchIdx";
+	public static final String SEARCH_IDX_NEO4J = DBNodeProperties.SEARCH_INDEX_NAME;
+	public static final String SEARCH_IDX_GWT = "searchIdx";
 	
-	private static final String PAPER_IDX_NEO4J = "source_idx";
-	private static final String PAPER_IDX_GWT = "paper-idx";
+	public static final String PAPER_IDX_NEO4J = "source_idx";
+	public static final String PAPER_IDX_GWT = "paper-idx";
 	
-	private static final String URI_IDX = DBNodeProperties.URI_INDEX_NAME;
+	public static final String URI_IDX = DBNodeProperties.URI_INDEX_NAME;
 
 	// Get NEO4J DB
 //	public static EmbeddedReadOnlyGraphDatabase getReadOnlyGraphDatabase(ServletContext servletContext){
