@@ -33,8 +33,9 @@ public class DBNodeProperties {
 	public static String AUTHOR_LABEL_VALUE = "AUTHOR";	
 
 	// Node index names 
-	public static String SEARCH_INDEX_NAME = "fulltextSearchIdx";
-	public static String URI_INDEX_NAME = "uriIdx";
+	public static final String SEARCH_INDEX_NAME = "fulltextSearchIdx";
+	public static final String URI_INDEX_NAME = "uriIdx";
+	public static final String LABEL_INDEX_NAME = "label_idx";
 
 
 }
