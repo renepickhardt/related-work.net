@@ -45,6 +45,15 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 	@Inject
 	public MainView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
+		HTMLPanel p = new HTMLPanel("");
+		FormPanel fp = new FormPanel();
+		FileUpload fu = new FileUpload();
+		Button b = new Button();
+		b.setText("Upload a Paper");
+		p.add(fu);
+		p.add(b);
+		fp.add(p);
+		rwSidebar.add(fp);
 	}
 	
 	@Override

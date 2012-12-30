@@ -1,45 +1,31 @@
 package net.relatedwork.server.action;
 
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
-
-import javax.servlet.ServletContext;
-
+import com.google.inject.Inject;
+import com.gwtplatform.dispatch.server.ExecutionContext;
+import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
+import com.gwtplatform.dispatch.shared.ActionException;
+import net.relatedwork.server.ContextHelper;
+import net.relatedwork.server.dao.AuthorAccessHandler;
+import net.relatedwork.server.neo4jHelper.DBNodeProperties;
+import net.relatedwork.server.neo4jHelper.DBRelationshipTypes;
+import net.relatedwork.server.neo4jHelper.Neo4jToDTOHelper;
+import net.relatedwork.server.neo4jHelper.NodeType;
+import net.relatedwork.server.utils.IOHelper;
+import net.relatedwork.shared.dto.DisplayPaper;
+import net.relatedwork.shared.dto.DisplayPaperResult;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.NotFoundException;
 import org.neo4j.graphdb.Relationship;
-import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.index.Index;
-import org.neo4j.graphdb.index.IndexHits;
-import org.neo4j.index.lucene.QueryContext;
 
-import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
-
-import net.relatedwork.server.ContextHelper;
-import net.relatedwork.server.neo4jHelper.DBNodeProperties;
-import net.relatedwork.server.neo4jHelper.DBRelationshipProperties;
-import net.relatedwork.server.neo4jHelper.Neo4jToDTOHelper;
-import net.relatedwork.server.neo4jHelper.NodeType;
-import net.relatedwork.server.neo4jHelper.DBRelationshipTypes;
-import net.relatedwork.server.utils.IOHelper;
-import net.relatedwork.shared.dto.DisplayAuthorResult;
-import net.relatedwork.shared.dto.DisplayPaper;
-import net.relatedwork.shared.dto.DisplayPaperResult;
-import net.relatedwork.shared.dto.Paper;
-
-import com.google.inject.Inject;
-import com.gwtplatform.dispatch.server.ExecutionContext;
-import com.gwtplatform.dispatch.shared.ActionException;
+import javax.servlet.ServletContext;
 
 public class DisplayPaperActionHandler implements
 		ActionHandler<DisplayPaper, DisplayPaperResult> {
 
 	@Inject ServletContext servletContext;
-	
-	@Inject
-	public DisplayPaperActionHandler() {
-	}
+    @Inject AuthorAccessHandler authorAccessHandler;
 
 	@Override
 	public DisplayPaperResult execute(DisplayPaper action, ExecutionContext context)
@@ -71,8 +57,8 @@ public class DisplayPaperActionHandler implements
 			// Author list
 			for (Relationship rel: paperNode.getRelationships(DBRelationshipTypes.WRITTEN_BY)){
 				Node authorNode = rel.getEndNode();
-				result.addAuthor(Neo4jToDTOHelper.authorFromNode(authorNode));
-			};
+				result.addAuthor(authorAccessHandler.authorFromNode(authorNode));
+			}
 			
 			// Reference list
 			for (Relationship rel: paperNode.getRelationships(DBRelationshipTypes.CITES, Direction.OUTGOING)){

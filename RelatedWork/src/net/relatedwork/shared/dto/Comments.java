@@ -1,6 +1,7 @@
 package net.relatedwork.shared.dto;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
+import com.gwtplatform.dispatch.shared.Result;
+import net.relatedwork.client.tools.session.SessionInformation;
 
 /**
  * A data transfer object for one single comment of any type.
@@ -8,7 +9,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * @author Rene Pickhardt
  * @author Xinruo Sun <xiaoruoruo@gmail.com>
  */
-public class Comments implements IsSerializable {
+public class Comments implements Result {
 
     public enum CommentType {
         Question("Question"),
@@ -26,33 +27,29 @@ public class Comments implements IsSerializable {
         }
     }
 
-	Author author;
+    String uri;
+	SessionInformation author;
 	String comment;
 	String date;
 	Integer voting = 0;
-    Comments target;
+    String targetUri;
+    /** if this is reply, type is null */
     CommentType type;
 	
 	public Comments() {
-		// TODO Auto-generated constructor stub
 	}
 
-	public Comments(Author author, String comment){
-		this.author=author;
-		this.comment=comment;
-	}
-	
 	/**
 	 * @return the author
 	 */
-	public Author getAuthor() {
+	public SessionInformation getAuthor() {
 		return author;
 	}
 
 	/**
 	 * @param author the author to set
 	 */
-	public void setAuthor(Author author) {
+	public void setAuthor(SessionInformation author) {
 		this.author = author;
 	}
 
@@ -97,12 +94,12 @@ public class Comments implements IsSerializable {
 		this.voting = voting;
 	}
 
-    public Comments getTarget() {
-        return target;
+    public String getTargetUri() {
+        return targetUri;
     }
 
-    public void setTarget(Comments target) {
-        this.target = target;
+    public void setTargetUri(String targetUri) {
+        this.targetUri = targetUri;
     }
 
     public CommentType getType() {
@@ -111,5 +108,17 @@ public class Comments implements IsSerializable {
 
     public void setType(CommentType type) {
         this.type = type;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public boolean isReply() {
+        return type == null;
     }
 }

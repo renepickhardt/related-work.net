@@ -2,16 +2,8 @@ package net.relatedwork.server.guice;
 
 import com.gwtplatform.dispatch.server.guice.HandlerModule;
 import net.relatedwork.server.RequestGlobalSearchSuggestionActionHandler;
-import net.relatedwork.server.action.DisplayAuthorActionHandler;
-import net.relatedwork.shared.dto.DisplayAuthor;
-import net.relatedwork.shared.dto.GlobalSearch;
-import net.relatedwork.shared.dto.LoginAction;
-import net.relatedwork.shared.dto.NewUserAction;
-import net.relatedwork.shared.dto.RequestGlobalSearchSuggestion;
-import net.relatedwork.shared.dto.UserVerifyAction;
-import net.relatedwork.server.action.GlobalSearchActionHandler;
-import net.relatedwork.server.action.LoginActionActionHandler;
-import net.relatedwork.shared.dto.RequestLocalSearchSuggestion;
+import net.relatedwork.server.action.*;
+import net.relatedwork.shared.dto.*;
 import net.relatedwork.server.RequestLocalSearchSuggestionActionHandler;
 import net.relatedwork.server.action.NewUserActionActionHandler;
 import net.relatedwork.shared.dto.DisplayPaper;
@@ -47,5 +39,9 @@ public class ServerModule extends HandlerModule {
 
 		bindHandler(SetAuthorMetaDataActionHandler.class,
 				SetAuthorMetaDataActionHandlerActionHandler.class);
+
+		bindHandler(NewCommentAction.class, NewCommentActionHandler.class);
+
+        bindHandler(CommentVoteAction.class, CommentVoteActionHandler.class);
 	}
 }

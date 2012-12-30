@@ -23,6 +23,9 @@ public class CommentsPanelView  extends ViewImpl implements CommentsPanelPresent
     @UiField DecoratedTabPanel commentsTabPanel;
 
     private DockLayoutPanel[] tabs;
+    private List<String> tabTitles;
+
+    // TODO should have dedicated new post/reply boxes in each tab
 
     public interface Binder extends UiBinder<Widget, CommentsPanelView> {
     }
@@ -34,6 +37,7 @@ public class CommentsPanelView  extends ViewImpl implements CommentsPanelPresent
 
     @Override
     public void initTabs(List<String> tabTitles) {
+        this.tabTitles = tabTitles;
         commentsTabPanel.clear();
         tabs = new DockLayoutPanel[tabTitles.size()];
         for (int i = 0; i < tabTitles.size(); i++) {
@@ -43,6 +47,12 @@ public class CommentsPanelView  extends ViewImpl implements CommentsPanelPresent
             hackScroll(tabs[i].getWidget(0));
             commentsTabPanel.add(tabs[i], tabTitles.get(i));
         }
+    }
+
+    @Override
+    public void setPostCount(int tab, int count) {
+        String newTabTitle = tabTitles.get(tab) + " (" + count + ")" ;
+        commentsTabPanel.getTabBar().setTabText(tab, newTabTitle);
     }
 
     @Override

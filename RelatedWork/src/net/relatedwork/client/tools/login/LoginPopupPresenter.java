@@ -1,23 +1,21 @@
 package net.relatedwork.client.tools.login;
 
-import net.relatedwork.client.MainPresenter;
-import net.relatedwork.client.tools.events.ClearPopupsEvent;
-import net.relatedwork.client.tools.events.LoginEvent;
-import net.relatedwork.client.tools.events.ClearPopupsEvent.ClearPopupsHandler;
-import net.relatedwork.shared.dto.LoginAction;
-import net.relatedwork.shared.dto.LoginActionResult;
-
-import com.gwtplatform.dispatch.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.PresenterWidget;
-import com.gwtplatform.mvp.client.PopupView;
-import com.google.inject.Inject;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.web.bindery.event.shared.EventBus;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
+import com.gwtplatform.dispatch.shared.DispatchAsync;
+import com.gwtplatform.mvp.client.PopupView;
+import com.gwtplatform.mvp.client.PresenterWidget;
+import net.relatedwork.client.tools.events.ClearPopupsEvent;
+import net.relatedwork.client.tools.events.ClearPopupsEvent.ClearPopupsHandler;
+import net.relatedwork.client.tools.events.LoginEvent;
+import net.relatedwork.client.tools.session.SessionInformationManager;
+import net.relatedwork.shared.dto.LoginAction;
+import net.relatedwork.shared.dto.LoginActionResult;
 
 public class LoginPopupPresenter extends
 		PresenterWidget<LoginPopupPresenter.MyView> {
@@ -44,8 +42,10 @@ public class LoginPopupPresenter extends
 
 	@Inject DispatchAsync dispatchAsync;
 	@Inject NewUserPresenter newUserPresenter;
-	
-	@Override
+    @Inject SessionInformationManager sessionInformationManager;
+
+
+    @Override
 	protected void onBind() {
 		super.onBind();
 
@@ -61,7 +61,7 @@ public class LoginPopupPresenter extends
 										// hash password for security reasons
 										Integer.toString(getView().getRwLoginPassword().getText().hashCode()),
 										// session info
-										MainPresenter.getSessionInformation()
+										sessionInformationManager.get()
 										),
 								new AsyncCallback<LoginActionResult>() {
 									@Override

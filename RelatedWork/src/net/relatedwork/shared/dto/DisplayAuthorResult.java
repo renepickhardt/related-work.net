@@ -3,7 +3,7 @@ package net.relatedwork.shared.dto;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
+import java.util.List;
 
 import com.gwtplatform.dispatch.shared.Result;
 
@@ -14,10 +14,11 @@ public class DisplayAuthorResult implements Result {
 	private ArrayList<Author> citedAuthors = new ArrayList<Author>();
 	private ArrayList<Author> citedByAuthors = new ArrayList<Author>();
 	private ArrayList<Paper>  writtenPapers = new ArrayList<Paper>();
-	private ArrayList<Comments> comments = new ArrayList<Comments>();
+	private List<Comments> comments = new ArrayList<Comments>();
 	private String name;
 	private AuthorSidebar sidebar;
 	
+    private Author author;
 
 	public DisplayAuthorResult() {
 	}
@@ -43,7 +44,7 @@ public class DisplayAuthorResult implements Result {
 		this.comments.add(c);
 	}
 
-	public ArrayList<Comments> getComments() {
+	public List<Comments> getComments() {
 		return comments;
 	}
 	
@@ -86,9 +87,17 @@ public class DisplayAuthorResult implements Result {
 		});
 		return new ArrayList<Paper>(list.subList(0, Math.min(k, list.size())));		
 	}
-	
-	public String getName() {
-		return name;
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    public String getName() {
+		return author.getDisplayName();
 	}
 	
 	public void setName(String name) {
@@ -102,4 +111,12 @@ public class DisplayAuthorResult implements Result {
 	public AuthorSidebar getSidebar() {
 		return sidebar;
 	}
+
+	public String getUri() {
+        return author.getUri();
+    }
+
+    public void setCommentList(List<Comments> comments) {
+        this.comments = comments;
+    }
 }

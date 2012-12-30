@@ -66,9 +66,9 @@ public interface ClientGinjector extends Ginjector {
 
     AsyncProvider<CommentsPanelPresenter> getCommentsPanelPresenter();
     
-    AsyncProvider<UserVerifyPresenter> getUserVerifyPresenter();
-
 	AsyncProvider<SidebarPresenter> getSidebarPresenter();
 
 	AsyncProvider<WebsiteSidebarPresenter> getWebsiteSidebarPresenter();
+
+	AsyncProvider<UserVerifyPresenter> getUserVerifyPresenter();
 }

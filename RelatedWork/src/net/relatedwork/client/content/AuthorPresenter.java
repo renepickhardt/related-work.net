@@ -1,10 +1,13 @@
 package net.relatedwork.client.content;
 
+import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
-import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 
 import net.relatedwork.client.discussion.DiscussionsReloadedEvent;
@@ -14,15 +17,18 @@ import net.relatedwork.client.tools.ListPresenter;
 import net.relatedwork.client.tools.events.LoadingOverlayEvent;
 import net.relatedwork.client.tools.events.SidebarReloadedEvent;
 
+import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
-import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
-import com.google.inject.Inject;
-import com.google.web.bindery.event.shared.EventBus;
-import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
+import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import net.relatedwork.client.MainPresenter;
+import net.relatedwork.client.discussion.CommentsPanelPresenter;
+import net.relatedwork.client.discussion.DiscussionsReloadedEvent;
+import net.relatedwork.client.place.NameTokens;
+import net.relatedwork.client.tools.ListPresenter;
+import net.relatedwork.client.tools.events.LoadingOverlayEvent;
+import net.relatedwork.client.tools.session.SessionInformationManager;
 import net.relatedwork.shared.dto.Author;
 import net.relatedwork.shared.dto.DisplayAuthor;
 import net.relatedwork.shared.dto.DisplayAuthorResult;
@@ -72,6 +78,7 @@ public class AuthorPresenter extends
 	@Inject ListPresenter<Author> citedAuthorsListPresenter;
 	@Inject ListPresenter<Author> citedByAuthorsListPresenter;
 	@Inject ListPresenter<Paper> paperListPresenter;
+    @Inject SessionInformationManager sessionInformationManager;
 	
 	@Inject CommentsPanelPresenter commentPresenter;
 	
@@ -95,7 +102,7 @@ public class AuthorPresenter extends
 		final String author_url = request.getParameter("q", "None");
 		
 		// Log author visit
-		MainPresenter.getSessionInformation().logAuthor(author_url);
+		sessionInformationManager.get().logAuthor(author_url);
 		
 		// show Loading Overlay
 		getEventBus().fireEvent(new LoadingOverlayEvent(true));
@@ -113,6 +120,10 @@ public class AuthorPresenter extends
 			
 			@Override
 			public void onSuccess(DisplayAuthorResult result) {
+                Author author = new Author();
+                author.setDisplayName(result.getName());
+                author.setUri(result.getUri());
+
 				getView().setAuthorName(result.getName());
 				
 				similarAuthorsListPresenter.setTitle("Similar authors");
@@ -135,7 +146,7 @@ public class AuthorPresenter extends
 
 				getEventBus().fireEvent(new SidebarReloadedEvent(result.getSidebar(), author_url));
 				
-				getEventBus().fireEvent(new DiscussionsReloadedEvent(result.getComments()));
+				getEventBus().fireEvent(new DiscussionsReloadedEvent(author.getUri(), result.getComments()));
 			}
 		});
 		

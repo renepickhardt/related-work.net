@@ -133,7 +133,6 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(UserVerifyPresenter.class,
 				UserVerifyPresenter.MyView.class, UserVerifyView.class,
 				UserVerifyPresenter.MyProxy.class);
-		
 
 		bindPresenter(SidebarPresenter.class, SidebarPresenter.MyView.class,
 				SidebarView.class, SidebarPresenter.MyProxy.class);
@@ -141,5 +140,6 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(WebsiteSidebarPresenter.class,
 				WebsiteSidebarPresenter.MyView.class, WebsiteSidebarView.class,
 				WebsiteSidebarPresenter.MyProxy.class);
+
 	}
 }

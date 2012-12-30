@@ -1,12 +1,11 @@
 package net.relatedwork.client.discussion;
 
-import java.util.ArrayList;
-
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HasHandlers;
 import net.relatedwork.shared.dto.Comments;
 
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.EventHandler;
-import com.google.gwt.event.shared.HasHandlers;
+import java.util.List;
 
 public class DiscussionsReloadedEvent extends
 		GwtEvent<DiscussionsReloadedEvent.DiscussionsReloadedHandler> {
@@ -17,17 +16,24 @@ public class DiscussionsReloadedEvent extends
 		void onDiscussionsReloaded(DiscussionsReloadedEvent event);
 	}
 
-	
-	private ArrayList<Comments> comments;
+    /** Comment target: either Paper or Author */
+    private String targetUri;
+    /** A list of comments and replies for the target */
+    private List<Comments> comments;
 	
 	public DiscussionsReloadedEvent() {
 	}
 
-	public DiscussionsReloadedEvent(ArrayList<Comments> comments) {
-		this.comments = comments;
+	public DiscussionsReloadedEvent(String targetUri, List<Comments> comments) {
+        this.targetUri = targetUri;
+        this.comments = comments;
 	}
 
-	public ArrayList<Comments> getComments() {
+    public String getTargetUri() {
+        return targetUri;
+    }
+
+    public List<Comments> getComments() {
 		return comments;
 	}
 	

@@ -1,15 +1,12 @@
 package net.relatedwork.shared.dto;
 
-import net.relatedwork.client.place.NameTokens;
-import net.relatedwork.server.neo4jHelper.DBNodeProperties;
-import net.relatedwork.shared.IsRenderable;
-
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
 import com.gwtplatform.dispatch.shared.Result;
-import com.gwtplatform.mvp.client.proxy.PlaceRequest;
+import net.relatedwork.client.place.NameTokens;
+import net.relatedwork.shared.IsRenderable;
 
 /**
  * this class is a dto for authors that shall be displayed it 
@@ -28,10 +25,10 @@ public class Author implements Result, IsSerializable, IsRenderable{
 	}
 	String displayName;
 	String uri;
-	private Integer score;	
+	private Double score;
 
 
-	public Author(String displayName, String uri, Integer score){
+	public Author(String displayName, String uri, Double score){
 		this.displayName = displayName;
 		this.uri = uri;
 		this.score = score;
@@ -67,11 +64,11 @@ public class Author implements Result, IsSerializable, IsRenderable{
 		this.uri = uri;
 	}
 
-	public Integer getScore() {
+	public Double getScore() {
 		return score;
 	}
 
-	public void setScore(Integer score) {
+	public void setScore(Double score) {
 		this.score = score;
 	}
 

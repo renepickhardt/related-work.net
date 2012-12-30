@@ -1,78 +1,53 @@
 package net.relatedwork.server.action;
 
-import java.util.NoSuchElementException;
 
-import javax.servlet.ServletContext;
-
-import org.apache.lucene.search.Sort;
-import org.apache.lucene.search.SortField;
-import org.neo4j.graphdb.Direction;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Relationship;
-import org.neo4j.graphdb.index.Index;
-import org.neo4j.graphdb.index.IndexHits;
-import org.neo4j.index.lucene.QueryContext;
-import org.neo4j.kernel.EmbeddedReadOnlyGraphDatabase;
-
-import sun.security.x509.AuthorityInfoAccessExtension;
-
+import com.google.inject.Inject;
+import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
-
-import net.relatedwork.server.ContextHelper;
-import net.relatedwork.server.neo4jHelper.DBNodeProperties;
-import net.relatedwork.server.neo4jHelper.DBRelationshipProperties;
-import net.relatedwork.server.neo4jHelper.Neo4jToDTOHelper;
-import net.relatedwork.server.neo4jHelper.NodeType;
-import net.relatedwork.server.neo4jHelper.DBRelationshipTypes;
+import com.gwtplatform.dispatch.shared.ActionException;
+import net.relatedwork.server.dao.AuthorAccessHandler;
+import net.relatedwork.server.dao.CommentsAccessHelper;
+import net.relatedwork.server.neo4jHelper.*;
 import net.relatedwork.server.utils.IOHelper;
 import net.relatedwork.shared.dto.Author;
 import net.relatedwork.shared.dto.AuthorSidebar;
 import net.relatedwork.shared.dto.Comments;
 import net.relatedwork.shared.dto.DisplayAuthor;
 import net.relatedwork.shared.dto.DisplayAuthorResult;
-import net.relatedwork.shared.dto.Paper;
-
-import com.google.inject.Inject;
-import com.gwtplatform.dispatch.server.ExecutionContext;
-import com.gwtplatform.dispatch.shared.ActionException;
+import org.neo4j.graphdb.Direction;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
 
 public class DisplayAuthorActionHandler implements
 		ActionHandler<DisplayAuthor, DisplayAuthorResult> {
 	
-	@Inject ServletContext servletContext;
+    @Inject AuthorAccessHandler authorAccessHandler;
+    @Inject CommentsAccessHelper commentsAccessHelper;
 	
-	@Inject
-	public DisplayAuthorActionHandler() {
-	}
-
 	@Override
 	public DisplayAuthorResult execute(DisplayAuthor action,
 			ExecutionContext context) throws ActionException {
 		
 		DisplayAuthorResult result = new DisplayAuthorResult();
-		Index<Node> uriIndex = ContextHelper.getUriIndex(servletContext);
-		
+
 		String uri = action.getUri();
 		IOHelper.log("Rendering author page with uri '"+ uri +"'");
-		
-		// TODO: This still gives
-		// Service exception while executing net.relatedwork.shared.dto.DisplayAuthor: Service exception executing action "DisplayAuthor", java.lang.NullPointerException
-		// when URI not found e.g. "Filippenko, A. V."
-		Node n = null;
-		try{
-			n = uriIndex.get(DBNodeProperties.URI, uri).getSingle();
-		} catch (Exception e) {
-			System.out.println("URI INDEX ERROR. uri " + uri + " has more than one associated node.");
-		}
-		
-		if (n == null ||  !NodeType.isAuthorNode(n) || !n.hasProperty(DBNodeProperties.PAGE_RANK_VALUE) ){
-			System.out.println("Cannot render Author page for node: "+n.toString() +", uri: " + uri);
-			return result;
-		}
-		
-		// Add data to result. Requires URIs to be set.
-		result.setName((String)n.getProperty(DBNodeProperties.AUTHOR_NAME));
 
+		Node n = authorAccessHandler.authorNodeFromUri(uri);
+        if (n == null) {
+            System.out.println("URI INDEX ERROR. uri " + uri + " has more than one associated node.");
+            return result;
+        }
+
+        Author author = authorAccessHandler.authorFromNode(n);
+
+        if (author == null) {
+            System.out.println("Cannot render Author page for node: "+n.toString() +", uri: " + uri);
+            return result;
+        }
+        result.setAuthor(author);
+
+        
 		//TODO: get from data base
 		AuthorSidebar authorSidebar = new AuthorSidebar();
 		if (n.hasProperty("metadata:url")){
@@ -86,28 +61,29 @@ public class DisplayAuthorActionHandler implements
 		authorSidebar.setStudents(null);
 		result.setSidebar(authorSidebar);
 		
+
 		for (Relationship rel:n.getRelationships(DBRelationshipTypes.CO_AUTHOR_COUNT)){
 			Node coAuthor = rel.getEndNode();
 			Integer score = (Integer)rel.getProperty(DBRelationshipProperties.CO_AUTHOR_COUNT);
-			result.addCoAuthor(Neo4jToDTOHelper.authorFromNode(coAuthor,score));
+			result.addCoAuthor(authorAccessHandler.authorFromNode(coAuthor,score));
 		}
 
 		for (Relationship rel:n.getRelationships(DBRelationshipTypes.CITES_AUTHOR,Direction.OUTGOING)){
 			Node citedAuthor = rel.getEndNode();
 			Integer score = (Integer)rel.getProperty(DBRelationshipProperties.CITATION_COUNT);
-			result.addCitedAuthor(Neo4jToDTOHelper.authorFromNode(citedAuthor, score));
+			result.addCitedAuthor(authorAccessHandler.authorFromNode(citedAuthor, score));
 		}
 		
 		for (Relationship rel:n.getRelationships(DBRelationshipTypes.CITES_AUTHOR,Direction.INCOMING)){
 			Node citedAuthor = rel.getStartNode();
 			Integer score = (Integer)rel.getProperty(DBRelationshipProperties.CITATION_COUNT);
-			result.addCitedByAuthor(Neo4jToDTOHelper.authorFromNode(citedAuthor, score));
+			result.addCitedByAuthor(authorAccessHandler.authorFromNode(citedAuthor, score));
 		}
 		
 		for (Relationship rel:n.getRelationships(DBRelationshipTypes.SIM_AUTHOR, Direction.OUTGOING)){
 			Node simAuthor = rel.getEndNode();
 			Integer score = (int)((Double)rel.getProperty(DBRelationshipProperties.SIM_AUTHOR_SCORE)*1000.);
-			result.addSimilarAuthor(Neo4jToDTOHelper.authorFromNode(simAuthor, score));
+			result.addSimilarAuthor(authorAccessHandler.authorFromNode(simAuthor, score));
 		}
 		
 		for (Relationship rel:n.getRelationships(DBRelationshipTypes.WRITTEN_BY)){
@@ -115,19 +91,12 @@ public class DisplayAuthorActionHandler implements
 			result.addWrittenPaper(Neo4jToDTOHelper.paperFromNode(paper));
 		}
 
-		//TODO: those should be taken from the data base!
-        Comments c1 = new Comments(new Author(), "this is some comment");
-        result.addComment(c1);
-        Comments reply1 = new Comments(new Author(), "this is a reply");
-        reply1.setTarget(c1);
-        result.addComment(reply1);
-		result.addComment(new Comments(new Author(),"another comment"));
-        result.addComment(new Comments(new Author(),"and more comments"));
+        result.setCommentList(commentsAccessHelper.getRelatedComments(uri));
 
 		return result;
 	}
 
-	@Override
+    @Override
 	public void undo(DisplayAuthor action, DisplayAuthorResult result,
 			ExecutionContext context) throws ActionException {
 	}

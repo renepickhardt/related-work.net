@@ -23,7 +23,7 @@ public class CommentBoxView extends ViewImpl implements CommentBoxPresenter.MyVi
     private final Widget widget;
 
     @UiField HorizontalPanel viewCommentPanel;
-    @UiField HTMLPanel author;
+    @UiField VerticalPanel authorAndDate;
     @UiField HTML commentContainer;
     @UiField Image upVote;
     @UiField Image downVote;
@@ -82,12 +82,14 @@ public class CommentBoxView extends ViewImpl implements CommentBoxPresenter.MyVi
             // show the new comment box
             viewCommentPanel.setVisible(false);
             newCommentPanel.setVisible(true);
+            commentRichTextArea.setHTML("");
         } else {
             // show existing comment
             viewCommentPanel.setVisible(true);
             newCommentPanel.setVisible(false);
-            author.clear();
-            author.add(comment.getAuthor().getAuthorLink());
+            authorAndDate.clear();
+            authorAndDate.add(new Label(comment.getAuthor().getUsername()));
+            authorAndDate.add(new Label(comment.getDate()));
             commentContainer.setHTML(comment.getComment());
             votes.setText(comment.getVoting().toString());
         }
