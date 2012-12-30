@@ -21,9 +21,7 @@
 						<g:HTMLPanel ui:field="rwContent" styleName="rwContent" />
 					</td>
 					<td id="bodyRightCell">
-						<g:HTMLPanel ui:field="rwSidebar" styleName="rwSidebar">
-							Side bar
-						</g:HTMLPanel>
+						<g:HTMLPanel ui:field="rwSidebar" styleName="rwSidebar"/>
 					</td>
 				</tr>
 			</table>
