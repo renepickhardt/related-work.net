@@ -57,7 +57,7 @@ public class SidebarReloadedEvent extends
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source) {
-		source.fireEvent(new SidebarReloadedEvent());
-	}
+//	public static void fire(HasHandlers source) {
+//		source.fireEvent(new SidebarReloadedEvent());
+//	}
 }
