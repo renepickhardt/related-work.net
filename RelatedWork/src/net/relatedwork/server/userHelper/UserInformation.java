@@ -1,36 +1,23 @@
 package net.relatedwork.server.userHelper;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-
-import javax.servlet.ServletContext;
-
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Transaction;
-import org.neo4j.graphdb.index.Index;
-import org.neo4j.index.impl.lucene.LuceneIndex;
-import org.neo4j.kernel.EmbeddedGraphDatabase;
-import org.neo4j.kernel.EmbeddedReadOnlyGraphDatabase;
-
-import scala.actors.threadpool.Arrays;
-
 import com.google.inject.Inject;
-
 import net.relatedwork.client.tools.session.SessionInformation;
 import net.relatedwork.server.ContextHelper;
+import net.relatedwork.server.dao.UserAccessHandler;
 import net.relatedwork.server.neo4jHelper.DBNodeProperties;
-import net.relatedwork.server.utils.Config;
 import net.relatedwork.server.utils.IOHelper;
 import net.relatedwork.shared.dto.LoginAction;
 import net.relatedwork.shared.dto.NewUserAction;
-import net.relatedwork.shared.dto.NewUserActionResult;
 import net.relatedwork.shared.dto.UserVerifyAction;
 import net.relatedwork.shared.dto.UserVerifyActionResult;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Transaction;
+import org.neo4j.kernel.EmbeddedGraphDatabase;
+
+import javax.servlet.ServletContext;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class UserInformation {
 	
@@ -43,23 +30,22 @@ public class UserInformation {
 	
 	private Node userNode = null;
 
-	// used for db interaction
-	private ServletContext servletContext;
-	// Remark: Since the servlet context is not static,
-	// we can not have static methods using the db!!
-	
-	
-	public void print() {
+    public void print() {
 		IOHelper.log("email       : "+ email);
 		IOHelper.log("passwordHash: "+ passwordHash);
 		IOHelper.log("verified?   : "+ isVerified.toString());
 		IOHelper.log("username    : "+ username);
 		IOHelper.log("sessionList : "+ sessionList.toString());
 	}
-	
+
+    private final EmbeddedGraphDatabase graphDB;
+
+    @Inject UserAccessHandler userAccessHandler;
+
+    @Inject
 	public UserInformation(ServletContext servletContext){
-		this.servletContext = servletContext;
-	}
+        graphDB = ContextHelper.getGraphDatabase(servletContext);
+    }
 	
 //	public UserInformation(String email){
 //		this.email = email;
@@ -136,7 +122,7 @@ public class UserInformation {
 	 * Login action handler
 	 */
 	public void loginUser(LoginAction loginAction) throws LoginException {
-		Node userLoginNode = ContextHelper.getUserNodeFromEamil(loginAction.getEmail(), servletContext);
+		Node userLoginNode = userAccessHandler.getUserNodeFromEmail(loginAction.getEmail());
 		
 		if ( userLoginNode == null ) {
 			throw new LoginException("No such user "+ email);
@@ -160,7 +146,7 @@ public class UserInformation {
 	/************ DATABASE ACTIONS **************/
 	
 	private void loadFromEmail(String email) throws IOException {
-		Node userLoginNode = ContextHelper.getUserNodeFromEamil(email, servletContext);
+		Node userLoginNode = userAccessHandler.getUserNodeFromEmail(email);
 
 		if ( userLoginNode == null ) {
 			throw new IOException("Address not found"+ email);
@@ -194,8 +180,6 @@ public class UserInformation {
 			return;
 		}
 		
-		EmbeddedGraphDatabase graphDB = ContextHelper.getGraphDatabase(servletContext);
-
 		Transaction tx = graphDB.beginTx();
 		try{
 			userNode.setProperty(DBNodeProperties.USER_EMAIL, email);
@@ -205,7 +189,7 @@ public class UserInformation {
 			userNode.setProperty(DBNodeProperties.USER_VERIFIED, isVerified);
 			userNode.setProperty(DBNodeProperties.USER_AUTH_SECRET, authSecret);
 			
-			ContextHelper.indexUserNode(userNode, email, servletContext);
+			userAccessHandler.indexUserNode(userNode, email);
 			
 			tx.success();
 		} catch (Exception e){
@@ -220,8 +204,6 @@ public class UserInformation {
 	private void createUserNode() {
 		IOHelper.log("Creating new user");
 		print();
-		
-		EmbeddedGraphDatabase graphDB = ContextHelper.getGraphDatabase(servletContext);
 		
 		Transaction tx = graphDB.beginTx();
 		try{
@@ -238,8 +220,6 @@ public class UserInformation {
 	}
 	
 	private void deleteUser() {
-		EmbeddedGraphDatabase graphDB = ContextHelper.getGraphDatabase(servletContext);
-		
 		Transaction tx = graphDB.beginTx();
 		try{
 			userNode.setProperty(DBNodeProperties.USER_DELETED, true);
@@ -253,7 +233,7 @@ public class UserInformation {
 	}
 	
 	private boolean userRecordExists(String email) {
-		Node userNode = ContextHelper.getUserNodeFromEamil(email, servletContext);
+		Node userNode = userAccessHandler.getUserNodeFromEmail(email);
 		if (userNode == null){ 
 			return false;
 		} else if ((Boolean) userNode.getProperty(DBNodeProperties.USER_DELETED) == true) {
@@ -287,8 +267,8 @@ public class UserInformation {
 	
 	private static boolean userDetailsOk( NewUserAction newUser ) {
 		// TODO: More checks
-		if (newUser.getUsername() == "") {
-			IOHelper.log("Usernam invalid: "+ newUser.getUsername());
+		if (newUser.getUsername().trim().length() == 0) {
+			IOHelper.log("Username invalid: "+ newUser.getUsername());
 			return false;
 		}
 		if (! newUser.getEmail().contains("@")){

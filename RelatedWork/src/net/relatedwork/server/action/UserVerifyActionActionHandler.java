@@ -2,6 +2,7 @@ package net.relatedwork.server.action;
 
 import javax.servlet.ServletContext;
 
+import com.google.inject.Provider;
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
 
 import net.relatedwork.server.userHelper.UserInformation;
@@ -17,8 +18,9 @@ public class UserVerifyActionActionHandler implements
 		ActionHandler<UserVerifyAction, UserVerifyActionResult> {
 
 	@Inject ServletContext servletContext;
-	
-	@Inject
+    @Inject Provider<UserInformation> userInformationProvider;
+
+    @Inject
 	public UserVerifyActionActionHandler() {
 	}
 
@@ -26,7 +28,7 @@ public class UserVerifyActionActionHandler implements
 	public UserVerifyActionResult execute(UserVerifyAction action,
 			ExecutionContext context) throws ActionException {
 
-		UserInformation UIO = new UserInformation(servletContext);
+		UserInformation UIO = userInformationProvider.get();
 		
 		try {
 			return UIO.verifyUser(action);

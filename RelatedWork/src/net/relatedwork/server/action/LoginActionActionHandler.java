@@ -2,6 +2,7 @@ package net.relatedwork.server.action;
 
 import javax.servlet.ServletContext;
 
+import com.google.inject.Provider;
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
 import net.relatedwork.client.tools.session.SessionInformation;
 import net.relatedwork.server.userHelper.LoginException;
@@ -17,6 +18,7 @@ public class LoginActionActionHandler implements
 		ActionHandler<LoginAction, LoginActionResult> {
 
 	@Inject ServletContext servletContext;
+    @Inject Provider<UserInformation> userInformationProvider;
 	
 	@Inject
 	public LoginActionActionHandler() {
@@ -31,7 +33,7 @@ public class LoginActionActionHandler implements
 		String password = loginAction.getPassword();
 		SessionInformation SIO = loginAction.getSession();
 		
-		UserInformation UIO = new UserInformation(servletContext);
+		UserInformation UIO = userInformationProvider.get();
 		
 		try {
 			UIO.loginUser(loginAction);

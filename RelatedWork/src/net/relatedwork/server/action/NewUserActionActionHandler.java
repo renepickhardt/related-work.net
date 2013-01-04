@@ -2,6 +2,7 @@ package net.relatedwork.server.action;
 
 import javax.servlet.ServletContext;
 
+import com.google.inject.Provider;
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
 import net.relatedwork.client.tools.session.SessionInformation;
 import net.relatedwork.server.userHelper.NewUserError;
@@ -18,7 +19,8 @@ public class NewUserActionActionHandler implements
 		ActionHandler<NewUserAction, NewUserActionResult> {
 
 	@Inject ServletContext servletContext;
-	
+    @Inject Provider<UserInformation> userInformationProvider;
+
 	@Inject
 	public NewUserActionActionHandler() {
 	}
@@ -35,7 +37,7 @@ public class NewUserActionActionHandler implements
 		
 		// Register new user on server 
 		try {
-			UserInformation UIO = new UserInformation(servletContext);
+			UserInformation UIO = userInformationProvider.get();
 			UIO.registerNewUser(newUserAction);
 		} catch (NewUserError e) {
 			// something went wrong
