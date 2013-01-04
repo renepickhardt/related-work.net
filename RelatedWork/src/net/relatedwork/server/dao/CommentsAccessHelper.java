@@ -2,6 +2,7 @@ package net.relatedwork.server.dao;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.gwtplatform.dispatch.shared.ActionException;
 import net.relatedwork.client.tools.session.SessionInformation;
@@ -9,6 +10,7 @@ import net.relatedwork.server.ContextHelper;
 import net.relatedwork.server.neo4jHelper.DBNodeProperties;
 import net.relatedwork.server.neo4jHelper.DBRelationshipTypes;
 import net.relatedwork.server.neo4jHelper.DiscussionTypeMapper;
+import net.relatedwork.server.userHelper.UserInformation;
 import net.relatedwork.server.utils.MD5Util;
 import net.relatedwork.shared.dto.Comments;
 import org.neo4j.graphdb.*;
@@ -38,6 +40,8 @@ public class CommentsAccessHelper {
 
     @Inject DiscussionTypeMapper discussionTypeMapper;
     @Inject AuthorAccessHandler authorAccessHandler;
+    @Inject UserAccessHandler userAccessHandler;
+    @Inject Provider<UserInformation> userInformationProvider;
 
     private TraversalDescription relatedCommentsTraversal;
 
@@ -103,7 +107,8 @@ public class CommentsAccessHelper {
         try {
             Node newNode = database.createNode();
 
-            // TODO lookup the author and set COMMENT_AUTHOR relation.
+            Node userNode = userAccessHandler.getUserNodeFromEmail(comment.getAuthor().getEmailAddress());
+            newNode.createRelationshipTo(userNode, DBRelationshipTypes.COMMENT_AUTHOR);
             newNode.setProperty(DBNodeProperties.COMMENT_BODY, comment.getComment());
             newNode.setProperty(DBNodeProperties.COMMENT_DATE, comment.getDate());
             newNode.setProperty(DBNodeProperties.COMMENT_URI, comment.getUri());
@@ -158,7 +163,7 @@ public class CommentsAccessHelper {
             // assume a default author if not found
             author = new SessionInformation();
         } else {
-            author = null; // construct from authorNode
+            author = fromUserNode(authorNode);
         }
 
         String targetUri;
@@ -181,6 +186,17 @@ public class CommentsAccessHelper {
 
         System.out.println("Got comment of type " + comment.getType() + ": " + comment.getComment());
         return comment;
+    }
+
+    // TODO: server code should not depend on client code(SessionInformation).
+    // Besides, user info should be a dedicated kind of object.
+    private SessionInformation fromUserNode(Node user) {
+        UserInformation userInformation = userInformationProvider.get();
+        userInformation.loadFromNode(user);
+        SessionInformation sessionInformation = new SessionInformation();
+        sessionInformation.setUsername(userInformation.username);
+        sessionInformation.setEmailAddress(userInformation.email);
+        return sessionInformation;
     }
 
     private static String now() {

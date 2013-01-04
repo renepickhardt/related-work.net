@@ -174,8 +174,8 @@ public class CommentBoxPresenter extends
     private SessionInformation checkLogin() {
         SessionInformation sessionInformation = sessionInformationManager.get();
         if (!sessionInformation.isLoggedIn()) {
-//            Window.alert("Please login!");
-//            return null;
+            Window.alert("Please login!");
+            return null;
         }
         return sessionInformation;
     }

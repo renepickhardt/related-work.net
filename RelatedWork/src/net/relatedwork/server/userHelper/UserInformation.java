@@ -155,7 +155,7 @@ public class UserInformation {
 		loadFromNode(userLoginNode);		
 	}
 
-	private void loadFromNode(Node userLoginNode) {
+	public void loadFromNode(Node userLoginNode) {
 		email        = (String) userLoginNode.getProperty(DBNodeProperties.USER_EMAIL);
 		passwordHash = (String) userLoginNode.getProperty(DBNodeProperties.USER_PW_HASH);
 		username     = (String) userLoginNode.getProperty(DBNodeProperties.USER_NAME);
