@@ -1,7 +1,6 @@
 package net.relatedwork.shared.dto;
 
 import com.gwtplatform.dispatch.shared.UnsecuredActionImpl;
-import net.relatedwork.shared.dto.SetAuthorMetaDataActionHandlerResult;
 import java.util.HashMap;
 
 public class SetAuthorMetaDataActionHandler extends
