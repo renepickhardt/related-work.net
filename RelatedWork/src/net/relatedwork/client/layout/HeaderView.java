@@ -11,7 +11,7 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 
 	private final Widget widget;
 
-	@UiField HTMLPanel rwBreadcrumbs;
+//	@UiField HTMLPanel rwBreadcrumbs;
 	@UiField HTMLPanel rwHeaderSearch;
 	@UiField HTMLPanel rwLoginControls;
 
@@ -26,13 +26,13 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 	}
 
 
-	public HTMLPanel getRwBreadcrumbs() {
-		return rwBreadcrumbs;
-	}
+//	public HTMLPanel getRwBreadcrumbs() {
+//		return rwBreadcrumbs;
+//	}
 
-	public void setRwBreadcrumbs(HTMLPanel rwBreadcrumbs) {
-		this.rwBreadcrumbs = rwBreadcrumbs;
-	}
+//	public void setRwBreadcrumbs(HTMLPanel rwBreadcrumbs) {
+//		this.rwBreadcrumbs = rwBreadcrumbs;
+//	}
 
 	public HTMLPanel getRwHeaderSearch() {
 		return rwHeaderSearch;
@@ -62,9 +62,10 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 	 * Setup nested presenters Nested presenter 
 	 */
 	public void setInSlot(Object slot, Widget content) {
-		if (slot == HeaderPresenter.TYPE_Breadcrumbs){
-			setBreadcrumbs(content);
-		} else if (slot == HeaderPresenter.TYPE_Search){
+//		if (slot == HeaderPresenter.TYPE_Breadcrumbs){
+//			setBreadcrumbs(content);
+//		} else 
+		if (slot == HeaderPresenter.TYPE_Search){
 			setSearchBox(content);
 		} else if (slot == HeaderPresenter.TYPE_LoginControls){
 			setLoginControls(content);
@@ -87,10 +88,10 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.MyView {
 		}
 	}
 	
-	private void setBreadcrumbs(Widget content) {
-		rwBreadcrumbs.clear();
-		if (content != null) {
-			rwBreadcrumbs.add(content);
-		}
-	}	
+//	private void setBreadcrumbs(Widget content) {
+//		rwBreadcrumbs.clear();
+//		if (content != null) {
+//			rwBreadcrumbs.add(content);
+//		}
+//	}	
 }
