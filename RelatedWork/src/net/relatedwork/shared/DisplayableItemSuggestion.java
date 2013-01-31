@@ -12,7 +12,7 @@ public class DisplayableItemSuggestion implements IsSerializable, Suggestion {
 	public DisplayableItemSuggestion() {
 		// TODO Auto-generated constructor stub
 	}
-		
+	
 	public DisplayableItemSuggestion(String suggestion, String q, boolean personalized){
 		String[] values = suggestion.split("\t");
 		String first = q.charAt(0)+"";

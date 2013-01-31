@@ -28,16 +28,6 @@ public class GlobalSearchActionHandler implements
 	@Inject ServletContext servletContext;
     @Inject AuthorAccessHandler authorAccessHandler;
 
-	public static String prepareQuery(String queryString){
-		queryString = queryString.replaceAll("\\W+", " ");
-		queryString = queryString.trim();
-		queryString = queryString.toLowerCase();
-		// replace whitespaces
-		queryString = queryString.replaceAll("\\s+", "* ");
-		queryString = queryString + "*";
-		return "key:("+queryString+")";
-	}
-	
 	@Override
 	public GlobalSearchResult execute(GlobalSearch action, ExecutionContext context)
 			throws ActionException {
@@ -47,7 +37,7 @@ public class GlobalSearchActionHandler implements
 		GlobalSearchResult result = new GlobalSearchResult();
 		
 		String queryRaw = action.getQuery();
-		String query = prepareQuery(queryRaw);
+		String query = ContextHelper.prepareQueryString(queryRaw);
 		
 		IOHelper.log("Send query:" + queryRaw);
 		IOHelper.log("Processed query:" + query);

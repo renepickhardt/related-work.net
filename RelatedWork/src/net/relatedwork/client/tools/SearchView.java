@@ -19,6 +19,7 @@ import com.google.gwt.storage.client.Storage;
 import com.google.gwt.storage.client.StorageMap;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -103,28 +104,33 @@ public class SearchView extends ViewImpl implements SearchPresenter.MyView {
 	 * @return
 	 */
 	private SuggestOracle getSuggestOracle() {
-			
+		
 		return new SuggestOracle(){
-			boolean flag=false;			
+			boolean haveLocalSuggestTreeFlag=false;
 			SuggestTree<Integer> tree;
 			
 			@Override
 			public void requestSuggestions(final Request request,
 					final Callback callback) {
+				/* Request suggestions from Oracle*/
 				final Response r = new Response();
 				final ArrayList<DisplayableItemSuggestion> local = new ArrayList<DisplayableItemSuggestion>();
 
+				// Normaize input to lower case
 				request.setQuery(request.getQuery().toLowerCase());
 				
-				if (flag==false){
+				// get local suggest tree if not already present
+				if (haveLocalSuggestTreeFlag==false){
 					  tree = new SuggestTree<Integer>(3,new Comparator<Integer>(){
 							@Override
 							public int compare(Integer o1, Integer o2) {
 								return -o1.compareTo(o2);
 							}});
-					  Storage locStore = Storage.getLocalStorageIfSupported();
-					  String tmp = locStore.getItem("suggestMap");
-					  if (false){/*tmp!=null){
+					  
+					  // Storage locStore = Storage.getLocalStorageIfSupported();
+					  // String tmp = locStore.getItem("suggestMap");
+					  if (false){
+						  /*tmp!=null){
 						  tree.build(SuggestProtocol.deSerializeHashMap(tmp));
 						  flag = true;*/
 					  }
@@ -142,6 +148,8 @@ public class SearchView extends ViewImpl implements SearchPresenter.MyView {
 								// TODO Auto-generated method stub
 								HashMap<String,Integer> map = new HashMap<String, Integer>();
 								HashMap<String, Integer> tmp;
+
+								// Add Authors to local tree
 								tmp = result.getLocalAuthorSuggestions();
 								for (String key:tmp.keySet()){
 									ArrayList<String> out = SuggestProtocol.getSuggestTreeAuthor(key);
@@ -149,6 +157,8 @@ public class SearchView extends ViewImpl implements SearchPresenter.MyView {
 										map.put(s, tmp.get(key));
 									}
 								}
+
+								// Add Papers to local tree
 								tmp = result.getLocalPaperSuggestions();
 								for (String key:tmp.keySet()){
 									ArrayList<String> out = SuggestProtocol.getSuggestTreePaper(key);
@@ -158,25 +168,26 @@ public class SearchView extends ViewImpl implements SearchPresenter.MyView {
 								}
 
 								//TODO: invoking webstore seems not to work!
-								Storage s = Storage.getLocalStorageIfSupported();
-								s.setItem("suggestMap", SuggestProtocol.serializeMap(map));
-								
+								//Storage s = Storage.getLocalStorageIfSupported();
+								//s.setItem("suggestMap", SuggestProtocol.serializeMap(map));
 								
 								tree.build(map);
-								flag = true;
+								haveLocalSuggestTreeFlag = true;
+								
+								Window.alert("build local suggest tree:" + map.size());
 							}
 						}); 									
 					  }
 				}
 				
-				SuggestionList list = tree.getBestSuggestions(request.getQuery());						
+				SuggestionList list = tree.getBestSuggestions(request.getQuery());
 				for (int i=0;i< list.length();i++){
 					local.add(new DisplayableItemSuggestion(list.get(i), request.getQuery(),true));
 				}
 				r.setSuggestions(local);
 				callback.onSuggestionsReady(request, r);
 
-				//make rpc request!
+				//Get suggestions
 				dispatcher.execute(
 						new RequestGlobalSearchSuggestion(request),
 						new AsyncCallback<RequestGlobalSearchSuggestionResult>() {
@@ -186,14 +197,13 @@ public class SearchView extends ViewImpl implements SearchPresenter.MyView {
 							@Override
 							public void onSuccess(
 									RequestGlobalSearchSuggestionResult result) {
-								for (Suggestion sug : result.getResponse()
-										.getSuggestions()) {
+								for (Suggestion sug : result.getResponse().getSuggestions()) {
 									local.add(new DisplayableItemSuggestion(sug.getDisplayString(),request.getQuery(),false));
 								}
 								r.setSuggestions(local);
 								callback.onSuggestionsReady(request, r);
 							}
-						});		
+						});
 			}
 
 			@Override
