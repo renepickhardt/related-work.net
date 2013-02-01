@@ -1,5 +1,6 @@
 package net.relatedwork.client.tools;
 
+
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
@@ -14,6 +15,7 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.web.bindery.event.shared.EventBus;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -61,37 +63,71 @@ public class SearchPresenter extends
 	@Override
 	protected void onBind() {
 		super.onBind();
-		registerHandler(getView().getSearchBox().addClickHandler(new StartSearchHandler()));
-		registerHandler(getView().getSuggestBox().addKeyUpHandler(new StartSearchHandler()));
-	}	
-	
-	public class StartSearchHandler implements ClickHandler, KeyUpHandler {
-				
-		public StartSearchHandler() {
-		}
-
-		@Override
-		public void onClick(ClickEvent event) {
-			doSearch();
-		}
-
-		@Override
-		public void onKeyUp(KeyUpEvent event) {
-			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
+		
+		// Click Search Box
+		registerHandler(getView().getSearchBox().addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
 				doSearch();
 			}
-			if (event.getNativeKeyCode() == KeyCodes.KEY_ESCAPE){
-				getView().resetSuggestBox();
+		}));
+		
+		// Press enter
+		registerHandler(getView().getSuggestBox().addKeyUpHandler(new KeyUpHandler(){
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				// TODO Auto-generated method stub
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
+//					Window.alert("Enter Event"+ this.toString());
+					doSearch();
+				} else 	if (event.getNativeKeyCode() == KeyCodes.KEY_ESCAPE) {
+					getView().resetSuggestBox();
+				}
 			}
+		}));
+	}	
+	
+
+	static String lastQuerry; 
+	private void doSearch() {
+		final String query = getView().getSuggestBox().getText();
+		if (query.equals(lastQuerry)){
+//			Window.alert("Query Already sent");
+			return;
 		}
-		
-		
-		private void doSearch() {
-			final String query = getView().getSuggestBox().getText();
-			PlaceRequest myRequest = new PlaceRequest(NameTokens.serp);
-			myRequest = myRequest.with( "q", query );
-			placeManager.revealPlace( myRequest );
-		}
+		lastQuerry = query;
+		PlaceRequest myRequest = new PlaceRequest(NameTokens.serp);
+		myRequest = myRequest.with( "q", query );
+		placeManager.revealPlace( myRequest );
 	}
+	
+//	public class StartSearchHandler implements ClickHandler, KeyUpHandler {
+//		
+//		public StartSearchHandler() {
+//		}
+//
+//		@Override
+//		public void onClick(ClickEvent event) {
+//			doSearch();
+//		}
+//
+//		@Override
+//		public void onKeyUp(KeyUpEvent event) {
+//			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
+////				Window.alert("Enter Event"+ this.toString());
+//				doSearch();
+//			} else 	if (event.getNativeKeyCode() == KeyCodes.KEY_ESCAPE) {
+//				getView().resetSuggestBox();
+//			}
+//		}
+//		
+//		
+//		private void doSearch() {
+//			final String query = getView().getSuggestBox().getText();
+//			PlaceRequest myRequest = new PlaceRequest(NameTokens.serp);
+//			myRequest = myRequest.with( "q", query );
+//			placeManager.revealPlace( myRequest );
+//		}
+//	}
 	
 }

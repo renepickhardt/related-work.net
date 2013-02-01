@@ -11,6 +11,7 @@ import javax.servlet.ServletContext;
 import org.apache.lucene.queryParser.QueryParser.Operator;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
+import org.apache.tools.ant.taskdefs.Sleep;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.index.Index;
 import org.neo4j.graphdb.index.IndexHits;
@@ -63,13 +64,18 @@ public class ContextHelper {
 		return graphDB;
 	}
 
+	private static Boolean treeLoadedFlag = false;
 	
 	// Auto Completion
 	public static SuggestTree<Integer> getSuggestTree(
 			ServletContext servletContext) {
+
 		SuggestTree<Integer> tree = (SuggestTree<Integer>) servletContext.getAttribute(SUGGEST_TREE);
-		if (tree == null){
+		
+		if (treeLoadedFlag == false){
 			IOHelper.log("build new suggesttree from disk");
+			treeLoadedFlag = true;
+
 			tree = new SuggestTree<Integer>(5,new Comparator<Integer>(){
 				@Override
 				public int compare(Integer o1, Integer o2) {
@@ -94,7 +100,9 @@ public class ContextHelper {
 			}
 			tree.build(map);
 			servletContext.setAttribute(SUGGEST_TREE, tree);
+			IOHelper.log("Finished building suggesttree" + tree.sizeInfo().toString());
 		}
+		
 		return tree;
 	}
 

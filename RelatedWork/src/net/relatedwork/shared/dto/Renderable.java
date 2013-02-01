@@ -38,4 +38,9 @@ public class Renderable implements IsRenderable, IsSerializable{
 	public String getText() {
 		return this.displayName;
 	}
+
+	@Override
+	public String getUri() {
+		return this.uri;
+	}
 }

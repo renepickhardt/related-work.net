@@ -12,6 +12,7 @@ import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
+import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
@@ -37,6 +38,9 @@ public class SearchResultPagePresenter
 		public void addResultElement(HorizontalPanel element);
 	}
 
+	@Inject PlaceManager placeManager;
+
+	
 	@ProxyCodeSplit
 	@NameToken(NameTokens.serp)
 	public interface MyProxy extends ProxyPlace<SearchResultPagePresenter> {
@@ -97,7 +101,27 @@ public class SearchResultPagePresenter
 	public void setResults(ArrayList<IsRenderable> searchResults) {
 		
 		//getView().getSerpContainer().clear();
+
+		// Goto page if only one search result 
+		if (searchResults.size() == 1 ){
+			IsRenderable result = searchResults.get(0);
+			
+			String place;
+			if (result instanceof Paper) {
+				place = NameTokens.paper;
+			} else {
+				place = NameTokens.author;
+			}
+			
+			PlaceRequest myRequest = new PlaceRequest(place);
+			
+			myRequest = myRequest.with( "q", result.getUri());
+			placeManager.revealPlace( myRequest );
+
+			return;
+		}
 		
+		// More than one result present: Render Search Page
 		for (IsRenderable r:searchResults){
 			//getView().getSerpContainer().add(r.getLink());
 			HorizontalPanel panel = new HorizontalPanel();
