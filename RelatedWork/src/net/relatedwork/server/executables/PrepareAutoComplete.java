@@ -8,13 +8,12 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import net.relatedwork.server.neo4jHelper.DBNodeProperties;
-import net.relatedwork.server.neo4jHelper.RelationshipTypes;
+import net.relatedwork.server.neo4jHelper.DBRelationshipTypes;
 import net.relatedwork.server.utils.Config;
 import net.relatedwork.server.utils.IOHelper;
 import net.relatedwork.shared.dto.Author;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.tools.ant.types.CommandlineJava.SysProperties;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
@@ -66,7 +65,7 @@ public class PrepareAutoComplete {
 			counter++;
 			if (counter % 10000 == 0){
 				IOHelper.log("Adding entries. Processed " + counter + " nodes. Filled " + (PaperEntryList.size() + AuthorEntryList.size())+ " index entries.");
-				break;
+//				break;
 			}
 
 		}
@@ -125,7 +124,7 @@ public class PrepareAutoComplete {
 	}
 
 	private static String getType(Node node){
-		for (Relationship type_rel: node.getRelationships(Direction.OUTGOING,RelationshipTypes.TYPE)) {
+		for (Relationship type_rel: node.getRelationships(Direction.OUTGOING,DBRelationshipTypes.TYPE)) {
 			return (String)type_rel.getEndNode().getProperty(DBNodeProperties.LABEL);
 		}
 		return "None";

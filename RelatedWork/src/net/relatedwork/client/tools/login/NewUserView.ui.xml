@@ -1,0 +1,19 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:PopupPanel  animationEnabled="true" glassEnabled="true" autoHideEnabled="true">
+		<g:HTMLPanel>
+			<h2>Register new User</h2>
+			<g:Label text="Username" />       <g:TextBox ui:field="rwNewUsername"/>
+			<g:Label text="Email" />          <g:TextBox ui:field="rwNewEmail"/>
+			<g:Label text="Password" />       <g:TextBox ui:field="rwNewPassword" />
+			<g:Label text="RepeatPassword" /> <g:TextBox ui:field="rwNewPasswordRepeat" />
+			<g:Button text="Submit" ui:field="rwNewUserSubmit"/>
+		</g:HTMLPanel>
+	</g:PopupPanel>
+</ui:UiBinder>

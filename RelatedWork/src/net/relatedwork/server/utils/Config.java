@@ -28,12 +28,14 @@ public class Config extends Properties {
 
 	// by Heinrich
 	public String autoCompleteFile;
+	public String sessionDir;
+	public String userDir;
 
 	static Config instance = null;
 
 	public Config() {
 		// config.txt should lie in package root folder i.e. RelatedWork in this case
-		String file = "/home/heinrich/Desktop/eclipse_related-work/RelatedWork/config.txt";
+		String file = "/var/lib/datasets/rawdata/relatedwork/config.txt";
 		try {
 			BufferedInputStream stream = new BufferedInputStream(
 					new FileInputStream(file));

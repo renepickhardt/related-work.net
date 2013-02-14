@@ -8,18 +8,74 @@ import java.util.Map;
 
 import javax.servlet.ServletContext;
 
+import org.apache.lucene.queryParser.QueryParser.Operator;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
+//import org.apache.tools.ant.taskdefs.Sleep;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.index.Index;
+import org.neo4j.graphdb.index.IndexHits;
+import org.neo4j.helpers.collection.MapUtil;
+import org.neo4j.index.impl.lucene.LuceneIndex;
+import org.neo4j.index.lucene.QueryContext;
+import org.neo4j.kernel.EmbeddedGraphDatabase;
+import org.neo4j.kernel.EmbeddedReadOnlyGraphDatabase;
+
+import net.relatedwork.server.executables.CustomTokenAnalyzer;
+import net.relatedwork.server.neo4jHelper.DBNodeProperties;
+import net.relatedwork.server.userHelper.UserInformation;
 import net.relatedwork.server.utils.Config;
 import net.relatedwork.server.utils.IOHelper;
-import net.relatedwork.server.utils.SuggestTree;
+import net.relatedwork.shared.SuggestTree;
 
 public class ContextHelper {
 
-	private static final String SUGGESTTREE = "suggesttree";
+	private static final String SUGGEST_TREE = "sugges-ttree";
+	private static final String READ_ONLY_NEO4J = "read-only-neo4j";
+	private static final String RW_NEO4J = "rw-neo4j";
 	
+	private static final String SEARCH_IDX_NEO4J = DBNodeProperties.SEARCH_INDEX_NAME;
+	private static final String SEARCH_IDX_GWT = "searchIdx";
+	
+	private static final String PAPER_IDX_NEO4J = "source_idx";
+	private static final String PAPER_IDX_GWT = "paper-idx";
+	
+	private static final String URI_IDX = DBNodeProperties.URI_INDEX_NAME;
+
+	// Get NEO4J DB
+//	public static EmbeddedReadOnlyGraphDatabase getReadOnlyGraphDatabase(ServletContext servletContext){
+//		EmbeddedReadOnlyGraphDatabase graphDB = (EmbeddedReadOnlyGraphDatabase)servletContext.getAttribute(READ_ONLY_NEO4J);
+//		if (graphDB == null){
+//			IOHelper.log("Adding neo4j RO db to servletContext");
+//			graphDB = new EmbeddedReadOnlyGraphDatabase(Config.get().neo4jDbPath);
+//			servletContext.setAttribute(READ_ONLY_NEO4J, graphDB);
+//		}
+//		return graphDB;
+//	}
+
+	// Get NEO4J RW version
+	public static EmbeddedGraphDatabase getGraphDatabase(ServletContext servletContext){
+		EmbeddedGraphDatabase graphDB = (EmbeddedGraphDatabase)servletContext.getAttribute(RW_NEO4J);
+		if (graphDB == null){
+			IOHelper.log("Adding neo4j RW db to servletContext");
+			graphDB = new EmbeddedGraphDatabase(Config.get().neo4jDbPath);
+			servletContext.setAttribute(RW_NEO4J, graphDB);
+		}
+		return graphDB;
+	}
+
+	private static Boolean treeLoadedFlag = false;
+	
+	// Auto Completion
 	public static SuggestTree<Integer> getSuggestTree(
 			ServletContext servletContext) {
-		SuggestTree<Integer> tree = (SuggestTree<Integer>) servletContext.getAttribute(SUGGESTTREE);
-		if (tree == null){
+
+		SuggestTree<Integer> tree = (SuggestTree<Integer>) servletContext.getAttribute(SUGGEST_TREE);
+		
+		if (treeLoadedFlag == false){
+			IOHelper.log("build new suggesttree from disk");
+			treeLoadedFlag = true;
+
 			tree = new SuggestTree<Integer>(5,new Comparator<Integer>(){
 				@Override
 				public int compare(Integer o1, Integer o2) {
@@ -43,9 +99,66 @@ public class ContextHelper {
 				e.printStackTrace();
 			}
 			tree.build(map);
-			servletContext.setAttribute(SUGGESTTREE, tree);
+			servletContext.setAttribute(SUGGEST_TREE, tree);
+			IOHelper.log("Finished building suggesttree" + tree.sizeInfo().toString());
 		}
+		
 		return tree;
 	}
+
+	// Search index
+	public static Index<Node> getSearchIndex(ServletContext servletContext){
+//		EmbeddedReadOnlyGraphDatabase graphDB = getReadOnlyGraphDatabase(servletContext);
+		EmbeddedGraphDatabase graphDB = getGraphDatabase(servletContext);
+		Index<Node> index = (Index<Node>)servletContext.getAttribute(SEARCH_IDX_GWT);
+		if (index == null){
+			IOHelper.log("Adding search index - " + SEARCH_IDX_GWT + "- to servletContext.");
+			index = graphDB.index().forNodes(SEARCH_IDX_NEO4J,
+					MapUtil.stringMap("analyzer", CustomTokenAnalyzer.class.getName())
+					);
+			((LuceneIndex<Node>) index).setCacheCapacity("key", 300000);
+			servletContext.setAttribute(SEARCH_IDX_GWT,index);
+		}
+		return index;
+	}
+	
+	
+	public static String prepareQueryString(String queryString){
+		queryString = queryString.replaceAll("\\W+", " ");
+		queryString = queryString.trim();
+		queryString = queryString.toLowerCase();
+		// replace whitespaces
+		queryString = queryString.replaceAll("\\s+", "* ");
+		queryString = queryString + "*";
+		return "key:("+queryString+")";
+	}
+	
+
+	// URI index
+	public static Index<Node> getUriIndex(ServletContext servletContext){
+//		EmbeddedReadOnlyGraphDatabase graphDB = getReadOnlyGraphDatabase(servletContext);
+		EmbeddedGraphDatabase graphDB = getGraphDatabase(servletContext);
+		Index<Node> index = (Index<Node>)servletContext.getAttribute(URI_IDX);
+		if (index == null){
+			IOHelper.log("Adding uri index - " + URI_IDX + " - to servletContext");
+			index = graphDB.index().forNodes(URI_IDX);
+			((LuceneIndex<Node>) index).setCacheCapacity(DBNodeProperties.URI, 300000);
+			servletContext.setAttribute(URI_IDX,index);
+		}
+		return index;
+	}
+
+	public static Node getNodeByUri(String uri, ServletContext servletContext) {
+		return getUriIndex(servletContext).get(DBNodeProperties.URI, uri).getSingle();
+	}
+
+	public static Node getUserNodeFromEamil(String email, ServletContext servletContext) {
+		return getNodeByUri("rw:user:" + email, servletContext);
+	}
+
+	public static void indexUserNode(Node userNode, String email, ServletContext servletContext) {
+		getUriIndex(servletContext).add(userNode, DBNodeProperties.URI, "rw:user:"+ email);
+		
+	}	
 
 }

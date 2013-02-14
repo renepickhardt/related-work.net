@@ -14,7 +14,15 @@ public class NameTokens implements IsSerializable {
 	public static final String data = "!data";
 	public static final String license = "!license";
 	public static final String author = "!author";
+	public static final String serp = "serp";
 
+	public static final String SESSION_ID = "sessionId";
+	public static final String paper = "!paper";
+	public static final String userverify = "!userverify";
+
+	//public static final String PAPER_ID = "q";
+
+	
 	public static String getMain() {
 		return main;
 	}
@@ -37,5 +45,17 @@ public class NameTokens implements IsSerializable {
 
 	public static String getAuthor() {
 		return author;
+	}
+
+	public static String getSerp() {
+		return serp;
+	}
+
+	public static String getPaper() {
+		return paper;
+	}
+
+	public static String getUserverify() {
+		return userverify;
 	}
 }

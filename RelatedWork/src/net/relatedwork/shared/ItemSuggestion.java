@@ -11,7 +11,7 @@ public class ItemSuggestion implements IsSerializable, Suggestion {
 	public ItemSuggestion() {
 		// TODO Auto-generated constructor stub
 	}
-	
+		
 	public ItemSuggestion(String suggestion){
 		this.suggestion = suggestion;
 	}

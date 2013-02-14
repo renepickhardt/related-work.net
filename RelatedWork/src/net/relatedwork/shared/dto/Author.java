@@ -1,12 +1,12 @@
 package net.relatedwork.shared.dto;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Label;
+import com.gwtplatform.dispatch.shared.Result;
 import net.relatedwork.client.place.NameTokens;
 import net.relatedwork.shared.IsRenderable;
-
-import com.google.gwt.user.client.rpc.IsSerializable;
-import com.google.gwt.user.client.ui.Hyperlink;
-import com.gwtplatform.dispatch.shared.Result;
-import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 
 /**
  * this class is a dto for authors that shall be displayed it 
@@ -23,23 +23,33 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 public class Author implements Result, IsSerializable, IsRenderable{
 	public Author(){		
 	}
+	String displayName;
+	String uri;
+	private Double score;
 
-	
-	private String displayName;
-	private String uri;
-	private Integer score;	
 
-	public Author(String displayName, String uri, Integer score){
+	public Author(String displayName, String uri, Double score){
 		this.displayName = displayName;
 		this.uri = uri;
 		this.score = score;
 	}
 	
-	public Hyperlink getLink(){
+	public Hyperlink getAuthorLink(){
 		Hyperlink link = new Hyperlink();
 		link.setTargetHistoryToken(NameTokens.author+";q="+uri);
 		link.setText(displayName);
 		return link;
+	}
+
+	public String getText(){
+		return this.displayName;
+	}
+	
+	public HTMLPanel getHoverable(){
+		HTMLPanel panel = new HTMLPanel("");
+		Label l = new Label(score+"");
+		panel.add(l);
+		return panel;
 	}
 	
 	public String getDisplayName() {
@@ -58,11 +68,21 @@ public class Author implements Result, IsSerializable, IsRenderable{
 		this.uri = uri;
 	}
 
-	public Integer getScore() {
+	public Double getScore() {
 		return score;
 	}
 
-	public void setScore(Integer score) {
+	public void setScore(Double score) {
 		this.score = score;
-	}	
+	}
+
+	@Override
+	public Boolean passesFilter(String mask) {
+		if (this.displayName.toLowerCase().contains(mask))return true;
+		return false;
+	}
+	
+	public Boolean hasLink(){
+		return true;
+	}
 }

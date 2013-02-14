@@ -10,7 +10,7 @@ import org.neo4j.kernel.EmbeddedGraphDatabase;
 
 public class Calculator {
 
-	protected EmbeddedGraphDatabase graphDB;
+	static protected EmbeddedGraphDatabase graphDB;
 
 	public Calculator() {
 		super();

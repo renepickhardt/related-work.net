@@ -3,17 +3,25 @@ package net.relatedwork.client;
 import java.util.ArrayList;
 
 import net.relatedwork.shared.ItemSuggestion;
-import net.relatedwork.shared.RequestGlobalSearchSuggestion;
-import net.relatedwork.shared.RequestGlobalSearchSuggestionResult;
+import net.relatedwork.shared.dto.RequestGlobalSearchSuggestion;
+import net.relatedwork.shared.dto.RequestGlobalSearchSuggestionResult;
 
+import com.google.gwt.dom.client.HeadingElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FileUpload;
+import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
+import com.google.gwt.user.client.ui.SuggestOracle.Callback;
+import com.google.gwt.user.client.ui.SuggestOracle.Request;
 import com.google.gwt.user.client.ui.SuggestOracle.Response;
+import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
@@ -27,8 +35,32 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 	@UiField HTMLPanel rwContent;
 	@UiField HTMLPanel rwSidebar;
 	@UiField HTMLPanel rwFooter;
-	@UiField HTMLPanel rwDiscussions;
+	@UiField HTMLPanel rwOverlay;
+	
+	@UiField HeadingElement rwLoadingMessage; 
 		
+	public interface Binder extends UiBinder<Widget, MainView> {
+	}
+	
+	@Inject
+	public MainView(final Binder binder) {
+		widget = binder.createAndBindUi(this);
+		HTMLPanel p = new HTMLPanel("");
+		FormPanel fp = new FormPanel();
+		FileUpload fu = new FileUpload();
+		Button b = new Button();
+		b.setText("Upload a Paper");
+		p.add(fu);
+		p.add(b);
+		fp.add(p);
+		rwSidebar.add(fp);
+	}
+	
+	@Override
+	public Widget asWidget() {
+		return widget;
+	}
+	
 	public HTMLPanel getRwHeader() {
 		return rwHeader;
 	}
@@ -61,35 +93,34 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 		this.rwFooter = rwFooter;
 	}
 
-	public interface Binder extends UiBinder<Widget, MainView> {
+	
+	public void showLoadingOverlay(String message) {
+		this.rwOverlay.setStyleName("rwOverlay");
+		this.rwLoadingMessage.setInnerHTML("Loading <br>" + message);
 	}
 	
-	@Inject
-	public MainView(final Binder binder) {		
-		widget = binder.createAndBindUi(this);
+	public void hideLoadingOverlay() {
+		this.rwOverlay.setStyleName("rwOverlayHidden");
 	}
 	
-	@Override
-	public Widget asWidget() {
-		return widget;
-	}
 	
 	// Nested presenter setters
 
 	@Override
 	public void setInSlot(Object slot, Widget content) {
 		if (slot == MainPresenter.TYPE_Footer){
-			setFooter(content);			
+			setFooter(content);
 		}
 		else if (slot == MainPresenter.TYPE_SetMainContent) {
 			setMainContent(content);
-		} 
-		else if (slot == MainPresenter.TYPE_Discussion) {
-			setDiscussions(content);
-		} 
+		}
 		else if (slot == MainPresenter.TYPE_Header) {
 			setHeader(content);
-		} else {
+		} 
+		else if (slot == MainPresenter.TYPE_Sidebar) {
+			setSidebar(content);
+		}
+		else {
 			super.setInSlot(slot, content);
 		}
 	}
@@ -102,13 +133,13 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 		}
 	}
 
-	private void setDiscussions(Widget content) {
-		rwDiscussions.clear();
+	private void setSidebar(Widget content) {
+		rwSidebar.clear();
 		if (content != null) {
-			rwDiscussions.add(content);
-		}		
+			rwSidebar.add(content);
+		}
 	}
-
+	
 	private void setFooter(Widget content) {
 		rwFooter.clear();
 		if (content != null) {
@@ -121,5 +152,5 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 		if (content != null) {
 			rwContent.add(content);
 		}
-	}
+	}	
 }

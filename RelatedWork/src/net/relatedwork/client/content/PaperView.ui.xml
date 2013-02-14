@@ -1,0 +1,29 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<!-- 
+	The GWT Layout was inpired by:
+	http://www.canoo.com/blog/2010/04/26/gwt-uibinder-better-web-app-separation-of-concerns/
+	-->
+
+	<g:HTMLPanel>
+		<g:HTMLPanel>
+			<h1 ui:field="rwTitle">Title</h1>
+		</g:HTMLPanel>
+		<h2><g:HTMLPanel ui:field="rwAuthorPanel" styleName="rwAuthorPanel"/></h2>
+		
+		<g:HTMLPanel>
+			<p ui:field="rwAbstract" class="rwAbstract">Abstract</p>
+		</g:HTMLPanel>
+		
+		<g:HorizontalPanel>
+			<g:HTMLPanel ui:field="rwCitations"/>
+			<g:HTMLPanel ui:field="rwCitedBy"/>
+		</g:HorizontalPanel>
+	</g:HTMLPanel>
+</ui:UiBinder>

@@ -1,68 +1,245 @@
 /* Add css rules here for your application. */
 
+/**************************** LAYOUT ******************************/
+
+div.rwMain{
+	height: 100%;
+}
+
+div.rwHeader{
+	background-color: #EEEEEE;
+
+	border-style: none none dotted;
+    border-width: 1px;
+	border-width: 1px;
+	
+    padding: 10px;
+	margin: 0;
+}
+
+div.rwBody{
+}
+
+#bodyTable {
+	width:	100%;
+	height:	100%;
+
+	/* borders do still not work properly */
+	border-width: 0px;
+}
+
+#bodyLeftCell{	
+}
+
+#bodyRightCell{
+	width: 200px;
+}
+
+
+div.rwSidebar {
+	width:	100%;
+	height: 100%;
+	/* do not put padding here: pushes layout out of screen*/
+}
+
+div.rwContent {	
+	padding: 20px;
+}
+
+div.rwOverlay {
+		background-color: rgba(160, 160, 160, 0.88);
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		
+		/* Loading text positioning */
+		text-align: center;
+		padding-top: 5px;
+	}
+
+div.rwOverlayHidden {
+	visibility: hidden;
+	
+	/* do not consume space */
+	position: absolute;
+}
+
+/***************** HEADER CONTENT ********************/
+
+div.rwLogo {
+	width: 290px;
+	float: left;
+}
+
+div.rwSearchBar {
+	width: 300px;
+	float: left;
+	}
+
+div.rwBreadcrumbs {
+	clear:	both;
+}
+
+div.rwLogin {
+	float: right;	
+}
+
+
+/************ Footer content styling **************/
+
+div.rwFooterContainer {
+	background-color: #EEEEEE;
+	border-style: dotted none none none;
+    border-width: 1px;
+    
+    /* to stay ontop of wrapper */
+    position: relative; 
+}
+
+div.rwFooter {
+	width: 450px;
+	height: 109px; /* lseave room for border */
+	
+	margin-left: auto;
+	margin-right: auto;
+}
+
+table.rwFooterBlock {
+	width: 150px;
+	float: left;
+}
+
+/* sticky footer */
+/* {
+	margin: 0;
+} 
+*/
+
+/* all divs enclosing wrapper set to height 100% */
+html, body, .rwMain {
+	height: 100%;
+} 
+
+.wrapper {
+	position: relative;
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -110px; /* the bottom margin is the negative value of the footer's height */
+}
+
+.push {
+	clear: both;
+	height: 110px; /* .push must be the same height as .footer */
+}
+
+
+
+/***************** SPECIAL PRESENTER STYLE ******************/
+
+.rwDiscussions{
+	width: 800px;
+}
+
+.rwDiscussions .gwt-TabPanelBottom {
+    height: 400px;
+}
+
+.selected-comment {
+    background-color: yellow;
+}
+
+
+/***** List Styling ******/
+
+div.rwList{
+	background-color: #FFFFFF;
+    border-radius: 10px 10px 10px 10px;
+    border-style: solid;
+    border-width: 0;
+    box-shadow: 1px 1px 5px;
+    margin: 0px 30px 20px 0;
+    padding: 0 8px 26px 18px;
+    width: 400px; 
+}
+
+div.listOptions{
+	min-height:30px;
+    border-style: solid;
+    border-width: 0;
+	padding: 4px 3px 4px 3px;
+    width: 370px;
+}
+
+div.rwListEntry{
+	clear:both;
+	min-height:50px;
+    border-style: solid;
+    border-width: 0;
+	padding: 4px 3px 4px 3px;
+    width: 370px;
+}
+
+div.rwListEntry-hover{
+	clear:both;
+	min-height:50px;
+    border-style: solid;
+    border-width: 0;
+	background-color: #DDDDDD;
+    padding: 4px 3px 4px 3px;
+    width: 370px;
+    height: 16px;
+}
+
+div.rwVisibleListEntry{
+	float: left;
+}
+div.rwHoverableListEntry{
+	height: 15px;
+	float: left;
+	margin-top: 2px;
+	martin-left: 5px;
+}
+
+/************* HELPER CLASSES *****************/
+
+div.active{
+	background-color:#CC0000;
+}
+
 div.float{
 	float: left;
 }
 
-div.rwHeader{
-	width:1024px;
-	margin-left: auto ;
-	margin-right: auto ;
-	
-	padding: 8px;
-	border-style: none none dotted none;
-	border-width: 1px;
-	background-color: #EEEEEE;	
+/**************** TEXT STYLING ********************/
+
+body {
+	font-family: 'Lucida Grande', helvetica, arial, verdana, sans-serif;
 }
 
-div.rwBody{
-	width:1024px;
-	margin-left: auto ;
-	margin-right: auto ;
+a:link { color:#000070; text-decoration:none; }
+a:hover { text-decoration:underline; }
+a:visited { color:#551A8B; text-decoration:none; }
+
+
+h1 {
+	font-size: x-large;
+	font-weight: bold;
 }
 
-div.rwSidebar {
-	background-color: #DDDDFF;
-	width: 224px;
-	float: left;
-	min-height: 100px;
+h2 {
+	font-size: medium;
 }
 
-div.rwContent {
-	background-color: #FFFFDD;	
-	width: 800px;
-	float: left;
-	min-height: 100px;
+.rwAbstract {
+	text-align:justify;
+	font-family: 'Lucida Grande', helvetica, arial, verdana, sans-serif;
+	line-height:140%;
+	padding-left: 20px;
 }
 
-div.rwDiscussions{
-	background-color: #DDFFDD;	
-	width: 800px;
-	float: left;
-	min-height: 100px;
-	clear: both;
-}
 
-div.rwFooter {
-	padding: 8px;
-	border-style: none none dotted none;
-	border-width: 1px;
-	background-color: #CCCCCC;
-	
-	clear: both;
-	width:1024px;
-	margin-left: auto ;
-	margin-right: auto ;
-}
+/*************** HACKS *********************/
 
-table.rwFooterLinkPanel {
-	width:100%;
-}
-
-td.rwFooterLinkPanel{
-	width:33%;
-}
-
-table.rwFooterBlock {
-	margin-left: 50px;
+.gwt-SuggestBoxPopup{
 }
