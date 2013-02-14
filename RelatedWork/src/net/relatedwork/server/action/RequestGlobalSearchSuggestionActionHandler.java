@@ -1,4 +1,4 @@
-package net.relatedwork.server;
+package net.relatedwork.server.action;
 
 import java.util.ArrayList;
 
@@ -6,6 +6,7 @@ import javax.servlet.ServletContext;
 
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
 
+import net.relatedwork.server.ContextHelper;
 import net.relatedwork.shared.ItemSuggestion;
 import net.relatedwork.shared.SuggestTree;
 import net.relatedwork.shared.SuggestTree.SuggestionList;
@@ -32,6 +33,12 @@ public class RequestGlobalSearchSuggestionActionHandler
 			RequestGlobalSearchSuggestion action, ExecutionContext context)
 			throws ActionException {
 		SuggestTree<Integer> tree = ContextHelper.getSuggestTree(servletContext);
+		
+		// suggest tree not available?
+		if (tree == null) {
+			return new RequestGlobalSearchSuggestionResult(new Response());
+		}
+		
 		SuggestionList list = tree.getBestSuggestions(action.getRequest().getQuery());
 		ArrayList<ItemSuggestion> suggestions = new ArrayList<ItemSuggestion>();
 		for (int i=0;i<list.length();i++){

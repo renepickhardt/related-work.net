@@ -7,10 +7,10 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel>
-		<g:HTMLPanel ui:field="rwLogo"          styleName="rwLogo"><img src="images/logo.svg"></img></g:HTMLPanel>
+		<g:HTMLPanel ui:field="rwLogo"          styleName="rwLogo"><img src="images/logo.png"></img></g:HTMLPanel>
 		<g:HTMLPanel ui:field="rwHeaderSearch"  styleName="rwSearchBar"/>
 		<g:HTMLPanel ui:field="rwLoginControls" styleName="rwLogin"/>
-		<g:HTMLPanel ui:field="rwBreadcrumbs"   styleName="rwBreadcrumbs"/>
+		<!-- <g:HTMLPanel ui:field="rwBreadcrumbs"   styleName="rwBreadcrumbs"/>  -->
 		<div style="clear: both;"/>
 	</g:HTMLPanel>
 </ui:UiBinder>

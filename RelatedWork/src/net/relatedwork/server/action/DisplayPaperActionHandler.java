@@ -1,5 +1,8 @@
 package net.relatedwork.server.action;
 
+import java.awt.List;
+import java.util.ArrayList;
+
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
@@ -13,6 +16,8 @@ import net.relatedwork.server.neo4jHelper.NodeType;
 import net.relatedwork.server.utils.IOHelper;
 import net.relatedwork.shared.dto.DisplayPaper;
 import net.relatedwork.shared.dto.DisplayPaperResult;
+import net.relatedwork.shared.dto.Paper;
+
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.NotFoundException;
@@ -66,10 +71,14 @@ public class DisplayPaperActionHandler implements
 				result.addCitedPaper(Neo4jToDTOHelper.paperFromNode(citationTargetNode));
 			};
 
-//			for (String citeStirng: (ArrayList<String>)paperNode.getProperty(DBNodeProperties.PAPER_UNMATCHED_CITATIONS)){
-//				result.addCitedPaper(new Paper(citeStirng));
-//			}
-
+			// Unmatched references
+			//String[] array = (String[])paperNode.getProperty(DBNodeProperties.PAPER_UNMATCHED_CITATIONS);
+			for (String citeString: (String[])paperNode.getProperty(DBNodeProperties.PAPER_UNMATCHED_CITATIONS)){
+				if (!citeString.equals("")){
+				result.addCitedPaper(new Paper(citeString));
+				}
+			}
+			
 			// Citation List
 			for (Relationship rel: paperNode.getRelationships(DBRelationshipTypes.CITES, Direction.INCOMING)){
 				Node citationSourceNode = rel.getStartNode();

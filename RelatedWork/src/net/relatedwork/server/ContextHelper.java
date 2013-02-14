@@ -8,10 +8,16 @@ import java.util.Map;
 
 import javax.servlet.ServletContext;
 
+import org.apache.lucene.queryParser.QueryParser.Operator;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
+//import org.apache.tools.ant.taskdefs.Sleep;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.index.Index;
+import org.neo4j.graphdb.index.IndexHits;
 import org.neo4j.helpers.collection.MapUtil;
 import org.neo4j.index.impl.lucene.LuceneIndex;
+import org.neo4j.index.lucene.QueryContext;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
 import org.neo4j.kernel.EmbeddedReadOnlyGraphDatabase;
 
@@ -58,13 +64,18 @@ public class ContextHelper {
 		return graphDB;
 	}
 
+	private static Boolean treeLoadedFlag = false;
 	
 	// Auto Completion
 	public static SuggestTree<Integer> getSuggestTree(
 			ServletContext servletContext) {
+
 		SuggestTree<Integer> tree = (SuggestTree<Integer>) servletContext.getAttribute(SUGGEST_TREE);
-		if (tree == null){
+		
+		if (treeLoadedFlag == false){
 			IOHelper.log("build new suggesttree from disk");
+			treeLoadedFlag = true;
+
 			tree = new SuggestTree<Integer>(5,new Comparator<Integer>(){
 				@Override
 				public int compare(Integer o1, Integer o2) {
@@ -89,7 +100,9 @@ public class ContextHelper {
 			}
 			tree.build(map);
 			servletContext.setAttribute(SUGGEST_TREE, tree);
+			IOHelper.log("Finished building suggesttree" + tree.sizeInfo().toString());
 		}
+		
 		return tree;
 	}
 
@@ -108,6 +121,18 @@ public class ContextHelper {
 		}
 		return index;
 	}
+	
+	
+	public static String prepareQueryString(String queryString){
+		queryString = queryString.replaceAll("\\W+", " ");
+		queryString = queryString.trim();
+		queryString = queryString.toLowerCase();
+		// replace whitespaces
+		queryString = queryString.replaceAll("\\s+", "* ");
+		queryString = queryString + "*";
+		return "key:("+queryString+")";
+	}
+	
 
 	// URI index
 	public static Index<Node> getUriIndex(ServletContext servletContext){

@@ -86,7 +86,6 @@ public class MainPresenter extends
 	protected void onBind() {
 		super.onBind();
 		registerHandler(getEventBus().addHandler(LoadingOverlayEvent.getType(), overlayHandler));
-
 	
 	}
 	

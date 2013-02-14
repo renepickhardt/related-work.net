@@ -40,6 +40,10 @@ public class Author implements Result, IsSerializable, IsRenderable{
 		link.setText(displayName);
 		return link;
 	}
+
+	public String getText(){
+		return this.displayName;
+	}
 	
 	public HTMLPanel getHoverable(){
 		HTMLPanel panel = new HTMLPanel("");
@@ -76,5 +80,9 @@ public class Author implements Result, IsSerializable, IsRenderable{
 	public Boolean passesFilter(String mask) {
 		if (this.displayName.toLowerCase().contains(mask))return true;
 		return false;
-	}	
+	}
+	
+	public Boolean hasLink(){
+		return true;
+	}
 }

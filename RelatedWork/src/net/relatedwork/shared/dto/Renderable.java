@@ -28,5 +28,19 @@ public class Renderable implements IsRenderable, IsSerializable{
 	public Boolean passesFilter(String mask) {
 		if (this.displayName.toLowerCase().contains(mask))return true;
 		return false;
+	}
+
+	@Override
+	public Boolean hasLink() {
+		return true;
 	}	
+	@Override
+	public String getText() {
+		return this.displayName;
+	}
+
+	@Override
+	public String getUri() {
+		return this.uri;
+	}
 }

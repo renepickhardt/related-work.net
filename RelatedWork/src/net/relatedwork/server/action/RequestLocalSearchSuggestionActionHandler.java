@@ -1,9 +1,10 @@
-package net.relatedwork.server;
+package net.relatedwork.server.action;
 
 import java.util.HashMap;
 
 import javax.servlet.ServletContext;
 
+import net.relatedwork.server.ContextHelper;
 import net.relatedwork.server.neo4jHelper.DBNodeProperties;
 import net.relatedwork.server.neo4jHelper.Neo4jToDTOHelper;
 import net.relatedwork.server.neo4jHelper.NodeType;
@@ -11,6 +12,7 @@ import net.relatedwork.server.utils.IOHelper;
 import net.relatedwork.shared.dto.RequestLocalSearchSuggestion;
 import net.relatedwork.shared.dto.RequestLocalSearchSuggestionResult;
 
+import org.apache.lucene.queryParser.QueryParser.Operator;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.neo4j.graphdb.Direction;
@@ -46,17 +48,25 @@ public class RequestLocalSearchSuggestionActionHandler
 		HashMap<String, Integer> authorMap = new HashMap<String, Integer>();
 		HashMap<String, Integer> paperMap = new HashMap<String, Integer>();
 
-		
-//		map = new HashMap<String, Integer>();
-//		if (map==null)return null;
 		Sort s = new Sort();
 		s.setSort(new SortField("score", SortField.DOUBLE, true));
 
 		Index<Node> index = ContextHelper.getSearchIndex(servletContext);
-		IndexHits<Node> res = index.query(new QueryContext("key:Hartmann,?Hei*").sort(s).top(2));
 		
-		if (res == null)
+		String queryString = ContextHelper.prepareQueryString("Heinrich Hartmann");
+
+		IndexHits<Node> res = index.query(new QueryContext(queryString).defaultOperator(Operator.AND).sort(s).top(2));
+
+			
+		if (index == null){
+			System.out.println("No Index found");
 			return null;
+		}
+		
+		if (res == null){
+			System.out.println("Got no results");
+			return null;
+		}
 		
 		for (Node n : res) {
 			if (NodeType.isAuthorNode(n)){

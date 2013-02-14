@@ -53,8 +53,14 @@ public class Paper implements IsRenderable, IsSerializable {
 		return link;
 	}
 	
+	public String getText(){
+		return this.title;
+	}
+	
 	public HTMLPanel getHoverable(){
 		HTMLPanel panel = new HTMLPanel("");
+		if (this.uri.equals("")) return panel; 
+
 		HorizontalPanel hp = new HorizontalPanel();
 		Label l = new Label(citationCount + " Citations ");
 		Anchor a = new Anchor();
@@ -113,8 +119,13 @@ public class Paper implements IsRenderable, IsSerializable {
 	}
 	
 	public Boolean passesFilter(String mask) {
-		if (this.title.toLowerCase().contains(mask))return true;
+		if (this.title.toLowerCase().contains(mask)) return true;
 		return false;
-	}	
+	}
+
+	public Boolean hasLink() {
+		if (this.uri.equals("")) return false; 
+		return true;
+	}
 	
 }

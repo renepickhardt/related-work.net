@@ -65,7 +65,7 @@ public class PrepareAutoComplete {
 			counter++;
 			if (counter % 10000 == 0){
 				IOHelper.log("Adding entries. Processed " + counter + " nodes. Filled " + (PaperEntryList.size() + AuthorEntryList.size())+ " index entries.");
-				break;
+//				break;
 			}
 
 		}

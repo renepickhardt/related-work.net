@@ -1,13 +1,14 @@
 package net.relatedwork.server.guice;
 
 import com.gwtplatform.dispatch.server.guice.HandlerModule;
-import net.relatedwork.server.RequestGlobalSearchSuggestionActionHandler;
+
 import net.relatedwork.server.action.*;
 import net.relatedwork.shared.dto.*;
-import net.relatedwork.server.RequestLocalSearchSuggestionActionHandler;
 import net.relatedwork.server.action.NewUserActionActionHandler;
 import net.relatedwork.shared.dto.DisplayPaper;
 import net.relatedwork.server.action.DisplayPaperActionHandler;
+import net.relatedwork.server.action.RequestGlobalSearchSuggestionActionHandler;
+import net.relatedwork.server.action.RequestLocalSearchSuggestionActionHandler;
 import net.relatedwork.server.action.UserVerifyActionActionHandler;
 import net.relatedwork.shared.dto.SetAuthorMetaDataActionHandler;
 import net.relatedwork.server.action.SetAuthorMetaDataActionHandlerActionHandler;

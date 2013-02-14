@@ -13,6 +13,7 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Label;
 
 public class ListEntryPresenter<T extends IsRenderable> extends
 		PresenterWidget<ListEntryPresenter.MyView> {
@@ -58,7 +59,11 @@ public class ListEntryPresenter<T extends IsRenderable> extends
 	public void setContent(T element){
 		
 		HTMLPanel visiblePanel = getView().getRwVisibleListEntry();
-		visiblePanel.add(element.getAuthorLink());
+		if (element.hasLink()) {
+			visiblePanel.add(element.getAuthorLink());
+		} else {
+			visiblePanel.add(new Label(element.getText()));
+		}
 		
 		final HTMLPanel hoverPanel = getView().getRwHoverableListEntry();
 		hoverPanel.setVisible(false);
