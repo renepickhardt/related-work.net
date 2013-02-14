@@ -55,6 +55,14 @@
                 </configuration>
             </plugin>
 			
+			<plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+                <argLine>-Xmx4024m</argLine>
+            </configuration>
+        	</plugin>
+			
+			
 		</plugins>
 	</build>
 
@@ -135,6 +143,11 @@
 		<dependency>
 			<groupId>org.neo4j</groupId>
 			<artifactId>neo4j</artifactId>
+			<version>1.8</version>
+		</dependency>
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j-lucene-index</artifactId>
 			<version>1.8</version>
 		</dependency>
 

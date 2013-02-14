@@ -2,7 +2,7 @@ package net.relatedwork.server.action;
 
 import javax.servlet.ServletContext;
 
-import org.mortbay.jetty.handler.ContextHandler;
+//import org.mortbay.jetty.handler.ContextHandler;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
 

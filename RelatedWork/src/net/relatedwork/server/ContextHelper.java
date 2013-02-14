@@ -11,7 +11,7 @@ import javax.servlet.ServletContext;
 import org.apache.lucene.queryParser.QueryParser.Operator;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
-import org.apache.tools.ant.taskdefs.Sleep;
+//import org.apache.tools.ant.taskdefs.Sleep;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.index.Index;
 import org.neo4j.graphdb.index.IndexHits;
