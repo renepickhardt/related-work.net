@@ -1,0 +1,9 @@
+#
+# to be put in /var/lib/datasets/rawdata/relatedwork/config.txt
+#
+neo4jDbPath = /home/hartmann/data/related-work-db
+autoCompleteFile = /home/hartmann/data/auto_complete_store.txt
+sessionDir = /home/hartmann/data/rw-sessions
+userDir = /home/hartmann/data/rw-users
+pageRankIterations = 1
+createSearchIndex = False
